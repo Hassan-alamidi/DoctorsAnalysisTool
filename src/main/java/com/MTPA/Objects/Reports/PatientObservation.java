@@ -30,12 +30,13 @@ public class PatientObservation {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "encounter_id")
     private Encounter encounter;
 
+    //value could be an amount, true or false and so on, so string is best for this
     @Getter
     @Setter
-    private double resultValue;
+    private String resultValue;
 
     @Getter
     @Setter

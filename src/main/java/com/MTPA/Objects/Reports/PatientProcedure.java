@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class PatientProcedure {
 
     @Id
@@ -36,10 +37,12 @@ public class PatientProcedure {
 
     @Getter
     @Setter
+    @Column(name = "carried_out_on")
     private Date carriedOutOn;
 
     @Getter
     @Setter
+    @Column(name = "details")
     private String details;
 
 //    @Getter

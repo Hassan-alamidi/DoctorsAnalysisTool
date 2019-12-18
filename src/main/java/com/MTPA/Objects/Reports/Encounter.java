@@ -9,14 +9,27 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class Encounter {
 
     @Id
     @Getter
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
+
+    @Getter
+    @Setter
+    @Column(name = "type")
     private String type;
+
+    @Getter
+    @Setter
+    @Column(name = "date_visited")
     private Date dateVisited;
+
+    @Getter
+    @Setter
+    @Column(name = "date_left")
     private Date dateLeft;
 
     @Getter
@@ -33,6 +46,6 @@ public class Encounter {
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 }

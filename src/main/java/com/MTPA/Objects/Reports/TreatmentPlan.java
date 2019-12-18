@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+//this class needs to be extended
+@Entity
 public class TreatmentPlan {
 
     @Id
@@ -24,14 +26,13 @@ public class TreatmentPlan {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-    private Patient patient;
+    @Column(name = "patient_ppsn")
+    private String patientPPSN;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "encounter_id")
     private Encounter encounter;
 
     @Getter
@@ -41,9 +42,9 @@ public class TreatmentPlan {
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "patient_condition_id")
     private PatientCondition condition;
-    //the below is only generated when prediction is requested
+    //the below is only generated when prediction is requested might move to a separate class
 
     @Getter
     @Setter

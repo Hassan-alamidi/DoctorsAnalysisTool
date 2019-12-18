@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,13 +22,16 @@ public class Patient {
 
     @Getter
     @Setter
+    @Column(name = "name")
     private String name;
 
     @Getter
     @Setter
-    private int DOB;
+    @Column(name = "dob")
+    private Date DOB;
 
     @Getter
+    @Column(name = "ppsn")
     private String PPSN;
 
     @Getter
@@ -40,14 +44,17 @@ public class Patient {
 
     @Getter
     @Setter
+    @Column(name = "address")
     private String address;
 
     @Getter
     @Setter
+    @Column(name = "mother_ppsn")
     private int motherPPSN;
 
     @Getter
     @Setter
+    @Column(name = "father_ppsn")
     private int fatherPPSN;
 
     public Patient(){

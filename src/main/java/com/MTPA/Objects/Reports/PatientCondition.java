@@ -36,18 +36,22 @@ public class PatientCondition {
 
     @Getter
     @Setter
+    @Column(name = "symptoms")
     private String symptoms;
 
     @Getter
     @Setter
+    @Column(name = "details")
     private String details;
 
     @Getter
     @Setter
+    @Column(name = "discovered")
     private Date discovered;
 
     @Getter
     @Setter
+    @Column(name = "cured_on")
     private Date curedOn;
 
 // don't think we need this as this might cause a circular dependency should just retrieve PPSN
@@ -64,6 +68,6 @@ public class PatientCondition {
 
     @Getter
     @Setter
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "encounter_id")
     private Encounter encounter;
 }

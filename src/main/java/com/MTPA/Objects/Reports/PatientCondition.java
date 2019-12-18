@@ -16,11 +16,23 @@ public class PatientCondition {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
+//    this might make retrieval of patient data bloated so just get reference to condition and name
+//    and if further details needed another request can be made(may change back but unlikely)
+//    @Getter
+//    @Setter
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "condition_code", referencedColumnName = "condition_code")
+//    private Condition condition;
+
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "condition_code", referencedColumnName = "condition_code")
-    private Condition condition;
+    @Column(name = "name")
+    private String name;
+
+    @Getter
+    @Setter
+    @Column(name = "condition_code")
+    private int conditionCode;
 
     @Getter
     @Setter
@@ -38,11 +50,17 @@ public class PatientCondition {
     @Setter
     private Date curedOn;
 
+// don't think we need this as this might cause a circular dependency should just retrieve PPSN
+//    @Getter
+//    @Setter
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+//    private Patient patient;
+
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-    private Patient patient;
+    @Column(name = "patient_ppsn")
+    private String patientPPSN;
 
     @Getter
     @Setter

@@ -31,6 +31,10 @@ public class Condition {
 
     @Getter
     @Setter
+    private String description;
+
+    @Getter
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "can_progresses_to", referencedColumnName = "condition_code")
     private Condition progressesTo;
@@ -48,8 +52,4 @@ public class Condition {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "medication", referencedColumnName = "medication_code")
     private List<Medication> medicationList;
-
-    @Getter
-    @Setter
-    private String description;
 }

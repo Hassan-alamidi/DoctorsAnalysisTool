@@ -17,11 +17,22 @@ public class PatientProcedure {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
+// explained commented out code in patient condition the same reason applies
+//    @Getter
+//    @Setter
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "procedure_code", referencedColumnName = "procedure_code")
+//    private Procedure procedure;
+
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "procedure_code", referencedColumnName = "procedure_code")
-    private Procedure procedure;
+    @Column(name = "name")
+    private String name;
+
+    @Getter
+    @Setter
+    @Column(name = "procedure_code")
+    private int procedureCode;
 
     @Getter
     @Setter
@@ -29,19 +40,24 @@ public class PatientProcedure {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-    private Patient patient;
+    private String details;
+
+//    @Getter
+//    @Setter
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+//    private Patient patient;
+
+    @Getter
+    @Setter
+    @Column(name = "patient_ppsn")
+    private String patientPPSN;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
     private Encounter encounter;
-
-    @Getter
-    @Setter
-    private String details;
 
     @Getter
     @Setter

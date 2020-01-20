@@ -64,6 +64,7 @@ public class PatientProcedure {
 
     @Getter
     @Setter
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reason_for_procedure")
     private PatientCondition reasonForProcedure;
 }

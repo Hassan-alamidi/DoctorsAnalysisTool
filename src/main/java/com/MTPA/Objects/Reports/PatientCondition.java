@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 //patientConditions are medical patientConditions like allergies, illnesses
 @Entity
+@Table(name = "patient_condition")
 public class PatientCondition {
 
     @Id
@@ -66,8 +67,10 @@ public class PatientCondition {
     @Column(name = "patient_ppsn")
     private String patientPPSN;
 
+    //think the below should be a one to many as you can have many encounters for one condition
     @Getter
     @Setter
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
     private Encounter encounter;
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Entity
 public class Doctor {
 
     @Id
@@ -31,6 +32,6 @@ public class Doctor {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "organization_id")
     private Organization workPlace;
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 //this object represents a medical institute like GP,Hospital etc.
+@Entity
 public class Organization {
 
     @Id

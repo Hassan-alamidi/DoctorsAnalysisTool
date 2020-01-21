@@ -3,6 +3,7 @@ package com.MTPA.Resources;
 import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.PatientCondition;
+import com.MTPA.Services.PatientServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,12 @@ import java.time.LocalDate;
 public class PatientResource {
     //this entire endpoint will be restricted to doctors only
     PatientDAO patientDAO;
+    PatientServices patientServices;
 
     @Autowired
-    public PatientResource(PatientDAO patientDAO){
+    public PatientResource(PatientDAO patientDAO, PatientServices patientServices){
         this.patientDAO = patientDAO;
+        this.patientServices = patientServices;
     }
 
     @GetMapping
@@ -27,7 +30,7 @@ public class PatientResource {
 
     @PutMapping
     public Patient updatePatientRecords(Patient patient){
-        return null;
+        return patientServices.updatePatient(patient);
     }
 
     @PostMapping

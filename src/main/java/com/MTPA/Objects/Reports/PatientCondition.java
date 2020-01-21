@@ -3,6 +3,7 @@ package com.MTPA.Objects.Reports;
 import com.MTPA.Objects.Information.Condition;
 import com.MTPA.Objects.Patient;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,8 +14,10 @@ import java.util.Date;
 public class PatientCondition {
 
     @Id
+    @Setter
     @Getter
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column
     private int id;
 
 //    this might make retrieval of patient data bloated so just get reference to condition and name
@@ -55,7 +58,7 @@ public class PatientCondition {
     @Column(name = "cured_on")
     private Date curedOn;
 
-// don't think we need this as this might cause a circular dependency should just retrieve PPSN
+// don't thgit ink we need this as this might cause a circular dependency should just retrieve PPSN
 //    @Getter
 //    @Setter
 //    @ManyToOne(fetch = FetchType.LAZY)

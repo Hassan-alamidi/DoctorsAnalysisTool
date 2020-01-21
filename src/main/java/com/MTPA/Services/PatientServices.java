@@ -19,6 +19,7 @@ public class PatientServices {
         //get patient by PPSN then make sure only the unimportant data is changed like address or phone number
         Patient patientOldDetails = patientDAO.findByPPSN(patient.getPPSN());
         patient.setDOB(patientOldDetails.getDOB());
-        return null;
+        patientDAO.save(patient);
+        return patient;
     }
 }

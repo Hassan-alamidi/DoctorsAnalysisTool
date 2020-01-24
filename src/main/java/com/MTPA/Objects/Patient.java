@@ -2,19 +2,21 @@ package com.MTPA.Objects;
 
 import com.MTPA.Objects.Reports.PatientMedication;
 import com.MTPA.Objects.Reports.PatientCondition;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@JsonDeserialize
+@Table(name = "patient")
 public class Patient implements Serializable {
 
     @Id
@@ -67,8 +69,8 @@ public class Patient implements Serializable {
     @Column(name = "father_ppsn")
     private String fatherPPSN;
 
-    public Patient(final String PPSN){
-        this.PPSN = PPSN;
+    public Patient(final String ppsn){
+        this.PPSN = ppsn;
         patientConditions = new ArrayList<PatientCondition>();
         currentMedication = new ArrayList<PatientMedication>();
     }

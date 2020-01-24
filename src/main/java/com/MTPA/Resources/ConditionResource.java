@@ -1,8 +1,5 @@
 package com.MTPA.Resources;
 
-import com.MTPA.DAO.ConditionDAO;
-import com.MTPA.Objects.Information.Condition;
-import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.PatientCondition;
 import com.MTPA.Services.ConditionServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,7 @@ public class ConditionResource {
     }
 
     @PostMapping
-    public PatientCondition addPatientCondition(PatientCondition condition){
+    public PatientCondition addPatientCondition(@RequestBody PatientCondition condition){
         return conditionServices.addPatientCondition(condition);
     }
 

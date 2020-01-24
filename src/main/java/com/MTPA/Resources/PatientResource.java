@@ -2,40 +2,34 @@ package com.MTPA.Resources;
 
 import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Patient;
-import com.MTPA.Objects.Reports.PatientCondition;
 import com.MTPA.Services.PatientServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("patient")
 public class PatientResource {
     //this entire endpoint will be restricted to doctors only
-    PatientDAO patientDAO;
     PatientServices patientServices;
 
     @Autowired
-    public PatientResource(PatientDAO patientDAO, PatientServices patientServices){
-        this.patientDAO = patientDAO;
+    public PatientResource(PatientServices patientServices){
         this.patientServices = patientServices;
     }
 
     @GetMapping
-    public Patient getPatientRecords(@RequestHeader("ppsn") String PPSN){
-        return patientDAO.findByPPSN(PPSN);
+    public ResponseEntity<?> getPatientRecords(@RequestHeader("ppsn") String ppsn){
+        return patientServices.getPatient(ppsn);
     }
 
     @PutMapping
-    public Patient updatePatientRecords(Patient patient){
+    public ResponseEntity<?> updatePatientRecords(@RequestBody Patient patient){
         return patientServices.updatePatient(patient);
     }
 
     @PostMapping
-    public Patient createPatientRecords(@RequestBody Patient patient){
-        patientDAO.save(patient);
-        return patient;
+    public ResponseEntity<?> createPatientRecords(@RequestBody Patient patient){
+        return patientServices.createPatient(patient);
     }
 }

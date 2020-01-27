@@ -116,7 +116,7 @@ CREATE TABLE `patient` (
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `patient` ADD CONSTRAINT patient_unique_cols UNIQUE ( PPSN );
+ALTER TABLE `patient` ADD CONSTRAINT patient_unique_cols UNIQUE ( ppsn );
 --
 -- Table structure for table `patient_condition`
 --
@@ -230,6 +230,28 @@ CREATE TABLE `treatment_plan` (
   `patient_condition_id` int(11) NOT NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `doctor`
+--
+
+DROP TABLE IF EXISTS `doctor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `doctor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `medical_licence_number` int(45) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `dob` date NOT NULL,
+  `ppsn` varchar(45) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `privilege_level` varchar(45) NOT NULL,
+  `organization_id` varchar(200) NOT NULL
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number );
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

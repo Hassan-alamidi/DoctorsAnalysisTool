@@ -36,7 +36,7 @@ public class Patient implements Serializable {
 
     @Getter
     @Setter
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
     private Date DOB;
 

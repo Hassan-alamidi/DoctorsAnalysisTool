@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,6 +24,7 @@ public class BaseIntegrationTest {
 
     private static final String BASE_URI = "http://localhost:";
     protected final Patient EXISTING_PATIENT;
+    protected final Patient NEW_PATIENT;
     protected final Patient NEVER_GETS_ADDED_PATIENT;
 
     @LocalServerPort
@@ -49,6 +51,13 @@ public class BaseIntegrationTest {
                 .address("Test Tube")
                 .fatherPPSN("UNKNOWN")
                 .motherPPSN("UNKNOWN")
+                .build();
+        NEW_PATIENT = Patient.builder()
+                .firstName("john")
+                .lastName("doe")
+                .DOB(Date.valueOf(LocalDate.now()))
+                .PPSN("123N")
+                .address("123 easy street")
                 .build();
     }
 

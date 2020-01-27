@@ -21,6 +21,8 @@ public class PatientServices {
 
     public ResponseEntity<?> updatePatient(Patient patient){
         //get patient by PPSN then make sure only the unimportant data is changed like address or phone number
+        //TODO make sure id in both request and response match aswell as ppsn as user an attempt to
+        // update ppsn(disallowed) could cause another patient to be updated
         Patient patientOldDetails = patientDAO.findByPPSN(patient.getPPSN());
         if(patientOldDetails != null){
             patient.setDOB(patientOldDetails.getDOB());
@@ -36,6 +38,7 @@ public class PatientServices {
             return new ResponseEntity<Patient>(patient,HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Patient already exists", HttpStatus.UNPROCESSABLE_ENTITY);
+
     }
 
     public ResponseEntity<?> getPatient(String ppsn){

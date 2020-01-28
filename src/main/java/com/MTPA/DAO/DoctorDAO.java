@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface DoctorDAO extends JpaRepository<Doctor, Integer> {
 
     @Query("SELECT d FROM Doctor d WHERE d.MedicalLicenceNumber = ?1")
-    Doctor findByLicenceNumber(int licence);
+    Doctor findByLicenceNumber(String licence);
 }

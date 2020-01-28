@@ -19,7 +19,7 @@ public class Doctor {
     @Getter
     @Setter
     @Column(name = "medical_licence_number")
-    private int MedicalLicenceNumber;
+    private String MedicalLicenceNumber;
 
     @Getter
     @Setter

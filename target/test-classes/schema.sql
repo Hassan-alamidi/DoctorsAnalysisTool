@@ -232,6 +232,23 @@ CREATE TABLE `treatment_plan` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `organization`
+--
+
+DROP TABLE IF EXISTS `organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `organization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(200) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `phone_number` int(11) NOT NULL
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+ALTER TABLE `organization` ADD CONSTRAINT organization_unique_cols UNIQUE ( name, address, phone_number );
+
+--
 -- Table structure for table `doctor`
 --
 
@@ -240,18 +257,22 @@ DROP TABLE IF EXISTS `doctor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `doctor` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `medical_licence_number` int(45) NOT NULL,
+  `medical_licence_number` varchar(200) NOT NULL,
   `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
   `dob` date NOT NULL,
   `ppsn` varchar(45) NOT NULL,
   `address` varchar(200) NOT NULL,
-  `last_name` varchar(45) NOT NULL,
   `privilege_level` varchar(45) NOT NULL,
-  `organization_id` varchar(200) NOT NULL
+  `password` varchar(200) NOT NULL,
+  `phone_number` int(11) NOT NULL,
+  `organization_id` int(11) NOT NULL
 );
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number );
+ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number, phone_number );
+
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -1,0 +1,121 @@
+package Integration;
+
+import com.MTPA.Objects.Doctor;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.http.*;
+
+public class DoctorIntegrationTest extends BaseIntegrationTest {
+
+    private static final String REGISTER_ENDPOINT = "/register";
+    private static final String PASSWORD_CHANGE_ENDPOINT = "/password";
+    private static final String LOGIN_ENDPOINT = "/login";
+    private static final String DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD = "num4";
+    private static final String NON_DEFAULT_PASSWORD = "notDefault";
+    private static final String DEFAULT_PASSWORD = "ToBeChanged";
+
+    @Test
+    public void registerDoctorWithoutAdminPrivileges_thenFail(){
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(NEVER_GETS_ADDED_DOCTOR, doctorHeader), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void registerDoctorWithAdminPrivileges(){
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(NEVER_GETS_ADDED_DOCTOR, adminHeader), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void changeDefaultPasswordWithoutSupplyingCurrentPassword(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("newPassword", "newPass");
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void changePasswordWithoutSupplyingCurrentPassword_thenFail(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("newPassword", "newPass");
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void changePasswordWithIncorrectCurrentPassword_thenFail(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+        doctor.setPassword("incorrectPass");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("newPassword", "newPass");
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void changePasswordWithCorrectCurrentPassword(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+        doctor.setPassword(NON_DEFAULT_PASSWORD);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("newPassword", "newPass");
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void changePasswordWithLicenceNumberThatDoesNotExist_thenFail(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber("jiseknulkk");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("newPassword", "newPass");
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void loginToAccountWithDefaultPassword_thenNotLoggedIn(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
+        doctor.setPassword(DEFAULT_PASSWORD);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void loginToAccountWithIncorrectPassword_thenNotLoggedIn(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+        doctor.setPassword("incorrectPass");
+        ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void loginToAccount(){
+        Doctor doctor = new Doctor();
+        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+        doctor.setPassword(DEFAULT_PASSWORD);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
+}

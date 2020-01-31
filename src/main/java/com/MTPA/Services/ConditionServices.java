@@ -3,6 +3,8 @@ package com.MTPA.Services;
 import com.MTPA.DAO.ConditionDAO;
 import com.MTPA.Objects.Reports.PatientCondition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +19,20 @@ public class ConditionServices {
         this.conditionDAO = conditionDAO;
     }
 
-    public List<PatientCondition> getAllPatientConditions(String ppsn){
-        return conditionDAO.findAllPatientConditions(ppsn);
+    public ResponseEntity<List<PatientCondition>> getAllPatientConditions(String ppsn){
+        return new ResponseEntity<>(conditionDAO.findAllPatientConditions(ppsn), HttpStatus.OK);
     }
 
-    public PatientCondition getPatientCondition(int id){
-        return conditionDAO.findSpecificPatientCondition(id);
+    public ResponseEntity<PatientCondition> getPatientCondition(int id){
+        return new ResponseEntity<>(conditionDAO.findSpecificPatientCondition(id), HttpStatus.OK);
     }
 
-    public PatientCondition addPatientCondition(PatientCondition condition){
+    public ResponseEntity<List<PatientCondition>> getOnGoingPatientConditions(String ppsn){
+        return new ResponseEntity<>(conditionDAO.findPatientsOnGoingConditions(ppsn), HttpStatus.OK);
+    }
+
+    public ResponseEntity<PatientCondition> addPatientCondition(PatientCondition condition){
         conditionDAO.save(condition);
-        return condition;
+        return new ResponseEntity<>(condition, HttpStatus.OK);
     }
 }

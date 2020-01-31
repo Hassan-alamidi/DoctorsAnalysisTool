@@ -40,5 +40,5 @@ public class PatientObservation {
 
     @Getter
     @Setter
-    private String Unit;
+    private String unit;
 }

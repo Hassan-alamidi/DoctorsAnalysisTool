@@ -3,6 +3,7 @@ package com.MTPA.Resources;
 import com.MTPA.Objects.Reports.PatientCondition;
 import com.MTPA.Services.ConditionServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,22 @@ public class ConditionResource {
 
     //this should only have basic detail as it will be used to display as a list
     @GetMapping
-    public List<PatientCondition> getAllPatientConditions(@RequestHeader("PPSN") String ppsn){
+    public ResponseEntity<List<PatientCondition>> getAllPatientConditions(@RequestHeader("PPSN") String ppsn){
         return conditionServices.getAllPatientConditions(ppsn);
     }
 
+    @GetMapping("/on-going")
+    public ResponseEntity<List<PatientCondition>> getOnGoingConditions(@RequestHeader("PPSN") String ppsn){
+        return conditionServices.getOnGoingPatientConditions(ppsn);
+    }
     //this will give a more detailed view of a patients conditions (id is retrieved after selecting from list on page)
     @GetMapping("/{id}")
-    public PatientCondition getPatientCondition(@RequestParam("id") int id){
+    public ResponseEntity<PatientCondition> getPatientCondition(@RequestParam("id") int id){
         return conditionServices.getPatientCondition(id);
     }
 
     @PostMapping
-    public PatientCondition addPatientCondition(@RequestBody PatientCondition condition){
+    public ResponseEntity<PatientCondition> addPatientCondition(@RequestBody PatientCondition condition){
         return conditionServices.addPatientCondition(condition);
     }
-
 }

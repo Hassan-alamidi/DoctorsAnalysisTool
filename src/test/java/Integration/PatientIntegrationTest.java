@@ -158,7 +158,6 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void updatePatientDetailsExceptDOBAndPPSN(){
-        HttpHeaders headers = new HttpHeaders();
         doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
         ResponseEntity<Patient> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
@@ -170,6 +169,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         patient.setLastName("Updated");
 
         responseEntity = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient,doctorHeader), Patient.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Patient updatedPatient = responseEntity.getBody();
         Assert.assertTrue(patient.getFirstName().equals(updatedPatient.getFirstName()));
@@ -227,4 +227,17 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(responseEntity2.toString());
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity2.getStatusCode());
     }
+
+    @Test
+    public void getPatientWhileLoggedOut_thenFail(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("ppsn", EXISTING_PATIENT.getPPSN());
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange("/patient", HttpMethod.GET, new HttpEntity<>(headers), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
+
+    //not sure how to get a hold of expiredToken generating manually seems to fail so may need to mock
+    public void updatePatientWithExpiredToken(){}
 }

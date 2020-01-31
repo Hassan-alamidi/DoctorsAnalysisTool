@@ -17,4 +17,7 @@ public interface ConditionDAO extends JpaRepository<PatientCondition, Integer> {
 
     @Query("SELECT c FROM PatientCondition c WHERE c.id = ?1")
     PatientCondition findSpecificPatientCondition(int id);
+
+    @Query("SELECT c FROM PatientCondition c WHERE c.curedOn IS NULL AND c.patientPPSN = ?1")
+    List<PatientCondition> findPatientsOnGoingConditions(String ppsn);
 }

@@ -2,6 +2,7 @@ package Integration;
 
 import com.MTPA.HealthApp;
 import com.MTPA.Objects.Doctor;
+import com.MTPA.Objects.Organization;
 import com.MTPA.Objects.Patient;
 import com.auth0.jwt.JWT;
 import lombok.SneakyThrows;
@@ -23,9 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Properties;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -35,13 +36,17 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 public class BaseIntegrationTest {
 
     private static final String BASE_URI = "http://localhost:";
+    protected static final String LOGIN_ENDPOINT = "/login";
     protected static final String HEADER_STRING = "Authorization";
+    protected static final String ADMIN_LICENCE_NUM = "num1";
+    protected static final String NON_ADMIN_LICENCE_NUM = "num331";
     protected static String ADMIN_TOKEN;
     protected static String NON_ADMIN_TOKEN;
 
     protected Patient EXISTING_PATIENT;
     protected Patient NEW_PATIENT;
     protected Patient NEVER_GETS_ADDED_PATIENT;
+    protected Doctor NEVER_GETS_ADDED_DOCTOR;
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
@@ -56,21 +61,19 @@ public class BaseIntegrationTest {
         DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(BASE_URI + port);
         restTemplate.setUriTemplateHandler(uriBuilderFactory);
         if(ADMIN_TOKEN == null) {
-            Doctor doctor = new Doctor();
-            doctor.setMedicalLicenceNumber("num1");
-            doctor.setPassword("ToBeChanged");
-            ResponseEntity<String> responseEntity =
-                    restTemplate.exchange("/login", HttpMethod.POST, new HttpEntity<>(doctor), String.class);
-            NON_ADMIN_TOKEN = responseEntity.getHeaders().get(HEADER_STRING).get(0);
+            Doctor doctor = Doctor.builder()
+                    .MedicalLicenceNumber(ADMIN_LICENCE_NUM)
+                    .password("notDefault")
+                    .build();
+            ADMIN_TOKEN = getToken(doctor);
 
-            doctor.setMedicalLicenceNumber("num331");
-            responseEntity = restTemplate.exchange("/login", HttpMethod.POST, new HttpEntity<>(doctor), String.class);
-            ADMIN_TOKEN = responseEntity.getHeaders().get(HEADER_STRING).get(0);
-
+            doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
+            NON_ADMIN_TOKEN = getToken(doctor);
         }
         adminHeader = generateHeader(ADMIN_TOKEN);
         doctorHeader = generateHeader(NON_ADMIN_TOKEN);
         patientCreation();
+        doctorCreation();
     }
 
     private HttpHeaders generateHeader(String token){
@@ -106,6 +109,28 @@ public class BaseIntegrationTest {
                 .PPSN("123N")
                 .address("123 easy street")
                 .build();
+    }
+
+    private void doctorCreation(){
+        Organization organization = new Organization();
+        organization.setId(1);
+        NEVER_GETS_ADDED_DOCTOR = Doctor.builder()
+                .address("iajd")
+                .DOB(Date.valueOf("1999-08-09"))
+                .firstName("Tom")
+                .lastName("jife")
+                .MedicalLicenceNumber("986987M")
+                .privilegeLevel("User")
+                .PPSN("PPPPPPSSSSSNNNNN")
+                .phoneNumber(9899)
+                .password("anyPass")
+                .workPlace(organization)
+                .build();
+    }
+
+    private String getToken(Doctor doctor){
+        ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
+        return responseEntity.getHeaders().get(HEADER_STRING).get(0);
     }
 
     @Test

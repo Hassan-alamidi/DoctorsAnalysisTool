@@ -21,13 +21,13 @@ public class PatientServices {
 
     public ResponseEntity<?> updatePatient(Patient patient){
         //get patient by PPSN then make sure only the unimportant data is changed like address or phone number
-        //TODO make sure id in both request and response match aswell as ppsn as user an attempt to
-        // update ppsn(disallowed) could cause another patient to be updated
         Patient patientOldDetails = patientDAO.findByPPSN(patient.getPPSN());
-        if(patientOldDetails != null){
-            patient.setDOB(patientOldDetails.getDOB());
-            patientDAO.save(patient);
-            return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+        if(patientOldDetails != null && patient.getId() == patientOldDetails.getId() && patient.getPPSN().equals(patientOldDetails.getPPSN())){
+            if(patient.getDOB().compareTo(patientOldDetails.getDOB()) == 0){
+                patientDAO.save(patient);
+                return new ResponseEntity<Patient>(patient, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("You cannot update the patients Date of birth", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>("Patient Details not found", HttpStatus.NOT_FOUND);
     }

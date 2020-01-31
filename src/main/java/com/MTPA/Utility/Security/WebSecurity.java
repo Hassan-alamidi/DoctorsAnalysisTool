@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,7 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-    private static final String REGISTER_DOCTOR = "/authenticate/register";
+    private static final String REGISTER_DOCTOR = "/register";
     private static final String HEALTHCHECK = "/healthCheck";
     private final String SECRET;
     private final String HEADER_STRING;
@@ -56,8 +57,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, REGISTER_DOCTOR).hasAuthority("ROLE_Admin")
                 .antMatchers(HttpMethod.GET, HEALTHCHECK).permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .antMatchers(HttpMethod.PUT, "/password").permitAll()
+                .anyRequest().authenticated().and()
                 .addFilter(new AuthenticationFilter(authenticationManager(),SECRET,HEADER_STRING, TOKEN_PREFIX, EXPIRATION_TIME))
                 .addFilter(new AuthorizationFilter(authenticationManager(), SECRET,HEADER_STRING, TOKEN_PREFIX))
                 // this disables session creation on Spring Security

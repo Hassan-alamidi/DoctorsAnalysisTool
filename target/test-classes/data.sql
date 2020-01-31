@@ -18,6 +18,7 @@ INSERT INTO organization (id, name,address,phone_number) VALUES
 ---
 
 INSERT INTO doctor (medical_licence_number, first_name, last_name, dob, ppsn, address, privilege_level, password, phone_number, organization_id) VALUES
-('num1','testDoc','testie','1991-04-13','jsaof234j','123 easy street','Admin','$2a$10$X/1F8NfO3kEtY9jqmhI2T.DoX2ScfdLhf.B71sYuwfyf2HINl8rhe',819283,1),
-('num31','testDoc','testie','1991-04-13','jsaofsfee234j','123 easy street','User','$2a$10$SaZQmxR7DSPXDokK2DXDrufdNe9AmJWrHm38XZoQ9tIIj..vsaiWC',81923483,1),
-('num331','testDoc','testie','1991-04-13','jsaofsfsfee234j','123 easy street','User','$2a$10$o5F4YroB4yLQKIRZmMdrDe.XiHEI3I0wU6EdeLGXuWmHbqe.yqmyu',34323483,1);
+('num1','testDoc','testie','1991-04-13','jsaof234j','123 easy street','Admin','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',819283,1),
+('num31','testDoc','testie','1991-04-13','jsaofsfee234j','123 easy street','User','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',81923483,1),
+('num331','testDoc','testie','1991-04-13','jsaofsfsfee234j','123 easy street','User','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',34323483,1),
+('num4','Default','Pass','1991-04-13','StopForGettingToChangeUnique','123 easy street','User','$2a$10$N2mxboOvsAn56DA8Q.OeJ.ibE7UlRmQnLgbVvqZSj6YY8AqV.kdDq',0871736482,1);

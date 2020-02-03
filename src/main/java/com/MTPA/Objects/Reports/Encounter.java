@@ -2,14 +2,19 @@ package com.MTPA.Objects.Reports;
 
 import com.MTPA.Objects.Organization;
 import com.MTPA.Objects.Patient;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@JsonDeserialize
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Encounter {
 
     @Id
@@ -41,11 +46,19 @@ public class Encounter {
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @JsonIgnoreProperties("encounter")
     private List<PatientObservation> observations;
+
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @JsonIgnoreProperties("encounter")
+    private PatientCondition condition;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
+    @JsonIgnoreProperties("hiredDoctors")
     private Organization organization;
 }

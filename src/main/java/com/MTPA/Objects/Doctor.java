@@ -1,17 +1,23 @@
 package com.MTPA.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonDeserialize
 @Table(name = "doctor")
-public class Doctor {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Doctor implements Serializable {
 
     @Id
     @Getter
@@ -61,9 +67,11 @@ public class Doctor {
     @Setter
     private String password;
 
+    //TODO find better solution to jsonIgnoreProperties as it still loads all of the ignored properties
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
+    @JsonIgnoreProperties("hiredDoctors")
     private Organization workPlace;
 }

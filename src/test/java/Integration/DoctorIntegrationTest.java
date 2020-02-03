@@ -15,7 +15,7 @@ public class DoctorIntegrationTest extends BaseIntegrationTest {
     private static final String DEFAULT_PASSWORD = "ToBeChanged";
 
     @Test
-    public void registerDoctorWithoutAdminPrivileges_thenFail(){
+    public void registerDoctorWithoutAdminPrivileges_thenDoctorNotCreatedAndForbiddenReturned(){
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(NEVER_GETS_ADDED_DOCTOR, doctorHeader), String.class);
         System.out.println(responseEntity.toString());
@@ -23,9 +23,9 @@ public class DoctorIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void registerDoctorWithAdminPrivileges(){
+    public void registerDoctorWithAdminPrivileges_ThenDoctorIsCreated(){
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(NEVER_GETS_ADDED_DOCTOR, adminHeader), String.class);
+                restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(DOCTOR_GETS_ADDED_TO_DB, adminHeader), String.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -98,7 +98,7 @@ public class DoctorIntegrationTest extends BaseIntegrationTest {
         doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
         doctor.setPassword(DEFAULT_PASSWORD);
         ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
     }
 
     @Test

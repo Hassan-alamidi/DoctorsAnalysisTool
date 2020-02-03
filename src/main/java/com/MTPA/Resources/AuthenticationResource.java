@@ -27,4 +27,10 @@ public class AuthenticationResource {
     public ResponseEntity<?> passwordChange(@RequestBody Doctor doctor, @RequestHeader String newPassword){
         return doctorService.passwordChange(doctor,newPassword);
     }
+
+    @GetMapping("/personal-details")
+    public ResponseEntity<?> getDoctorByLicenceNumber(@RequestHeader("licenceNumber") String licenceNumber){
+        return doctorService.getDoctorByLicenceNumber(licenceNumber);
+    }
+
 }

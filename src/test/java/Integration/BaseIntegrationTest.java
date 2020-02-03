@@ -47,6 +47,7 @@ public class BaseIntegrationTest {
     protected Patient NEW_PATIENT;
     protected Patient NEVER_GETS_ADDED_PATIENT;
     protected Doctor NEVER_GETS_ADDED_DOCTOR;
+    protected Doctor DOCTOR_GETS_ADDED_TO_DB;
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
@@ -126,6 +127,19 @@ public class BaseIntegrationTest {
                 .password("anyPass")
                 .workPlace(organization)
                 .build();
+        DOCTOR_GETS_ADDED_TO_DB = Doctor.builder()
+                .address("iajd")
+                .DOB(Date.valueOf("1999-08-09"))
+                .firstName("Tim")
+                .lastName("jife")
+                .MedicalLicenceNumber("72648987N")
+                .privilegeLevel("User")
+                .PPSN("PP1224454SSSNNN")
+                .phoneNumber(9899)
+                .password("anyPass")
+                .workPlace(organization)
+                .build();
+
     }
 
     private String getToken(Doctor doctor){

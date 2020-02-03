@@ -187,10 +187,8 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         Patient patient = responseEntity.getBody();
         patient.setDOB(Date.valueOf("2003-02-10"));
 
-        responseEntity = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient, doctorHeader), Patient.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Patient updatedPatient = responseEntity.getBody();
-        Assert.assertTrue(!patient.getDOB().equals(updatedPatient.getDOB()));
+        ResponseEntity<String> failedResponse = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient, doctorHeader), String.class);
+        Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, failedResponse.getStatusCode());
     }
 
     @Test

@@ -1,5 +1,8 @@
 package com.MTPA.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +14,12 @@ import java.io.Serializable;
 import java.util.List;
 
 //this object represents a medical institute like GP,Hospital etc.
+//NOTE this object is not created by this application
 @Entity
 @Table(name = "organization")
 @AllArgsConstructor
 @JsonDeserialize
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Organization implements Serializable {
 
     @Id
@@ -35,9 +40,11 @@ public class Organization implements Serializable {
     @Setter
     private int phoneNumber;
 
+    //TODO find better solution to jsonIgnoreProperties as it still loads all of the ignored properties
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "workPlace")
+    @JsonIgnoreProperties("workPlace")
     private List<Doctor> hiredDoctors;
 
     public Organization(){}

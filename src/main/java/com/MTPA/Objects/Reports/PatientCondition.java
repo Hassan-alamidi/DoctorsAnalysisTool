@@ -2,6 +2,8 @@ package com.MTPA.Objects.Reports;
 
 import com.MTPA.Objects.Information.Condition;
 import com.MTPA.Objects.Patient;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -11,6 +13,8 @@ import java.util.Date;
 //patientConditions are medical patientConditions like allergies, illnesses
 @Entity
 @Table(name = "patient_condition")
+@JsonDeserialize
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PatientCondition {
 
     @Id
@@ -75,5 +79,6 @@ public class PatientCondition {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
+    @JsonIgnoreProperties("condition")
     private Encounter encounter;
 }

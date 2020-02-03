@@ -36,7 +36,7 @@ public class EncounterResource {
     }
 
     @GetMapping("/recent/{count}")
-    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("PPSN") final String ppsn, @RequestParam("count") int count){
+    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("PPSN") final String ppsn, @PathVariable("count") int count){
         return encounterService.getRecentEncounters(ppsn, count);
     }
 

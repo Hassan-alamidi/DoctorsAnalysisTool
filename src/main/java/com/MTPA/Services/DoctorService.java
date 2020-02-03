@@ -34,7 +34,8 @@ public class DoctorService implements UserDetailsService {
         if (doctor == null) {
             throw new UsernameNotFoundException(licenceNum);
         }else if(bCryptPasswordEncoder.matches(TEMP_PASSWORD, doctor.getPassword())){
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Password must be changed");
+            throw new UsernameNotFoundException("Must change password");
+            //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Password must be changed");
         }
 
         return User.builder()
@@ -63,5 +64,10 @@ public class DoctorService implements UserDetailsService {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    public ResponseEntity<Doctor> getDoctorByLicenceNumber(String licenceNum){
+        //TODO need to restrict this to only logged in doctor
+        return new ResponseEntity(doctorDAO.findByLicenceNumber(licenceNum), HttpStatus.OK);
     }
 }

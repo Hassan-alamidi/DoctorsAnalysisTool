@@ -273,6 +273,24 @@ CREATE TABLE `doctor` (
 
 ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number, phone_number );
 
+--
+-- Table structure for table `encounter`
+--
+
+DROP TABLE IF EXISTS `encounter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `encounter` (
+  `id` int(11) NOT NULL PRIMARY KEY,
+  `type` varchar(200) NOT NULL,
+  `date_visited` date NOT NULL,
+  `date_left` date DEFAULT NULL,
+  `patient_ppsn` varchar(200) NOT NULL,
+  `organization_id` int(11) NOT NULL
+);
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -114,8 +114,35 @@ public class DoctorIntegrationTest extends BaseIntegrationTest {
     public void loginToAccount(){
         Doctor doctor = new Doctor();
         doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
-        doctor.setPassword(DEFAULT_PASSWORD);
+        doctor.setPassword(NON_DEFAULT_PASSWORD);
         ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void doctorGetsTheirOwnInformation(){
+        ResponseEntity<String> responseEntity = restTemplate.exchange("/personal-details", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void doctorTriesToGetColleaguesInformation(){
+        doctorHeader.add("licenceNumber", ADMIN_LICENCE_NUM);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("/colleague", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void AdminGetsColleaguesInformation(){
+        adminHeader.add("licenceNumber", NON_ADMIN_LICENCE_NUM);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("/colleague", HttpMethod.GET, new HttpEntity<>(adminHeader), String.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void AdminTriesToGetNonExistentColleaguesInformation(){
+        adminHeader.add("licenceNumber", "FakeLicence");
+        ResponseEntity<String> responseEntity = restTemplate.exchange("/colleague", HttpMethod.GET, new HttpEntity<>(adminHeader), String.class);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }

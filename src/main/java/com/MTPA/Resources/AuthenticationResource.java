@@ -28,9 +28,14 @@ public class AuthenticationResource {
         return doctorService.passwordChange(doctor,newPassword);
     }
 
-    @GetMapping("/personal-details")
-    public ResponseEntity<?> getDoctorByLicenceNumber(@RequestHeader("licenceNumber") String licenceNumber){
+    @GetMapping("/colleague")
+    public ResponseEntity<?> getDoctorByLicenceNumber(@RequestHeader("licenceNumber") final String licenceNumber){
         return doctorService.getDoctorByLicenceNumber(licenceNumber);
+    }
+
+    @GetMapping("/personal-details")
+    public ResponseEntity<?> getDoctorsPersonalDetails(@RequestHeader("Authorization") final String token){
+        return doctorService.getPersonalDetails(token);
     }
 
 }

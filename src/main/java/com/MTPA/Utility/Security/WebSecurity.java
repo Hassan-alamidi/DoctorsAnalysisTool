@@ -56,6 +56,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, REGISTER_DOCTOR).hasAuthority("ROLE_Admin")
+                .antMatchers(HttpMethod.GET, "/colleague").hasAuthority("ROLE_Admin")
                 .antMatchers(HttpMethod.GET, HEALTHCHECK).permitAll()
                 .antMatchers(HttpMethod.PUT, "/password").permitAll()
                 .anyRequest().authenticated().and()

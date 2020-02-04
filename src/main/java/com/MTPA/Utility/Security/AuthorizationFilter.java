@@ -70,4 +70,21 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         }
         return null;
     }
+
+    public UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        if (token != null) {
+            // parse the token.
+            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).build();
+            DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(TOKEN_PREFIX, ""));
+
+            String subject = decodedJWT.getSubject();
+            String role = decodedJWT.getClaim("rol").asString();
+
+            if (subject != null) {
+                return new UsernamePasswordAuthenticationToken(subject, null, Arrays.asList(new SimpleGrantedAuthority(role)));
+            }
+            return null;
+        }
+        return null;
+    }
 }

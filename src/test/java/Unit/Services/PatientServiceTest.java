@@ -124,4 +124,18 @@ public class PatientServiceTest {
         }
     }
 
+    @Test
+    public void getExistingPatient(){
+        when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
+        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPPSN());
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+
+    @Test
+    public void getNonExistingPatient(){
+        when(patientDAO.findByPPSN(any(String.class))).thenReturn(null);
+        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPPSN());
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
 }

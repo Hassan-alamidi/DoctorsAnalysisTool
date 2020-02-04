@@ -16,14 +16,14 @@ import java.util.Optional;
 
 @Service
 public class EncounterService {
-    //no need for observation service as observations should always include details of encounter
-    private final ObservationDAO observationDAO;
+
     private final EncounterDAO encounterDAO;
+    private final ObservationService observationService;
 
     @Autowired
-    public EncounterService(final EncounterDAO encounterDAO, final ObservationDAO observationDAO){
+    public EncounterService(final EncounterDAO encounterDAO, final ObservationService observationService){
         this.encounterDAO = encounterDAO;
-        this.observationDAO = observationDAO;
+        this.observationService = observationService;
     }
 
     public ResponseEntity<List<Encounter>> getAllEncounters(final String ppsn){
@@ -63,13 +63,12 @@ public class EncounterService {
             List<PatientObservation> observations = encounter.getObservations();
             Encounter savedEncounter = encounterDAO.save(encounter);
             try {
-                observations.forEach( ob -> {
-                    ob.setEncounter(savedEncounter);
-                    observationDAO.save(ob);
-                });
+                //TODO finish off or find a better way of saving objects linked to an encounter lik observations or conditions
+                savedEncounter.setObservations(observationService.saveAllObservations(observations, savedEncounter));
+
             } catch (Exception e){
                 encounterDAO.delete(savedEncounter);
-                return new ResponseEntity<String>("could not save observation", HttpStatus.UNPROCESSABLE_ENTITY);
+                return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);

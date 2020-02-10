@@ -167,7 +167,7 @@ DROP TABLE IF EXISTS `patient_observation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient_observation` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(200) NOT NULL,
   `description` longtext NOT NULL,
   `date_taken` date NOT NULL,
@@ -281,7 +281,7 @@ DROP TABLE IF EXISTS `encounter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `encounter` (
-  `id` int(11) NOT NULL PRIMARY KEY,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `type` varchar(200) NOT NULL,
   `date_visited` date NOT NULL,
   `date_left` date DEFAULT NULL,

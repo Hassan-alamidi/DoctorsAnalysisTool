@@ -188,7 +188,9 @@ public class DoctorServiceTest {
     }
 
     public void doctorGetsPersonalDetails_thenOk(){
-
+        when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
+        ResponseEntity<?> responseEntity = doctorService.getPersonalDetails("");
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     //don't know how to create a semi valid token in tests so failure testing for get personal details will have to wait
 }

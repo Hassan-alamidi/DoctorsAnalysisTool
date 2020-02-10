@@ -21,7 +21,7 @@ public class EncounterResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Encounter>> getAllEncounters(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<List<Encounter>> getAllEncounters(@RequestHeader("ppsn") final String ppsn){
         return encounterService.getAllEncounters(ppsn);
     }
 
@@ -31,7 +31,7 @@ public class EncounterResource {
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("ppsn") final String ppsn){
         return encounterService.getRecentEncounters(ppsn);
     }
 

@@ -27,6 +27,7 @@ public class MedicationResource {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    //NOTE Probably shouldn't allow update of medication as will want to keep a history of medication
     @PutMapping
     public ResponseEntity<PatientMedication> updateCurrentMedication(@RequestBody final PatientMedication medication){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

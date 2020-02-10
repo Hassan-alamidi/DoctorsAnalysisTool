@@ -5,6 +5,8 @@ import com.MTPA.Objects.Reports.Encounter;
 import com.MTPA.Objects.Reports.PatientObservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +21,15 @@ public class ObservationService {
         this.observationDAO = observationDAO;
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     public List<PatientObservation> saveAllObservations(final List<PatientObservation> observations,
-                                                        final Encounter encounter) throws Exception {
-        try {
-            final List<PatientObservation> savedObservations = new ArrayList<>();
-            observations.forEach(ob -> {
-                ob.setEncounter(encounter);
-                savedObservations.add(observationDAO.save(ob));
-            });
-            return savedObservations;
-        }catch (Exception e){
-            throw new Exception("Could not save Observations");
-        }
+                                                        final Encounter encounter) {
+        final List<PatientObservation> savedObservations = new ArrayList<>();
+        observations.stream().forEach(ob -> {
+            ob.setEncounter(encounter);
+            savedObservations.add(observationDAO.save(ob));
+        });
+        return savedObservations;
     }
 
 

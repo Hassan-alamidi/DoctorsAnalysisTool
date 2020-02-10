@@ -2,7 +2,6 @@ package com.MTPA.Services;
 
 import com.MTPA.DAO.DoctorDAO;
 import com.MTPA.Objects.Doctor;
-import com.MTPA.Utility.Security.AuthorizationFilter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -11,43 +10,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class DoctorService implements UserDetailsService {
 
     //this will change to a randomly generated password in the future that will be emailed out to the doctor for them to change
     private static final String TEMP_PASSWORD = "ToBeChanged";
-    private final String SECRET;
-    private final String TOKEN_PREFIX;
+    private final String secret;
+    private final String tokenPrefix;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private DoctorDAO doctorDAO;
 
     @Autowired
-    public DoctorService(DoctorDAO doctorDAO, BCryptPasswordEncoder bCryptPasswordEncoder, @Value("${auth.secret}") final String secret,
-                         @Value("${TOKEN_PREFIX}") final String tokenPrefix){
+    public DoctorService(final DoctorDAO doctorDAO, final BCryptPasswordEncoder bCryptPasswordEncoder,
+                         @Value("${auth.secret}") final String secret, @Value("${TOKEN_PREFIX}") final String tokenPrefix){
         this.doctorDAO = doctorDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.SECRET = secret;
-        this.TOKEN_PREFIX = tokenPrefix;
+        this.secret = secret;
+        this.tokenPrefix = tokenPrefix;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String licenceNum) {
+    public UserDetails loadUserByUsername(final String licenceNum) {
         Doctor doctor = doctorDAO.findByLicenceNumber(licenceNum);
 
         if (doctor == null) {
             throw new UsernameNotFoundException(licenceNum + " not found");
         }else if(bCryptPasswordEncoder.matches(TEMP_PASSWORD, doctor.getPassword())){
             throw new UsernameNotFoundException("Must change password");
-            //throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Password must be changed");
         }
 
         return User.builder()
@@ -58,13 +54,13 @@ public class DoctorService implements UserDetailsService {
                 .build();
     }
 
-    public ResponseEntity<?> registerDoctor(Doctor doctor){
+    public ResponseEntity<?> registerDoctor(final Doctor doctor){
         doctor.setPassword(bCryptPasswordEncoder.encode(TEMP_PASSWORD));
         Doctor retVal = doctorDAO.save(doctor);
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> passwordChange(Doctor doctor, String newPassword){
+    public ResponseEntity<HttpStatus> passwordChange(final Doctor doctor, final String newPassword){
         if(newPassword == null || newPassword.trim().isEmpty()){
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -81,12 +77,12 @@ public class DoctorService implements UserDetailsService {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> getDoctorByLicenceNumber(String licenceNum){
+    public ResponseEntity<Doctor> getDoctorByLicenceNumber(final String licenceNum){
         Doctor doctorDetails = doctorDAO.findByLicenceNumber(licenceNum);
-        return new ResponseEntity<>(doctorDetails, HttpStatus.OK);
+        return new ResponseEntity<Doctor>(doctorDetails, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPersonalDetails(String token){
+    public ResponseEntity<?> getPersonalDetails(final String token){
         String licenceNumber = getLicenceNumber(token);
         if(licenceNumber != null && !licenceNumber.isEmpty()){
             Doctor doctorDetails = doctorDAO.findByLicenceNumber(licenceNumber);
@@ -95,22 +91,22 @@ public class DoctorService implements UserDetailsService {
         return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    private String getAuthority(String token){
+    private String getAuthority(final String token){
         if (token != null) {
             // parse the token.
-            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).build();
-            DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(TOKEN_PREFIX, ""));
+            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(secret.getBytes())).build();
+            DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(tokenPrefix, ""));
 
             return decodedJWT.getClaim("rol").asString();
         }
         return null;
     }
 
-    private String getLicenceNumber(String token){
+    private String getLicenceNumber(final String token){
         if (token != null) {
             // parse the token.
-            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).build();
-            DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(TOKEN_PREFIX, ""));
+            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(secret.getBytes())).build();
+            DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(tokenPrefix, ""));
 
             return decodedJWT.getSubject();
         }

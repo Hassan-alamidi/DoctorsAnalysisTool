@@ -24,21 +24,19 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final String SECRET;
-    private final String HEADER_STRING;
-    private final String TOKEN_PREFIX;
-    //8 hours token life
-    private final long EXPIRATION_TIME;
+    private final String secret;
+    private final String headerString;
+    private final String tokenPrefix;
+    private final long expirationTime;
+    private final AuthenticationManager authenticationManager;
 
-    private AuthenticationManager authenticationManager;
-
-    public AuthenticationFilter(AuthenticationManager authenticationManager, final String secret,
+    public AuthenticationFilter(final AuthenticationManager authenticationManager, final String secret,
                                 final String headerString, final String tokenPrefix, final long expiration){
         this.authenticationManager = authenticationManager;
-        this.SECRET = secret;
-        this.HEADER_STRING = headerString;
-        this.TOKEN_PREFIX = tokenPrefix;
-        this.EXPIRATION_TIME = expiration;
+        this.secret = secret;
+        this.headerString = headerString;
+        this.tokenPrefix = tokenPrefix;
+        this.expirationTime = expiration;
     }
 
     @Override
@@ -69,8 +67,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withClaim("rol", role)
                 .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .sign(HMAC512(secret.getBytes()));
+        res.addHeader(headerString, tokenPrefix + token);
     }
 }

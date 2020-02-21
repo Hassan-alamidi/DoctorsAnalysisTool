@@ -33,13 +33,15 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
-    private static final String BASE_URI = "http://localhost:";
+    protected static final String BASE_URI = "http://localhost:";
     protected static final String LOGIN_ENDPOINT = "/login";
     protected static final String HEADER_STRING = "Authorization";
     protected static final String ADMIN_LICENCE_NUM = "num1";
     protected static final String NON_ADMIN_LICENCE_NUM = "num331";
+    protected static final String REAL_PATIENT_PPSN = "87937M";
+    protected static final String REAL_PATIENT_WITH_NOTHING_PPSN = "87937N";
     protected static String ADMIN_TOKEN;
     protected static String NON_ADMIN_TOKEN;
 
@@ -48,11 +50,12 @@ public class BaseIntegrationTest {
     protected Patient NEVER_GETS_ADDED_PATIENT;
     protected Doctor NEVER_GETS_ADDED_DOCTOR;
     protected Doctor DOCTOR_GETS_ADDED_TO_DB;
+    protected Organization organization;
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
     @LocalServerPort
-    private int port;
+    protected int port;
 
     @Autowired
     protected TestRestTemplate restTemplate;
@@ -75,7 +78,11 @@ public class BaseIntegrationTest {
         doctorHeader = generateHeader(NON_ADMIN_TOKEN);
         patientCreation();
         doctorCreation();
+        setupOrganization();
+        setupTest();
     }
+
+    abstract void setupTest();
 
     private HttpHeaders generateHeader(String token){
         HttpHeaders headers = new HttpHeaders();
@@ -86,6 +93,7 @@ public class BaseIntegrationTest {
     @SneakyThrows
     private void patientCreation(){
         EXISTING_PATIENT = Patient.builder()
+                .id(1)
                 .firstName("Test")
                 .lastName("Subject")
                 .DOB(new SimpleDateFormat("yyyy-MM-dd").parse("1990-10-19"))
@@ -140,6 +148,14 @@ public class BaseIntegrationTest {
                 .workPlace(organization)
                 .build();
 
+    }
+
+    public void setupOrganization(){
+        organization = new Organization();
+        organization.setId(1);
+        organization.setAddress("pain in the ass");
+        organization.setName("testHospt");
+        organization.setPhoneNumber(9774);
     }
 
     private String getToken(Doctor doctor){

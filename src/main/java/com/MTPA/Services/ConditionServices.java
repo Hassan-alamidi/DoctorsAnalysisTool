@@ -35,7 +35,11 @@ public class ConditionServices {
 
     @Transactional(propagation = Propagation.MANDATORY)
     public ResponseEntity<PatientCondition> addPatientCondition(PatientCondition condition){
-        conditionDAO.save(condition);
+        try {
+            conditionDAO.save(condition);
+        }catch(Exception e){
+            System.out.println("fucking print error " + e.getMessage());
+        }
         return new ResponseEntity<>(condition, HttpStatus.OK);
     }
 }

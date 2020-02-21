@@ -18,7 +18,7 @@ public class MedicationResource {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<PatientMedication> getRecentMedication(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<PatientMedication> getCurrentMedication(@RequestHeader("PPSN") final String ppsn){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 

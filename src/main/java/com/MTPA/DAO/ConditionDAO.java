@@ -12,12 +12,12 @@ import java.util.List;
 @Repository
 public interface ConditionDAO extends JpaRepository<PatientCondition, Integer> {
 
-    @Query("SELECT c.id, c.name, c.conditionCode FROM PatientCondition c WHERE c.patientPPSN = ?1")
+    @Query("SELECT c.id, c.name, c.conditionCode FROM PatientCondition c WHERE c.patient.PPSN = ?1")
     List<PatientCondition> findAllPatientConditions(String ppsn);
 
     @Query("SELECT c FROM PatientCondition c WHERE c.id = ?1")
     PatientCondition findSpecificPatientCondition(int id);
 
-    @Query("SELECT c FROM PatientCondition c WHERE c.curedOn IS NULL AND c.patientPPSN = ?1")
+    @Query("SELECT c FROM PatientCondition c WHERE c.curedOn IS NULL AND c.patient.PPSN = ?1")
     List<PatientCondition> findPatientsOnGoingConditions(String ppsn);
 }

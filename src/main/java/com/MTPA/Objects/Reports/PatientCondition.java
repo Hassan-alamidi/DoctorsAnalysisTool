@@ -62,23 +62,24 @@ public class PatientCondition {
     @Column(name = "cured_on")
     private Date curedOn;
 
-// don't thgit ink we need this as this might cause a circular dependency should just retrieve PPSN
-//    @Getter
-//    @Setter
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-//    private Patient patient;
-
+// don't think we need this as this might cause a circular dependency should just retrieve PPSN
     @Getter
     @Setter
-    @Column(name = "patient_ppsn")
-    private String patientPPSN;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = "patientConditions", allowSetters = true)
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "PPSN")
+    private Patient patient;
+
+//    @Getter
+//    @Setter
+//    @Column(name = "patient_ppsn")
+//    private String patientPPSN;
 
     //think the below should be a one to many as you can have many encounters for one condition
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties("condition")
+    @JsonIgnoreProperties(value = "condition", allowSetters = true)
     private Encounter encounter;
 }

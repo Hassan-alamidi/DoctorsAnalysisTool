@@ -3,7 +3,8 @@
 ---
 
 INSERT INTO patient (first_name, last_name, dob, ppsn, address, mother_ppsn, father_ppsn) VALUES
-('Test', 'Subject', TO_DATE('1990-10-19', 'yyyy-MM-dd'), '87937M', 'Our Lab', 'UNKNOWN', 'UNKNOWN');
+('Test', 'Subject', TO_DATE('1990-10-19', 'yyyy-MM-dd'), '87937M', 'Our Lab', 'UNKNOWN', 'UNKNOWN'),
+('Test', 'Subject2', TO_DATE('1990-10-19', 'yyyy-MM-dd'), '87937N', 'Our Lab', 'UNKNOWN', 'UNKNOWN');
 
 ---
 --- Create Organization Data
@@ -28,7 +29,17 @@ INSERT INTO doctor (medical_licence_number, first_name, last_name, dob, ppsn, ad
 ---
 
 INSERT INTO `encounter` (type, date_visited, date_left, patient_ppsn, organization_id) VALUES
-('checkup','2020-01-12',NULL,'87937M',1);
+('checkup','2020-01-12',NULL,'87937M',1),
+('checkup','2020-01-13',NULL,'87937M',1),
+('checkup','2020-01-14',NULL,'87937M',1),
+('checkup','2020-01-15',NULL,'87937M',1),
+('checkup','2020-01-16',NULL,'87937M',1),
+('checkup','2020-01-17',NULL,'87937M',1),
+('checkup','2020-01-18',NULL,'87937M',1),
+('checkup','2020-01-19',NULL,'87937M',1),
+('checkup','2020-01-20',NULL,'87937M',1),
+('checkup','2020-01-21',NULL,'87937M',1),
+('checkup','2020-01-22',NULL,'87937M',1);
 
 ---
 --- Create Patient Observations
@@ -36,3 +47,11 @@ INSERT INTO `encounter` (type, date_visited, date_left, patient_ppsn, organizati
 
 INSERT INTO `patient_observation` (type, description, date_taken, encounter_id, result_value, result_unit) VALUES
 ('ECG','checking heart rate due to concerns','2020-01-12',1,'160','BPM');
+
+---
+--- Create condition
+---
+
+INSERT INTO `condition` (condition_code, name, type, description, common_causes, common_symptoms, can_progress_to) VALUES
+(1,'ECG','checking heart rate due to concerns', 'ajiofej','eijfow','headache', null),
+(2,'ECG','checking heart rate due to concerns', 'ajiofej','eijfow','headache',1);

@@ -14,6 +14,8 @@ public class DoctorIntegrationTest extends BaseIntegrationTest {
     private static final String NON_DEFAULT_PASSWORD = "notDefault";
     private static final String DEFAULT_PASSWORD = "ToBeChanged";
 
+    public void setupTest(){}
+
     @Test
     public void registerDoctorWithoutAdminPrivileges_thenDoctorNotCreatedAndForbiddenReturned(){
         ResponseEntity<String> responseEntity =

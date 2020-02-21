@@ -19,6 +19,7 @@ public class Encounter {
 
     @Id
     @Getter
+    @Setter
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
@@ -40,25 +41,26 @@ public class Encounter {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"})
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "PPSN")
     private Patient patient;
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter")
-    @JsonIgnoreProperties("encounter")
+    @JsonIgnoreProperties(value = "encounter", allowSetters = true)
     private List<PatientObservation> observations;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
-    @JsonIgnoreProperties("encounter")
+    @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
     private PatientCondition condition;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
-    @JsonIgnoreProperties("hiredDoctors")
+    @JsonIgnoreProperties(value = "hiredDoctors", allowSetters = true)
     private Organization organization;
 }

@@ -2,6 +2,7 @@ package com.MTPA.Objects;
 
 import com.MTPA.Objects.Reports.PatientMedication;
 import com.MTPA.Objects.Reports.PatientCondition;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @JsonDeserialize
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "patient")
 public class Patient implements Serializable {
 
@@ -47,7 +49,8 @@ public class Patient implements Serializable {
     private String PPSN;
 
     @Getter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patientPPSN")
+    @JsonIgnoreProperties(value = "patient", allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     private List<PatientCondition> patientConditions;
 
     @Getter

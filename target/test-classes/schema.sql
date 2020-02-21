@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `condition` (
-  `condition_code` int(11) NOT NULL,
+  `condition_code` int(11) NOT NULL PRIMARY KEY,
   `name` varchar(45) NOT NULL,
   `type` varchar(45) NOT NULL,
   `description` longtext NOT NULL,
@@ -88,7 +88,7 @@ DROP TABLE IF EXISTS `medication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `medication` (
-  `medication_code` int(11) NOT NULL,
+  `medication_code` int(11) NOT NULL PRIMARY KEY,
   `name` varchar(200) NOT NULL,
   `type` varchar(200) NOT NULL,
   `description` longtext NOT NULL
@@ -125,14 +125,14 @@ DROP TABLE IF EXISTS `patient_condition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient_condition` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(200) NOT NULL,
   `symptoms` varchar(200) NOT NULL,
   `condition_code` int(11) NOT NULL,
   `details` longtext,
   `discovered` date NOT NULL,
   `cured_on` date DEFAULT NULL,
-  `patient_ppsn` varchar(45) NOT NULL,
+  `patient_ppsn` varchar(200) NOT NULL,
   `encounter_id` int(11) NOT NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;

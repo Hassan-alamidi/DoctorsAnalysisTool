@@ -11,6 +11,8 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     private static final String BASE_ENDPOINT = "/patient";
 
+    public void setupTest(){}
+
     @Test
     public void createNonExistingPatient(){
         ResponseEntity<Patient> createdPatient =

@@ -69,7 +69,6 @@ public class EncounterService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity<?> createEncounter(final Encounter encounter){
-        System.out.println(encounter.getPatient().getPPSN());
         if(!patientDAO.exists(encounter.getPatient().getPPSN())){
             return new ResponseEntity<String>("Patient Not Found",HttpStatus.NOT_FOUND);
         }
@@ -79,11 +78,12 @@ public class EncounterService {
             List<PatientObservation> observations = encounter.getObservations();
             Encounter savedEncounter = encounterDAO.save(encounter);
             //observations is mandatory
-            savedEncounter.setObservations(observationService.saveAllObservations(observations, savedEncounter));
+            observationService.saveAllObservations(observations, savedEncounter);
             if(encounter.getCondition() != null){
                 PatientCondition condition = encounter.getCondition();
                 condition.setEncounter(savedEncounter);
-                savedEncounter.setCondition(conditionServices.addPatientCondition(condition).getBody());
+                condition.setPatient(encounter.getPatient());
+                conditionServices.addPatientCondition(condition).getBody();
             }
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }

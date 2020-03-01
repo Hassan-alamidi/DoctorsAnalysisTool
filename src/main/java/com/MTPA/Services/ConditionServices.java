@@ -38,7 +38,7 @@ public class ConditionServices {
         try {
             conditionDAO.save(condition);
         }catch(Exception e){
-            System.out.println("fucking print error " + e.getMessage());
+            System.out.println(e.getMessage());
         }
         return new ResponseEntity<>(condition, HttpStatus.OK);
     }

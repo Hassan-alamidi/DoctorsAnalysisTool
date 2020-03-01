@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("observations")
 public class ObservationResource {
-
+    //this will most likely be deleted as all observations should be created and returned with encounters
     @GetMapping
     public ResponseEntity<List<PatientObservation>> getAllObservations(@RequestHeader("PPSN") final String ppsn){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

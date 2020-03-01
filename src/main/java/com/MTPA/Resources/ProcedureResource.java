@@ -1,8 +1,8 @@
 package com.MTPA.Resources;
 
-import com.MTPA.Objects.Reports.PatientObservation;
 import com.MTPA.Objects.Reports.PatientProcedure;
-import org.springframework.http.HttpStatus;
+import com.MTPA.Services.ProcedureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,24 +12,26 @@ import java.util.List;
 @RequestMapping("procedure")
 public class ProcedureResource {
 
+    private ProcedureService procedureService;
+
+    @Autowired
+    public void ProcedureResource(ProcedureService procedureService){
+        this.procedureService = procedureService;
+    }
+
     @GetMapping
     public ResponseEntity<List<PatientProcedure>> getAllProcedures(@RequestHeader("PPSN") final String ppsn){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return procedureService.getAllProcedures(ppsn);
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<PatientProcedure> getRecentProcedures(@RequestHeader("PPSN") final String ppsn){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    @GetMapping("/recent/{count}")
-    public ResponseEntity<List<PatientProcedure>> getRecentProcedure(@RequestHeader("PPSN") final String ppsn, @RequestParam("count") int count){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<List<PatientProcedure>> getRecentProcedures(@RequestHeader("PPSN") final String ppsn){
+        return procedureService.getRecentProcedures(ppsn);
     }
 
     @PostMapping
     public ResponseEntity<PatientProcedure> createProcedure(@RequestBody final PatientProcedure procedure){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return procedureService.createProcedure(procedure);
     }
 
 }

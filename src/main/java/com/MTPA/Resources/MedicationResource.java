@@ -1,8 +1,8 @@
 package com.MTPA.Resources;
 
 import com.MTPA.Objects.Reports.PatientMedication;
-import com.MTPA.Objects.Reports.PatientObservation;
-import org.springframework.http.HttpStatus;
+import com.MTPA.Services.MedicationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,24 +12,32 @@ import java.util.List;
 @RequestMapping("medication")
 public class MedicationResource {
 
-    @GetMapping
-    public ResponseEntity<List<PatientMedication>> getAllMedication(@RequestHeader("PPSN") final String ppsn){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    private MedicationService medicationService;
+
+    @Autowired
+    public MedicationResource(final MedicationService medicationService){
+        this.medicationService = medicationService;
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<PatientMedication> getCurrentMedication(@RequestHeader("PPSN") final String ppsn){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    @GetMapping
+    public ResponseEntity<List<PatientMedication>> getAllMedication(@RequestHeader("PPSN") final String ppsn){
+        return medicationService.getAllMedication(ppsn);
     }
 
     @PostMapping
-    public ResponseEntity<PatientMedication> createObservation(@RequestBody final PatientMedication medication){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<?> prescribeMedication(@RequestBody final PatientMedication patientMedication){
+        return medicationService.prescribeMedication(patientMedication);
     }
 
-    //NOTE Probably shouldn't allow update of medication as will want to keep a history of medication
-    @PutMapping
-    public ResponseEntity<PatientMedication> updateCurrentMedication(@RequestBody final PatientMedication medication){
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentMedication(@RequestHeader("PPSN") final String ppsn){
+        return medicationService.getPatientCurrentMedication(ppsn);
     }
+
+    //updating medication only allows for extending the end date anything other than that will need a new prescription
+    @PutMapping("/current")
+    public ResponseEntity<PatientMedication> extendMedicationTreatment(@RequestBody final PatientMedication medication){
+        return medicationService.extendMedicationTreatment(medication);
+    }
+
 }

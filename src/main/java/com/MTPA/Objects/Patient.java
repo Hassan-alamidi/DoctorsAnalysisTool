@@ -5,13 +5,12 @@ import com.MTPA.Objects.Reports.PatientCondition;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Builder
@@ -49,15 +48,6 @@ public class Patient implements Serializable {
     private String PPSN;
 
     @Getter
-    @JsonIgnoreProperties(value = "patient", allowSetters = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
-    private List<PatientCondition> patientConditions;
-
-    @Getter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
-    private List<PatientMedication> currentMedication;
-
-    @Getter
     @Setter
     @Column(name = "address")
     private String address;
@@ -72,15 +62,27 @@ public class Patient implements Serializable {
     @Column(name = "father_ppsn")
     private String fatherPPSN;
 
+    @Getter
+    @JsonIgnoreProperties(value = "patient", allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @Where(clause = "cured_on IS NULL")
+    private Set<PatientCondition> patientConditions;
+
+    @Getter
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @JsonIgnoreProperties(value = {"patient", "reasonForMedication"}, allowSetters = true)
+    @Where(clause = "treatment_end > CURRENT_DATE()")
+    private Set<PatientMedication> currentMedication;
+
     public Patient(final String ppsn){
         this.PPSN = ppsn;
-        patientConditions = new ArrayList<PatientCondition>();
-        currentMedication = new ArrayList<PatientMedication>();
+        patientConditions = new HashSet<PatientCondition>();
+        currentMedication = new HashSet<PatientMedication>();
     }
 
     public Patient(){
-        patientConditions = new ArrayList<PatientCondition>();
-        currentMedication = new ArrayList<PatientMedication>();
+        patientConditions = new HashSet<PatientCondition>();
+        currentMedication = new HashSet<PatientMedication>();
     }
 
     public void addCondition(PatientCondition condition){

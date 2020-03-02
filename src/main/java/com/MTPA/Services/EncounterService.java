@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class EncounterService {
@@ -75,7 +76,7 @@ public class EncounterService {
 
         //TODO before going forward with this database restructure needed, more thought needs to be put into the database
         if(encounter.getId() == 0 && encounter.getObservations() != null && !encounter.getObservations().isEmpty()) {
-            List<PatientObservation> observations = encounter.getObservations();
+            Set<PatientObservation> observations = encounter.getObservations();
             Encounter savedEncounter = encounterDAO.save(encounter);
             //observations is mandatory
             observationService.saveAllObservations(observations, savedEncounter);

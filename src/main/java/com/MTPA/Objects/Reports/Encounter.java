@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @JsonDeserialize
@@ -49,7 +50,7 @@ public class Encounter {
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter")
     @JsonIgnoreProperties(value = "encounter", allowSetters = true)
-    private List<PatientObservation> observations;
+    private Set<PatientObservation> observations;
 
     @Getter
     @Setter

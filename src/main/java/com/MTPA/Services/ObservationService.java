@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ObservationService {
@@ -22,9 +24,9 @@ public class ObservationService {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public List<PatientObservation> saveAllObservations(final List<PatientObservation> observations,
-                                                        final Encounter encounter) {
-        final List<PatientObservation> savedObservations = new ArrayList<>();
+    public Set<PatientObservation> saveAllObservations(final Set<PatientObservation> observations,
+                                                       final Encounter encounter) {
+        final Set<PatientObservation> savedObservations = new HashSet<>();
         observations.stream().forEach(ob -> {
             ob.setEncounter(encounter);
             savedObservations.add(observationDAO.save(ob));

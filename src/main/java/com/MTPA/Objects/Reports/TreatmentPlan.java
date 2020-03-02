@@ -1,6 +1,5 @@
 package com.MTPA.Objects.Reports;
 
-import com.MTPA.Objects.Patient;
 import lombok.Getter;
 import lombok.Setter;
 

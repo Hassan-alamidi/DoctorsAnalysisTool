@@ -47,27 +47,27 @@ public class EncounterServiceTest {
     Date date;
     Patient patient;
     PatientObservation observation;
-    List<PatientObservation> observations;
+    Set<PatientObservation> observations;
 
     @Before
     @SneakyThrows
     public void setup(){
         date = new SimpleDateFormat("yyyy-MM-dd").parse("2020-02-12");
-        patient = new Patient(1,"fistName","secondName", date, "ppsn", new ArrayList<PatientCondition>(),
-                new ArrayList<PatientMedication>(),"address","ajd", "jsoidja");
+        patient = new Patient(1,"fistName","secondName", date, "ppsn","address",
+                "ajd", "jsoidja", new HashSet<PatientCondition>(), new HashSet<>());
         observation = new PatientObservation();
         observation.setDescription("");
         observation.setDateTaken(date);
         observation.setType("blood test");
         observation.setResultValue("blood everywhere");
         observation.setUnit("mistakes");
-        observations = Arrays.asList(observation);
+        observations = new HashSet<PatientObservation>(Collections.singleton(observation));
         encounterService = new EncounterService(patientDAO,encounterDAO,conditionServices,observationService);
         encounter = new Encounter();
         encounter.setDateVisited(date);
         encounter.setPatient(patient);
         encounter.setObservations(observations);
-        encounters = Arrays.asList(encounter);
+        encounters = new ArrayList<Encounter>(Collections.singleton(encounter));
 
     }
 
@@ -81,7 +81,7 @@ public class EncounterServiceTest {
 
     @Test
     public void getAllEncountersWherePPSNHasNone_thenNotFound(){
-        when(encounterDAO.findAllEncountersOrderedByDate(any(String.class))).thenReturn(new ArrayList<Encounter>());
+        when(encounterDAO.findAllEncountersOrderedByDate(any(String.class))).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getAllEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     }
@@ -110,7 +110,7 @@ public class EncounterServiceTest {
 
     @Test
     public void getRecentEncountersWherePPSNHasNone_thenNotFound(){
-        when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<Encounter>());
+        when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     }
@@ -125,7 +125,7 @@ public class EncounterServiceTest {
 
     @Test
     public void getANumberOfRecentEncountersWherePPSNHasNone_thenNotFound(){
-        when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<Encounter>());
+        when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN", 1);
         Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     }

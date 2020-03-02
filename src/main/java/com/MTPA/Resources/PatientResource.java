@@ -1,6 +1,5 @@
 package com.MTPA.Resources;
 
-import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Patient;
 import com.MTPA.Services.PatientServices;
 import org.springframework.beans.factory.annotation.Autowired;

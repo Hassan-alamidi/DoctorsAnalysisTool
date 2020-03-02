@@ -24,12 +24,12 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
 
     private final String ENCOUNTER_ENDPOINT = "/encounter";
     private Encounter encounter;
-    private List<PatientObservation> observations;
+    private Set<PatientObservation> observations;
 
     @SneakyThrows
     public void setupTest(){
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2020-05-12");
-        observations = new ArrayList<>();
+        observations = new HashSet<>();
         PatientObservation observation = new PatientObservation();
         observation.setDateTaken(date);
         observation.setDescription("patient is sick as a dog");
@@ -156,7 +156,7 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void createEncounterWithoutObservations_thenUnprocessable(){
-        encounter.setObservations(new ArrayList<>());
+        encounter.setObservations(new HashSet<>());
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
     }

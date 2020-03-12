@@ -24,14 +24,6 @@ public class PatientCondition {
     @Column
     private int id;
 
-//    this might make retrieval of patient data bloated so just get reference to condition and name
-//    and if further details needed another request can be made(may change back but unlikely)
-//    @Getter
-//    @Setter
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "condition_code", referencedColumnName = "condition_code")
-//    private Condition condition;
-
     @Getter
     @Setter
     @Column(name = "name")
@@ -62,7 +54,6 @@ public class PatientCondition {
     @Column(name = "cured_on")
     private Date curedOn;
 
-// don't think we need this as this might cause a circular dependency should just retrieve PPSN
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -70,12 +61,6 @@ public class PatientCondition {
     @JoinColumn(name = "patient_ppsn", referencedColumnName = "PPSN")
     private Patient patient;
 
-//    @Getter
-//    @Setter
-//    @Column(name = "patient_ppsn")
-//    private String patientPPSN;
-
-    //think the below should be a one to many as you can have many encounters for one condition
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)

@@ -21,6 +21,10 @@ public class PatientObservation {
 
     @Getter
     @Setter
+    private String observationCode;
+
+    @Getter
+    @Setter
     private String type;
 
     @Getter

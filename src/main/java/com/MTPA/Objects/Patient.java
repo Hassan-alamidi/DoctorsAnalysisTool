@@ -37,9 +37,20 @@ public class Patient implements Serializable {
 
     @Getter
     @Setter
+    @Column(name = "gender")
+    private String gender;
+
+    @Getter
+    @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
     private Date DOB;
+
+    @Getter
+    @Setter
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "dod")
+    private Date DOD;
 
     //I don't want a setter here but jackson seems to insist on it must find a solution later
     @Setter

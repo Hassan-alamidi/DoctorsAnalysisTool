@@ -9,9 +9,6 @@ setwd("~/Documents/CollegeProjects/DoctorsAnalysisTool/dataTransformation")
 medications <- read.csv("syntheaOutput/medications.csv", stringsAsFactors = FALSE)
 patients <- read.csv("syntheaOutput/patients.csv", stringsAsFactors = FALSE)
 observations <- read.csv("syntheaOutput/observations.csv", stringsAsFactors = FALSE)
-encounters <- read.csv("syntheaOutput/encounters.csv", stringsAsFactors = FALSE)
-careplans <- read.csv("syntheaOutput/careplans.csv", stringsAsFactors = FALSE)
-procedures <- read.csv("syntheaOutput/procedures.csv", stringsAsFactors = FALSE)
 conditions <- read.csv("syntheaOutput/conditions.csv", stringsAsFactors = FALSE)
 immunizations <- read.csv("syntheaOutput/immunizations.csv", stringsAsFactors = FALSE)
 
@@ -21,8 +18,6 @@ patients$DEATHDATE <- as.Date(patients$DEATHDATE, format = "%Y-%m-%d")
 
 observations$DATE <- as.Date(observations$DATE, format = "%Y-%m-%d")
 observations <- arrange(observations, DATE)
-
-procedures$DATE <- as.Date(procedures$DATE, format = "%Y-%m-%d")
 
 medications$START <- as.Date(medications$START, format = "%Y-%m-%d")
 medications$STOP <- as.Date(medications$STOP, format = "%Y-%m-%d")
@@ -94,13 +89,11 @@ immunizations <- NA
 print("Starting to reduce data")
 df <- data.frame()
 for (i in 1:nrow(patients)) {
-  patientProcedures <- select(filter(procedures, PATIENT == patients[i, 1]), c(DATE,CODE,DESCRIPTION))
   patientObservations <- select(filter(observations, PATIENT == patients[i,1]), c(DATE, CODE, DESCRIPTION, VALUE, UNITS))
   patientConditions <-select(filter(conditions, PATIENT == patients[i,1]), c(START, STOP, CODE, DESCRIPTION))
   condToPredict <-select(filter(conditionsToPredict, PATIENT == patients[i,1]), c(START, STOP, CODE, DESCRIPTION))
   #not sure if I will include medication and care plans in this version
   patientMedications <- distinct(select(filter(medications, PATIENT == patients[i,1]), c(START, STOP, CODE, DESCRIPTION)), CODE, .keep_all = TRUE )
-  patientCarePlans <- select(filter(careplans, PATIENT == patients[i,1]), START, STOP, CODE, DESCRIPTION, REASONDESCRIPTION)
   
   if(nrow(condToPredict) > 0){
     for(j in 1:nrow(condToPredict)){

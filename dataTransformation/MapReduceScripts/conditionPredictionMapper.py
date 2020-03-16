@@ -36,13 +36,13 @@ def loadPatientDataFromFile(patientId, fileName):
     return dataList
 
 count = 0
-file = open("../MapReduceOutput/patient.txt", 'r')
-lines = file.readlines()
-file.close()
+#file = open("../MapReduceOutput/patient.txt", 'r')
+#lines = file.readlines()
+#file.close()
 finalData = pd.DataFrame()
 observationsList = set()
 boolList = set()
-for line in lines:
+for line in sys.stdin:
     if(count == 0):
         count += 1
         continue

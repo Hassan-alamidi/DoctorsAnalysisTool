@@ -22,8 +22,8 @@ for line in sys.stdin:
         deathDate = str(data[2])
         gender = str(data[14])
     except ValueError:
-        print("Failed to read patient")
-        print(data)
+        #print("Failed to read patient")
+        #print(data)
         continue
     
     print(ppsn, birthDate, deathDate, gender, sep=',')

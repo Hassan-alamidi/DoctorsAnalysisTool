@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Mar 13 18:54:03 2020
+Created on Fri Mar 13 19:10:56 2020
 
 @author: hassan
+map immunizations, this requires annother mapper to mix with medication, followed by a reducer
 """
 
 from __future__ import print_function
@@ -18,8 +19,8 @@ for line in sys.stdin:
         ppsn = str(data[1])
         description = str(data[4])
     except ValueError:
-        #print("Failed to read procedure")
+        #print("Failed to read observation")
         #print(data)
         continue
-    
+        
     print(ppsn, date, description, sep=',')

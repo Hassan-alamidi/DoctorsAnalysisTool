@@ -19,8 +19,8 @@ for line in sys.stdin:
         ppsn = str(data[2])
         description = str(data[6])
     except ValueError:
-        print("Failed to read medication")
-        print(data)
+        #print("Failed to read medication")
+        #print(data)
         continue
     
     print(ppsn,start, stop, description, sep=',')

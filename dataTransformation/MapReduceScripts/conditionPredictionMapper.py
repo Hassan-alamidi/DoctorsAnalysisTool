@@ -11,6 +11,7 @@ import datetime as date
 import calendar
 import pandas as pd
 import numpy as np
+import pickle
 
 def manipulateMonth(currentDate, months):
     currentDate = date.datetime.strptime(currentDate, "%Y-%m-%d").date()
@@ -52,8 +53,6 @@ for line in sys.stdin:
     #dataframe is overkill and is actually slightly slower but using it for readability
     patient = pd.DataFrame(line,columns=["ppsn", "birthDate", "deathDate", "gender"])
     patient["birthDate"] = pd.to_datetime(patient["birthDate"])
-    print(count)
-    print(patient)
     
     patientObservations = loadPatientDataFromFile(patient.iloc[0,0], "MapReduceOutput/observations.txt")
     patientObservations = pd.DataFrame(patientObservations,columns=["ppsn", "date", "description", "value", "units"])
@@ -121,7 +120,8 @@ for line in sys.stdin:
                 
                 tmpCond = pd.concat([tmpCond.reset_index(drop=True),tmpObv], axis=1)
                 finalData = pd.concat([finalData,tmpCond])
-
+    
+   
 #the below commented out code was the beginning of dealing with null data but not sure if I should do that   
 #    for col in observationsList:
 #        if(!is_string_dtype(finalData[col])):
@@ -129,6 +129,10 @@ for line in sys.stdin:
 for col in boolList:
     finalData[col].fillna(0, inplace=True)
 
-#for index, rows in finalData.iterrows():  
-#    print(rows)
-finalData.to_csv("MapReduceOutput/conditionPrediction.csv", index=False)
+with open("MapReduceOutput/setOfBool.txt", "a") as file:
+    for col in boolList:
+        file.write(col + "\n")
+
+print(",".join(str(colName) for colName in finalData))
+for index, rows in finalData.iterrows():
+        print(",".join(str(colu) for colu in rows))

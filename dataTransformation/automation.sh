@@ -16,4 +16,14 @@ echo "combining medication with immunizations"
 cat MapReduceOutput/medication.txt | python MapReduceScripts/medicationAndImmunizationCombiner.py medication > MapReduceOutput/medAndImmun.txt
 cat MapReduceOutput/immunizations.txt | python MapReduceScripts/medicationAndImmunizationCombiner.py immunization >> MapReduceOutput/medAndImmun.txt
 echo "Mapping everything for neural network"
-cat MapReduceOutput/patient.txt | python MapReduceScripts/conditionPredictionMapper.py > MapReduceOutput/conditionPrediction.txt
+numOfLines=$(sed -n '$='$1 MapReduceOutput/patient.txt)
+oneQuaterNum=$(expr $numOfLines / 4)
+twoQuaterNum=$(($oneQuater+$oneQuaterNum))
+threeQuaterNum=$(($oneQuater+$twoQuaterNum))
+
+rm MapReduceOutput/setOfBool.txt
+sed -n 1,100p MapReduceOutput/patient.txt | python MapReduceScripts/conditionPredictionMapper.py > MapReduceOutput/predictionSplit1.txt
+sed -n "$oneQuaterNum","$twoQuaterNum"p MapReduceOutput/patient.txt | python MapReduceScripts/conditionPredictionMapper.py > MapReduceOutput/predictionSplit2.txt &
+sed -n "$twoQuaterNum","$threeQuaterNum"p MapReduceOutput/patient.txt | python MapReduceScripts/conditionPredictionMapper.py > MapReduceOutput/predictionSplit3.txt &
+sed -n "$threeQuaterNum","$numOfLines"p MapReduceOutput/patient.txt | python MapReduceScripts/conditionPredictionMapper.py > MapReduceOutput/predictionSplit4.txt &
+echo "finished"

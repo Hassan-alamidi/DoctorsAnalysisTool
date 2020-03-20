@@ -6,6 +6,7 @@ library(stringr)
 
 setwd("~/Documents/CollegeProjects/DoctorsAnalysisTool/dataTransformation")
 
+test <- read.csv("MapReduceOutput/PatientCurrentCondition.csv", stringsAsFactors = FALSE)
 medications <- read.csv("syntheaOutput/medications.csv", stringsAsFactors = FALSE)
 patients <- read.csv("syntheaOutput/patients.csv", stringsAsFactors = FALSE)
 observations <- read.csv("syntheaOutput/observations.csv", stringsAsFactors = FALSE)

@@ -17,7 +17,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint
 from sklearn.preprocessing import StandardScaler
-from keras import optimizers
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -29,17 +28,17 @@ display(HTML("<style>.container { width:100% !important; }</style>"))
 np.random.seed(1237981)
 sc = StandardScaler()
 oneHEncoder = OneHotEncoder()
-dataset = pd.read_csv("../dataTransformation/scriptOutput/PatientCurrentCondition.csv", index_col=[0])
+dataset = pd.read_csv("../dataTransformation/MapReduceOutput/PatientCurrentCondition.csv", index_col=[0])
 y = dataset.iloc[:,0:1].values
 tst = y
 y = oneHEncoder.fit_transform(y).toarray()
 
 print(oneHEncoder.get_feature_names())
 
-numClass = len(np.unique(dataset.condPatientSoonToHave.values))
+numClass = len(np.unique(dataset.condToPredict.values))
 
 
-x = dataset[dataset.columns.difference(['target', 'condPatientSoonToHave', 'PPSN'])]
+x = dataset[dataset.columns.difference(['target', 'condToPredict', 'patient'])]
 
 for col in x.columns:
     if(is_string_dtype(x[col])):

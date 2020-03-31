@@ -1,0 +1,9 @@
+
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(‚º¯Õıÿÿÿÿ8œßšüŠ.
+j	java:S116/"NRename this field "DOB" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğà»º8œßšüŠ.
+i	java:S1165"NRename this field "DOD" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶´*8œßšüŠ.
+p	java:S116;"ORename this field "PPSN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦È×ûÿÿÿÿ8œßšüŠ.
+U
+java:S1948P"3Make "patientConditions" transient or serializable.(şÇßÅıÿÿÿÿ8œßšüŠ.
+P
+java:S1948V"3Make "currentMedication" transient or serializable.(ñâÄœ8œßšüŠ.

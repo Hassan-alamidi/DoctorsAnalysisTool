@@ -1,0 +1,8 @@
+
+rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Çƒ°
+=squid:S1452"&Remove usage of generic wildcard type.(ğÔì÷
+=squid:S1452)"&Remove usage of generic wildcard type.(ç³Î
+=squid:S1452"&Remove usage of generic wildcard type.(¦¯²œ
+\squid:S4684$"@Replace this persistent entity with a simple POJO or DTO object.(å˜ªïøÿÿÿÿ
+Wsquid:S4684)"@Replace this persistent entity with a simple POJO or DTO object.(ç³Î
+=squid:S1452"&Remove usage of generic wildcard type.(¡Á»ä

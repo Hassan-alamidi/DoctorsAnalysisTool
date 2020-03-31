@@ -1,0 +1,7 @@
+
+Bsquid:S1452H"&Remove usage of generic wildcard type.(ü˜¸”ıÿÿÿÿ
+rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«½¯Â
+Usquid:S1135M"2Complete the task associated to this TODO comment.(ü«Œøÿÿÿÿ8ıº–¯.
+csquid:UselessImportCheck"8Remove this unused import 'com.MTPA.DAO.ObservationDAO'.(ÊÆ¯ã8ğ²Á®.
+Nsquid:S1905?"+Remove this unnecessary cast to "Pageable".(‘Şõûÿÿÿÿ8ğ²Á®.
+Nsquid:S19056"+Remove this unnecessary cast to "Pageable".(êğäİüÿÿÿÿ8ğ²Á®.

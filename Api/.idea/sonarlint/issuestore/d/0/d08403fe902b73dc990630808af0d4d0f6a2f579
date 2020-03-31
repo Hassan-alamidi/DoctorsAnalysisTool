@@ -1,0 +1,6 @@
+
+fsquid:S4488"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ÅÊ¼¿8¦Üãş-
+wsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¤²ÈÔùÿÿÿÿ
+lsquid:S00101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ûáÀ³8ÅÁ×Ÿı-
+osquid:S1223"LRename this method to prevent any misunderstanding or make it a constructor.(¡Ãá›øÿÿÿÿ8ÅÁ×Ÿı-
+psquid:UselessImportCheck"@Remove this unused import 'org.springframework.http.HttpMethod'.(Ê¨Ä¡øÿÿÿÿ8¦Üãş-

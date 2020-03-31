@@ -1,0 +1,5 @@
+
+squid:UselessImportCheck"ORemove this unused import 'com.fasterxml.jackson.annotation.JsonBackReference'.(»Ôœ¿ıÿÿÿÿ8‹×â›†.
+}squid:UselessImportCheck"RRemove this unused import 'com.fasterxml.jackson.annotation.JsonManagedReference'.(Æ˜µ8‹×â›†.
+Osquid:S1135+"2Complete the task associated to this TODO comment.(š‰£N8‹×â›†.
+wsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(‚º¯Õıÿÿÿÿ

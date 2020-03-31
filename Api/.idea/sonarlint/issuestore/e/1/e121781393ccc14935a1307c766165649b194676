@@ -1,0 +1,9 @@
+
+_squid:UselessImportCheck"/Remove this unused import 'java.util.Optional'.(¨˜ëÝüÿÿÿÿ8ô¥Üãþ-
+Isquid:S1452."&Remove usage of generic wildcard type.(œÈä‘ùÿÿÿÿ8îƒê—ý-
+=squid:S1452"&Remove usage of generic wildcard type.(ýö…Ä
+rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«½¯Â
+=squid:S1452%"&Remove usage of generic wildcard type.(²³ä„
+usquid:UselessImportCheck"ERemove this unused import 'javax.persistence.PersistenceContextType'.(Ï‹¸ùùÿÿÿÿ8š–·æ‰.
+qsquid:UselessImportCheck
+"ARemove this unused import 'javax.persistence.PersistenceContext'.(ê°ÝÒýÿÿÿÿ8š–·æ‰.

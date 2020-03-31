@@ -1,0 +1,6 @@
+
+msquid:S2068"V'PASSWORD' detected in this expression, review this potentially hard-coded credential.(Àäƒ²
+Dsquid:S14529"&Remove usage of generic wildcard type.(¨ÛË»8ì²Á®.
+]squid:UnusedPrivateMethod^"1Remove this unused private "getAuthority" method.(õ¨åÂ8ì²Á®.
+rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«½¯Â
+Isquid:S1452U"&Remove usage of generic wildcard type.(İõù¶øÿÿÿÿ8ì²Á®.

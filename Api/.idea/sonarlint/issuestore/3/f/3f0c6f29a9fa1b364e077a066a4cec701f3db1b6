@@ -1,0 +1,8 @@
+
+Tsquid:UselessImportCheck"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
+isquid:S00116"QRename this field "SECRET" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÈÓ–Ð
+ssquid:UselessImportCheck"ORemove this unused import 'org.springframework.security.core.GrantedAuthority'.(½Á±ÿ
+psquid:S00116"XRename this field "HEADER_STRING" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ó¦‘ß
+qsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ã¹ø
+_squid:UselessImportCheck";Remove this unused import 'com.auth0.jwt.interfaces.Claim'.(ƒ›ò®
+tsquid:S00116"WRename this field "TOKEN_PREFIX" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ƒÅëÿÿÿÿÿ

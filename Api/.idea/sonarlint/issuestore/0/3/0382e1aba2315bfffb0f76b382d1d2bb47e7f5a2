@@ -1,0 +1,11 @@
+
+squid:UselessImportCheck"]Remove this unused import 'org.springframework.security.core.userdetails.UserDetailsService'.(¶…¥à
+Xsquid:UselessImportCheck"4Remove this unused import 'com.MTPA.Objects.Doctor'.(¯ÌÙ
+‘squid:UselessImportCheck"aRemove this unused import 'org.springframework.security.web.authentication.HttpStatusEntryPoint'.(ÛĞ£åÿÿÿÿÿ8Œƒÿ-
+zsquid:UselessImportCheck"QRemove this unused import 'org.springframework.context.annotation.Configuration'.(¬²Úäşÿÿÿÿ
+rsquid:S00116!"ZRename this field "EXPIRATION_TIME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡²ö›
+isquid:S00116"QRename this field "SECRET" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÈÓ–Ğ
+qsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ã¹ø
+psquid:S00116"XRename this field "HEADER_STRING" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ó¦‘ß
+ssquid:UselessImportCheck"ORemove this unused import 'org.springframework.security.core.userdetails.User'.(–Ä€
+tsquid:S00116 "WRename this field "TOKEN_PREFIX" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚ƒÅëÿÿÿÿÿ

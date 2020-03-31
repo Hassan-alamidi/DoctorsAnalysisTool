@@ -1,0 +1,7 @@
+
+wsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(‚º¯Õıÿÿÿÿ
+}squid:UselessImportCheck"RRemove this unused import 'com.fasterxml.jackson.annotation.JsonManagedReference'.(Æ˜µ8ş¼â›†.
+|squid:S00116"_Rename this field "MedicalLicenceNumber" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ç¿µåüÿÿÿÿ
+lsquid:S001164"ORename this field "PPSN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦È×ûÿÿÿÿ
+fsquid:S00116."NRename this field "DOB" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğà»º
+Osquid:S1135F"2Complete the task associated to this TODO comment.(š‰£N8ş¼â›†.

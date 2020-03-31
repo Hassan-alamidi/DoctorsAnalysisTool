@@ -1,0 +1,7 @@
+
+rsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«½¯Â
+Zsquid:UselessImportCheck"*Remove this unused import 'java.util.Set'.(ö²„¤þÿÿÿÿ8¦æºâ‰.
+usquid:UselessImportCheck"ERemove this unused import 'javax.persistence.PersistenceContextType'.(Ï‹¸ùùÿÿÿÿ8“µ¸æ‰.
+[
+squid:S106,"9Replace this use of System.out or System.err by a logger.(©þêÜúÿÿÿÿ8žðšä….
+qsquid:UselessImportCheck"ARemove this unused import 'javax.persistence.PersistenceContext'.(ê°ÝÒýÿÿÿÿ8“µ¸æ‰.

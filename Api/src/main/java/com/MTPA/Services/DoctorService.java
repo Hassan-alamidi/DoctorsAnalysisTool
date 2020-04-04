@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
 public class DoctorService implements UserDetailsService {
@@ -38,6 +39,7 @@ public class DoctorService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String licenceNum) {
+        System.out.println(licenceNum);
         Doctor doctor = doctorDAO.findByLicenceNumber(licenceNum);
 
         if (doctor == null) {

@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    private static final String AUTHENTICATED_COOKIE = "isAuthenticated";
     private final String secret;
     private final String headerString;
     private final String tokenPrefix;
@@ -69,6 +71,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withSubject(((User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(HMAC512(secret.getBytes()));
+        Cookie authorizationCookie = new Cookie(headerString,tokenPrefix + token);
+        authorizationCookie.setHttpOnly(true);
+
+        //cookie.setSecure(true);
+        res.addCookie(authorizationCookie);
         res.addHeader(headerString, tokenPrefix + token);
     }
 }

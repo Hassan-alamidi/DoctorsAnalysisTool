@@ -4,30 +4,21 @@ import com.MTPA.HealthApp;
 import com.MTPA.Objects.Doctor;
 import com.MTPA.Objects.Organization;
 import com.MTPA.Objects.Patient;
-import com.auth0.jwt.JWT;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Properties;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -66,7 +57,7 @@ public abstract class BaseIntegrationTest {
         restTemplate.setUriTemplateHandler(uriBuilderFactory);
         if(ADMIN_TOKEN == null) {
             Doctor doctor = Doctor.builder()
-                    .MedicalLicenceNumber(ADMIN_LICENCE_NUM)
+                    .medicalLicenceNumber(ADMIN_LICENCE_NUM)
                     .password("notDefault")
                     .build();
             ADMIN_TOKEN = getToken(doctor);
@@ -128,7 +119,7 @@ public abstract class BaseIntegrationTest {
                 .DOB(Date.valueOf("1999-08-09"))
                 .firstName("Tom")
                 .lastName("jife")
-                .MedicalLicenceNumber("986987M")
+                .medicalLicenceNumber("986987M")
                 .privilegeLevel("User")
                 .PPSN("PPPPPPSSSSSNNNNN")
                 .phoneNumber(9899)
@@ -140,7 +131,7 @@ public abstract class BaseIntegrationTest {
                 .DOB(Date.valueOf("1999-08-09"))
                 .firstName("Tim")
                 .lastName("jife")
-                .MedicalLicenceNumber("72648987N")
+                .medicalLicenceNumber("72648987N")
                 .privilegeLevel("User")
                 .PPSN("PP1224454SSSNNN")
                 .phoneNumber(9899)

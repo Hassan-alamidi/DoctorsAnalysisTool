@@ -1,38 +1,28 @@
 import React from 'react';
 import './App.scss';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import {ProtectedRoute} from "./components/protectedRoute"
 
-class App extends React.Component {
-  constructor(){
-    super();
-    this.login = this.login.bind(this);
-    this.state ={
-      medLicence:"",
-      password:""
-    }
+import LoginPage from './pages/login'
+import HomePage from './pages/home'
+import NavBar from './components/navBar'
 
-    this.changeHandler = this.changeHandler.bind(this)
-  }
-
-  changeHandler(val) {
-    const {name, value} = val.target;
-    this.setState({ [name]: value });
-  }
-
-  login(){
-    alert(this.state.medLicence);
-    alert(this.state.password);
-  }
-
-  render(){
-    
-    return (
-      <div className="loginForm container">
-        <input className="form-control form-control-lg" type="text" placeholder="Medical Licence Number" name="medLicence" onChange={this.changeHandler} />
-        <input className="form-control form-control-lg" type="password" placeholder="password" name="password" onChange={this.changeHandler} />
-        <button onClick={this.login} type="submit" className="btn btn-primary">Login</button>
-      </div>
-    );
-  }
+function App() {
+  const withNavBar = () =>(
+    <div>
+      <NavBar />
+      <ProtectedRoute component={HomePage} path="/home" />
+    </div>
+  );
+  return(
+    <Router>
+      <Switch>
+        <Route component={LoginPage} exact path="/" />
+        <Route component={withNavBar} />
+        <Route path="*" component={() => "404 Page Not Found"} />
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;

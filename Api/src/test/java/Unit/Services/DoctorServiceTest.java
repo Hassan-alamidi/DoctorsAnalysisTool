@@ -1,19 +1,14 @@
 package Unit.Services;
 
 import com.MTPA.DAO.DoctorDAO;
-import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Doctor;
 import com.MTPA.Services.DoctorService;
-import com.MTPA.Services.PatientServices;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.print.Doc;
 import java.text.SimpleDateFormat;
 
 import static junit.framework.TestCase.fail;
@@ -61,14 +55,14 @@ public class DoctorServiceTest {
                 .PPSN("ppssn")
                 .lastName("t")
                 .password("notDefault")
-                .MedicalLicenceNumber("licence234")
+                .medicalLicenceNumber("licence234")
                 .address("54 54 54 dew lane")
                 .privilegeLevel("User")
                 .phoneNumber(78789)
                 .build();
         doctorForLogin = Doctor.builder()
                 .password("notDefault")
-                .MedicalLicenceNumber("licence234")
+                .medicalLicenceNumber("licence234")
                 .build();
     }
 

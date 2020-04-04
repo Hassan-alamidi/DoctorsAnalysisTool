@@ -1,0 +1,27 @@
+.loginPg{
+    height: 100%;
+    background-image: url("../images/loginPageBackground.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    body{
+        background-color: transparent;
+    }
+}
+
+.largePadding{
+    padding-bottom: 150px;
+}
+
+.smallPadding{
+    padding-bottom: 40px;
+}
+
+.heading{
+    font-variant: full-width;
+    font-family: initial;
+    font: lighter;
+    font-size: 5rem;
+    color: #706d7b;
+    font-weight: bold;
+    text-align: center;
+}

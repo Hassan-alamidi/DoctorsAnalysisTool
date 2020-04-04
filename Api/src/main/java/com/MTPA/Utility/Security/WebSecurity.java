@@ -21,6 +21,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -69,7 +72,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST","PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));//Arrays.asList("X-Requested-With","X-Auth-Token", "X-HTTP-Method-Override", "Content-Type", "Accept", "Authorization", "Origin","Access-Control-Request-Method","Access-Control-Request-Headers"));
+        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.addExposedHeader("Authorization");
+//        corsConfiguration.addExposedHeader("Set-Cookie");
+//        corsConfiguration.addExposedHeader("X-Auth-Token");
+        corsConfiguration.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
     }
+
 }

@@ -27,7 +27,7 @@ public class Doctor implements Serializable {
     @Getter
     @Setter
     @Column(name = "medical_licence_number")
-    private String MedicalLicenceNumber;
+    private String medicalLicenceNumber;
 
     @Getter
     @Setter

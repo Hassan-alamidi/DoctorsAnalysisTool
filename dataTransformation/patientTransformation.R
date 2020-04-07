@@ -6,7 +6,7 @@ observations <- read.csv("syntheaOutput/observations.csv", stringsAsFactors = FA
 encounters <- read.csv("syntheaOutput/encounters.csv", stringsAsFactors = FALSE)
 careplans <- read.csv("syntheaOutput/careplans.csv", stringsAsFactors = FALSE)
 procedures <- read.csv("syntheaOutput/procedures.csv", stringsAsFactors = FALSE)
-
+conditions <- read.csv("syntheaOutput/conditions.csv", stringsAsFactors = FALSE)
 patients <- data.frame(ppsn=character(), firstName=character(), lastName=character(), dob=character(), dod=character(), 
                        gender=character(), address=character(), stringsAsFactors = FALSE)
 

@@ -1,51 +1,40 @@
 import React from 'react';
 import "../resources/css/shared.scss"
+import "bootstrap";
+import ConditionsList from "./conditionsList"
+import MedicationList from "./medicationList"
 
-const PatientInfoCard = ({firstName, lastName, gender, dob, ppsn, address,patientConditions, detailed}) => {
+
+const PatientInfoCard = ({header, patient, detailed, callback}) => {
     //remove time from date
-    dob = dob.split('T')[0]
+    //for testing use this jsaofj
+    patient.dob = patient.dob.split('T')[0]
     return(
         <div className="card">
             <div className="card-body">
-                <h5 className="card-title">Patient Found:  {firstName} {lastName}</h5>
+                <h5 className="card-title">{header}</h5>
                 <ul className="list-group">
-                    <li className="list-group-item list-group-item-success">Patient PPSN: {ppsn}</li>
-                    <li className="list-group-item list-group-item-success">Patient Date of birth: {dob}</li>
-                    <li className="list-group-item list-group-item-success">Patient Gender: {gender}</li>
-                    <li className="list-group-item list-group-item-success">Patient Address: {address}</li>
-                    {!(detailed) && 
-                        
-                            <div className="row">
-                                <div className="card col-md-6">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Patient Current Conditions</h5>
-                                        <ul className="list-group">
-                                            {patientConditions.map((condition, i) => {
-                                                {condition.discovered = condition.discovered.split('T')[0]}
-                                                return(<li key={"conditon" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{condition.name}</p> <p>Discovered: {condition.discovered}</p></li>)
-                                            })}
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div className="card col-md-6">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Patient Current Medications</h5>
-                                        <ul className="list-group">
-                                            {patientConditions.map((condition, i) => {
-                                                {condition.discovered = condition.discovered.split('T')[0]}
-                                                return(<li key={"medication" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{condition.name}</p> <p>Discovered: {condition.discovered}</p></li>)
-                                            })}
-                                        </ul>
-                                    </div>
-                                </div>
+                    <li className="list-group-item list-group-item-success">Patient PPSN: {patient.ppsn}</li>
+                    <li className="list-group-item list-group-item-success">Patient Date of birth: {patient.dob}</li>
+                    <li className="list-group-item list-group-item-success">Patient Gender: {patient.gender}</li>
+                    <li className="list-group-item list-group-item-success">Patient Address: {patient.address}</li>
+                    {(detailed) && 
+                        <div className="row">
+                            <div className="card col-md-6">
+                                <ConditionsList conditions={patient.patientConditions} />
                             </div>
-                        
+                            <div className="card col-md-6">
+                                <MedicationList medications={patient.currentMedication} />
+                            </div>
+                        </div>
                     }
                 </ul>
             </div>
-            <div className="card-footer">
-            <button type="button" className="btn" id="left-panel-link" >View Patient Information</button>
-            </div>
+            {(detailed) &&
+                <div className="card-footer">
+                    <button type="button" className="btn" id="left-panel-link" onClick={callback}>View and manage patient</button>
+                </div>
+            }
         </div>
     );
 }

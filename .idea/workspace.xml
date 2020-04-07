@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a023df26-1229-4c4d-a98b-68ffe018e9cc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/DoctorsAnalysisTool.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/healthapplication.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/DAO/DoctorDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/DAO/DoctorDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Objects/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Objects/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Services/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Services/DoctorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Utility/Security/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Utility/Security/AuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Utility/Security/WebSecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/main/java/com/MTPA/Utility/Security/WebSecurity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/test/java/Integration/BaseIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/test/java/Integration/BaseIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/src/test/java/Unit/Services/DoctorServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Api/src/test/java/Unit/Services/DoctorServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/DAO/DoctorDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/DAO/DoctorDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Objects/Doctor$DoctorBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Objects/Doctor$DoctorBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Objects/Doctor.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Objects/Doctor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Services/DoctorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Services/DoctorService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Utility/Security/AuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Utility/Security/AuthenticationFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Utility/Security/WebSecurity.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/classes/com/MTPA/Utility/Security/WebSecurity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/test-classes/Integration/BaseIntegrationTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/test-classes/Integration/BaseIntegrationTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/target/test-classes/Unit/Services/DoctorServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Api/target/test-classes/Unit/Services/DoctorServiceTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZxSdducsDimWK9OBftEJVfE3KM" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a023df26-1229-4c4d-a98b-68ffe018e9cc" name="Default Changelist" comment="" />
+      <created>1585779341030</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585779341030</updated>
+    </task>
+    <servers />
+  </component>
+</project>

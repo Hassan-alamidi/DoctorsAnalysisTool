@@ -8,10 +8,8 @@ const MedicationList = ({medications}) => {
             <h5 className="card-title">Patient Current Medications</h5>
             <ul className="panel-group accordion" id="medication">
                 {medications.map((medication, i) => {
-                    {
-                        medication.treatmentStart = medication.treatmentStart.split('T')[0];
-                        medication.treatmentEnd = medication.treatmentEnd.split('T')[0];
-                    }
+                    medication.treatmentStart = medication.treatmentStart.split('T')[0];
+                    medication.treatmentEnd = medication.treatmentEnd.split('T')[0];
                     return(
                         <div className="panel" key={"medicationitem" + i} >
                             <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.name}</p></a>

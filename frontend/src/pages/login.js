@@ -44,7 +44,7 @@ class LoginPage extends React.Component {
 
     toHome() {
         auth.login();
-        this.props.history.push("/home");
+        this.props.history.push("/hub/home");
     }
 
     render() {

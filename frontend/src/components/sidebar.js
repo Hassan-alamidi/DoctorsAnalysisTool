@@ -5,34 +5,40 @@ import bootstrap from "bootstrap";
 class SideBar extends React.Component {
 
   render(){
+    //TODO make more customizable
     return (
-        <nav className="navbar navbar-dark bg-dark">
-            <a className="navbar-brand" href="/">Medical Hub</a>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
+        <nav className="navbar navbar-dark bg-dark" id="sidebar" >
+            <div id="navbarSupportedContent">
+                <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href="#/action">
-                            Administration Panel
-                        </a>
+                        <button className="nav-link btn btn-link"
+                            onClick={() => this.props.callback("condition")}>
+                            Condition History
+                        </button>
                     </li>
-                </ul>
-                
-                <ul className="nav navbar-nav navbar-right" id="user-dropdown">
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#/action"> Doctors Name
-                            <span className="caret"></span></a>
-                        <ul className="dropdown-menu bg-dark">
-                            <li className="nav-item">
-                                <a className="nav-link" href="#/action">
-                                Account
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#/action">
-                                    Sign Out
-                                </a>
-                            </li>
-                        </ul>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link"
+                            onClick={() => this.props.callback("medication")}>
+                            Medication History
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link"
+                            onClick={() => this.props.callback("procedure")}> 
+                            Procedure History
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                    <button className="nav-link btn btn-link"
+                        onClick={() => this.props.callback("observation")}>
+                            Observation History
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn btn-link"
+                            onClick={() => this.props.callback("encounter")}>
+                            Encounter History
+                        </button>
                     </li>
                 </ul>
             </div>

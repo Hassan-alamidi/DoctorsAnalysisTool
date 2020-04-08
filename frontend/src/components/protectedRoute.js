@@ -4,7 +4,7 @@ import auth from "./auth"
 
 export const ProtectedRoute = ({component: Component, ...rest}) =>{
     return(
-        <Route 
+        <Route
             {...rest}
             render={props => {
                 if(auth.isAuthenticated()){

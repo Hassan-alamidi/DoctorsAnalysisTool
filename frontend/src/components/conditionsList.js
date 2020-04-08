@@ -8,7 +8,7 @@ const ConditionsList = ({conditions}) => {
             <h5 className="card-title">Patient Current Conditions</h5>
             <div className="panel-group accordion" id="condition">
                 {conditions.map((condition, i) => {
-                    {condition.discovered = condition.discovered.split('T')[0]}
+                    condition.discovered = condition.discovered.split('T')[0]
                     return(
                     <div className="panel" key={"conditionitem" + i} >
                         <a data-toggle="collapse" data-parent="#condition" href={"#conditionId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{condition.name}</p> <p>Discovered: {condition.discovered}</p></a>

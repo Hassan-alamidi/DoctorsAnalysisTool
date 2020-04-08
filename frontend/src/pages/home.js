@@ -3,7 +3,6 @@ import "../resources/css/shared.scss"
 import PatientInfoCard from "../components/PatientInfoCard"
 import auth from "../components/auth"
 import {Redirect} from "react-router-dom"
-import Sidebar from "../components/sidebar"
 const axios = require('axios').default;
 
 class HomePage extends React.Component {
@@ -67,7 +66,7 @@ class HomePage extends React.Component {
             {
                 pathname:"/",
                 state:{
-                  from:"/home"
+                  from:"/hub/home"
                 }
             }
         } />
@@ -77,23 +76,22 @@ class HomePage extends React.Component {
         //redirect here
         <Redirect to={
           {
-              pathname:"/patient",
+              pathname:"/hub/patient",
               state:{
-                from:"/home"
+                from:"/hub/home"
               }
           }
       } />
       )
     } else{
       const header = "Patient Found: " + this.state.patient.firstName + " " + this.state.patient.lastName;
-      return(
-        <div className="customForm container">
-            <Sidebar />
-          <h1 className="heading smallPadding">Medical Hub</h1>
-          <input className="form-control form-control-lg" type="text" placeholder="Please enter Patient PPSN" name="patientPPSN" onChange={this.changeHandler} />
-          <button onClick={this.requestPatient} type="submit" className="btn btn-primary">Search</button>
-          {!(this.state.patient === 'undefined' || this.state.patient === "") && 
-            <PatientInfoCard header={header} patient={this.state.patient} detailed={true} callback={this.managingPatient} />}
+      return( 
+        <div className="customForm container">    
+            <h1 className="heading smallPadding">Medical Hub</h1>
+            <input className="form-control form-control-lg" type="text" placeholder="Please enter Patient PPSN" name="patientPPSN" onChange={this.changeHandler} />
+            <button onClick={this.requestPatient} type="submit" className="btn btn-primary">Search</button>
+            {!(this.state.patient === 'undefined' || this.state.patient === "") && 
+                <PatientInfoCard header={header} patient={this.state.patient} detailed={true} callback={this.managingPatient} />}
         </div>
       )
     }

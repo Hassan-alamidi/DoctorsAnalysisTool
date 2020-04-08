@@ -3,7 +3,7 @@ import "../resources/css/shared.scss"
 import PatientInfoCard from "../components/PatientInfoCard"
 import CardAlt from "../components/card-alt"
 import auth from "../components/auth"
-import { Redirect } from "react-router-dom"
+import { Redirect, withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const axios = require('axios').default;
@@ -14,11 +14,13 @@ class PatientControlPanelPage extends React.Component {
         this.state = {
             patientPPSN: "",
             patient: "",
+            nextPage:"",
             tokenExpired: false,
             patientNotFound: false,
             loading: true
         }
-
+        
+        this.pageChange = this.pageChange.bind(this);
         this.getTitle = this.getTitle.bind(this);
     }
 
@@ -52,6 +54,10 @@ class PatientControlPanelPage extends React.Component {
         return (this.state.patient.firstName + " " + this.state.patient.lastName);
     }
 
+    pageChange(page){
+        this.setState({nextPage:page})
+    }
+
     render() {
         if (!this.state.loading) {
             if (this.state.tokenExpired) {
@@ -60,7 +66,7 @@ class PatientControlPanelPage extends React.Component {
                         {
                             pathname: "/",
                             state: {
-                                from: "/patient"
+                                from: "/hub/patient"
                             }
                         }
                     } />
@@ -69,13 +75,24 @@ class PatientControlPanelPage extends React.Component {
                 return (
                     <Redirect to={
                         {
-                            pathname: "/home",
+                            pathname: "/hub/home",
                             state: {
-                                from: "/patient"
+                                from: "/hub/patient"
                             }
                         }
                     } />
                 )
+            } else if (this.state.nextPage === "history") {
+                return(
+                <Redirect to={
+                    {
+                        pathname: "/dashboard/history",
+                        state: {
+                            from: "/hub/patient"
+                        }
+                    }
+                } />)
+                    //this.props.history.push("/dashboard/history");
             } else {
                 const header = this.getTitle()
                 return (
@@ -105,7 +122,7 @@ class PatientControlPanelPage extends React.Component {
                                 </div>
                                 <div className="col-xl-6">
                                     <div className="row" style={{height:"100%"}}>
-                                        <div className="cardButton col">
+                                        <div className="cardButton col" onClick={() => {this.pageChange("history")}}>
                                             <h5>Patient Medical History</h5>
                                             <hr />
                                             <div>
@@ -138,4 +155,4 @@ class PatientControlPanelPage extends React.Component {
     }
 }
 
-export default PatientControlPanelPage;
+export default withRouter(PatientControlPanelPage);

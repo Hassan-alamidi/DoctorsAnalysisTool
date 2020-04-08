@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @JsonDeserialize
@@ -32,12 +33,12 @@ public class PatientMedication {
     @Getter
     @Setter
     @Column(name = "treatment_start")
-    private Date treatmentStart;
+    private LocalDate treatmentStart;
 
     @Getter
     @Setter
     @Column(name = "treatment_end")
-    private Date treatmentEnd;
+    private LocalDate treatmentEnd;
 
     @Getter
     @Setter

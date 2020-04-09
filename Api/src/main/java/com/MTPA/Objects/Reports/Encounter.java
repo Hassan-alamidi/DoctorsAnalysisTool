@@ -60,6 +60,18 @@ public class Encounter {
 
     @Getter
     @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
+    private PatientMedication medication;
+
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
+    private PatientProcedure procedure;
+
+    @Getter
+    @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
     @JsonIgnoreProperties(value = "hiredDoctors", allowSetters = true)

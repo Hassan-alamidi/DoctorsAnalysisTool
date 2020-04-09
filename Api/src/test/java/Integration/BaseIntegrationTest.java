@@ -33,6 +33,7 @@ public abstract class BaseIntegrationTest {
     protected static final String NON_ADMIN_LICENCE_NUM = "num331";
     protected static final String REAL_PATIENT_PPSN = "87937M";
     protected static final String REAL_PATIENT_WITH_NOTHING_PPSN = "87937N";
+    protected static final String FAKE_PATIENT_PPSN = "fakePPSNNNNN67879";
     protected static String ADMIN_TOKEN;
     protected static String NON_ADMIN_TOKEN;
 

@@ -196,5 +196,26 @@ html{
 .fixed{
     position: fixed !important;
     width: 100%;
-    z-index: 1 !important;
+    z-index: 99 !important;
+}
+
+#transparentList{
+    opacity: 0.95;
+    .panel{
+        background-color: #4d4c4c;
+        color: white;
+        a{
+            color: #fff;
+            background-color: #313131;
+            text-decoration: none; 
+        }
+    }
+
+    .list-group-item-dark.list-group-item-action:focus{
+        background-color: #1e1e1e;
+    }
+
+    .list-group-item-dark.list-group-item-action:hover{
+        background-color: #1e1e1e;
+    }
 }

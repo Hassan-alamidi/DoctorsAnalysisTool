@@ -56,12 +56,12 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
     }
 
     //get all patient encounters
-    @Test
-    public void getAllPatientEncountersWithFakePPSN_thenNotFound(){
-        doctorHeader.add("PPSN", "FAKEPPSN");
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void getAllPatientEncountersWithFakePPSN_thenNotFound(){
+//        doctorHeader.add("PPSN", "FAKEPPSN");
+//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+//        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+//    }
 
     @Test
     public void getAllPatientEncounters_thenAllEncountersReturned(){
@@ -82,12 +82,12 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void getRecentEncountersWithFakePPSN_thenNotFound(){
-        doctorHeader.add("ppsn", "fakePPSN");
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void getRecentEncountersWithFakePPSN_thenNotFound(){
+//        doctorHeader.add("ppsn", "fakePPSN");
+//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+//        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+//    }
 
     @Test
     public void getRecentEncountersWithPPSN_thenListOfTenEncountersReturned(){
@@ -99,18 +99,29 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void getRecentEncountersWithPatientThatHasNoEncounters_thenNotFound(){
+    public void getRecentEncountersWithPatientThatHasNoEncounters_thenEmptyArrayReturned(){
         doctorHeader.add("ppsn", REAL_PATIENT_WITH_NOTHING_PPSN);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Encounter> encounters = responseEntity.getBody();
+        Assert.assertTrue(encounters.isEmpty());
+    }
+
+    @Test
+    public void getRecentEncountersWithFakePatient_thenNotFound(){
+        doctorHeader.add("ppsn", FAKE_PATIENT_PPSN);
+        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     //get specified number of recent encounters
     @Test
-    public void getSpecifiedNumberRecentEncountersWithFakePPSN_thenNotFound(){
+    public void getSpecifiedNumberRecentEncountersWithFakePPSN_thenEmptyArrayReturned(){
         doctorHeader.add("ppsn", "FAKEPPSN");
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/10", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/10", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Encounter> encounters = responseEntity.getBody();
+        Assert.assertTrue(encounters.isEmpty());
     }
 
     @Test
@@ -135,8 +146,10 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
     @Test
     public void getSpecifiedNumberRecentEncountersWithPatientThatHasNoEncounters_thenNotFound(){
         doctorHeader.add("ppsn", REAL_PATIENT_WITH_NOTHING_PPSN);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Encounter> encounters = responseEntity.getBody();
+        Assert.assertTrue(encounters.isEmpty());
     }
 
     //create encounters

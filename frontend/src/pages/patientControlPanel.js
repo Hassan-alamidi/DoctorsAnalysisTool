@@ -92,7 +92,6 @@ class PatientControlPanelPage extends React.Component {
                         }
                     }
                 } />)
-                    //this.props.history.push("/dashboard/history");
             } else {
                 const header = this.getTitle()
                 return (

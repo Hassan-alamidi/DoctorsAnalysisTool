@@ -16,26 +16,23 @@ import java.util.Set;
 public class ProcedureService {
 
     private ProcedureDAO procedureDAO;
-
+    PatientServices patientServices;
     @Autowired
-    public ProcedureService(ProcedureDAO procedureDAO){
+    public ProcedureService(ProcedureDAO procedureDAO, PatientServices patientServices){
         this.procedureDAO = procedureDAO;
+        this.patientServices = patientServices;
     }
 
     public ResponseEntity<List<PatientProcedure>> getAllProcedures(final String ppsn){
+        patientServices.getPatient(ppsn);
         List<PatientProcedure> procedures = procedureDAO.getPatientProcedureHistory(ppsn);
-        if(procedures.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<List<PatientProcedure>>(procedures, HttpStatus.OK);
     }
 
     public ResponseEntity<List<PatientProcedure>> getRecentProcedures(final String ppsn){
+        patientServices.getPatient(ppsn);
         Pageable pageable = (Pageable) PageRequest.of(0, 10);
         List<PatientProcedure> procedures = procedureDAO.findRecentProcedureOrderedByDate(ppsn, pageable);
-        if(procedures.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<List<PatientProcedure>>(procedures, HttpStatus.OK);
     }
 

@@ -41,25 +41,16 @@ public class TreatmentService {
 
     public ResponseEntity<List<TreatmentPlan>> getAllTreatments(final String ppsn){
         List<TreatmentPlan> treatmentPlans = treatmentPlanDAO.getAllTreatments(ppsn);
-        if(treatmentPlans.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(treatmentPlans, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getAllOnGoingTreatments(final String ppsn){
         List<TreatmentPlan> treatmentPlans = treatmentPlanDAO.getAllOnGoingTreatments(ppsn);
-        if(treatmentPlans.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(treatmentPlans, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getAllCompletedTreatments(final String ppsn){
         List<TreatmentPlan> treatmentPlans = treatmentPlanDAO.getAllCompletedTreatments(ppsn);
-        if(treatmentPlans.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(treatmentPlans, HttpStatus.OK);
     }
 }

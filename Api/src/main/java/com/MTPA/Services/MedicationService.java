@@ -27,9 +27,6 @@ public class MedicationService {
 
     public ResponseEntity<List<PatientMedication>> getAllMedication(final String ppsn){
         List<PatientMedication> medications = medicationDAO.getPatientMedicationHistory(ppsn);
-        if(medications.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
 
@@ -45,9 +42,6 @@ public class MedicationService {
     public ResponseEntity<?> getPatientCurrentMedication(final String ppsn){
         LocalDate currentDate = LocalDate.now();
         List<PatientMedication> currentMedication = medicationDAO.getCurrentPatientMedication(currentDate, ppsn);
-        if(currentMedication.isEmpty()){
-            return new ResponseEntity<String>("No medication found",HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(currentMedication, HttpStatus.OK);
     }
 

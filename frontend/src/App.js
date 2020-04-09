@@ -14,22 +14,19 @@ import NavBar from './components/navBar'
 function App() {
     library.add(faNotesMedical, faAddressCard, faFileMedicalAlt, faArchive);
     const withNavBar = () => (
-        <Router>
-            <NavBar />
-            <Switch>
-                <ProtectedRoute component={HomePage} exact path="/hub/home" />
-                <ProtectedRoute component={PatientControlPanel} exact path="/hub/patient" />
-                <ProtectedRoute path="*" component={() => "404 Page Not Found"} />
-            </Switch>
-        </Router>
+        <div>
+        <NavBar />
+        <Switch>
+            <ProtectedRoute component={HomePage} exact path="/hub/home" />
+            <ProtectedRoute component={PatientControlPanel} exact path="/hub/patient" />
+            <ProtectedRoute path="*" component={() => "404 Page Not Found"} />
+        </Switch></div>
     );
     const dashboard = () => (
-        <Router>
-            <Switch>
-                <ProtectedRoute component={HistoryPage} exact path="/dashboard/history" />
-                <ProtectedRoute path="*" component={() => "404 Dashboard Not Found"} />
-            </Switch>
-        </Router>
+        <Switch>
+            <ProtectedRoute component={HistoryPage} exact path="/dashboard/history" />
+            <ProtectedRoute path="*" component={() => "404 Dashboard Not Found"} />
+        </Switch>
     );
     return (
         <Router>

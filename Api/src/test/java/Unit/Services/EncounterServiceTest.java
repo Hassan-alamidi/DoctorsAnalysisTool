@@ -10,6 +10,7 @@ import com.MTPA.Objects.Reports.PatientObservation;
 import com.MTPA.Services.ConditionServices;
 import com.MTPA.Services.EncounterService;
 import com.MTPA.Services.ObservationService;
+import com.MTPA.Services.PatientServices;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,6 +40,8 @@ public class EncounterServiceTest {
     @Mock
     ObservationService observationService;
     @Mock
+    PatientServices patientServices;
+    @Mock
     ConditionServices conditionServices;
     EncounterService encounterService;
 
@@ -62,7 +65,7 @@ public class EncounterServiceTest {
         observation.setResultValue("blood everywhere");
         observation.setUnit("mistakes");
         observations = new HashSet<PatientObservation>(Collections.singleton(observation));
-        encounterService = new EncounterService(patientDAO,encounterDAO,conditionServices,observationService);
+        encounterService = new EncounterService(patientDAO,encounterDAO,conditionServices,observationService,patientServices);
         encounter = new Encounter();
         encounter.setDateVisited(date);
         encounter.setPatient(patient);
@@ -80,10 +83,11 @@ public class EncounterServiceTest {
     }
 
     @Test
-    public void getAllEncountersWherePPSNHasNone_thenNotFound(){
+    public void getAllEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findAllEncountersOrderedByDate(any(String.class))).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getAllEncounters("anyPPSN");
-        Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        Assert.assertTrue(entity.getBody().isEmpty());
     }
 
     @Test
@@ -109,10 +113,11 @@ public class EncounterServiceTest {
     }
 
     @Test
-    public void getRecentEncountersWherePPSNHasNone_thenNotFound(){
+    public void getRecentEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN");
-        Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        Assert.assertTrue(entity.getBody().isEmpty());
     }
 
     @Test
@@ -124,10 +129,11 @@ public class EncounterServiceTest {
     }
 
     @Test
-    public void getANumberOfRecentEncountersWherePPSNHasNone_thenNotFound(){
+    public void getANumberOfRecentEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN", 1);
-        Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        Assert.assertTrue(entity.getBody().isEmpty());
     }
 
     @Test

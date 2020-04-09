@@ -26,22 +26,24 @@ public class EncounterService {
     private final EncounterDAO encounterDAO;
     private final ObservationService observationService;
     private final ConditionServices conditionServices;
+    private final PatientServices patientServices;
 
     @Autowired
     public EncounterService(final PatientDAO patientDAO, final EncounterDAO encounterDAO, final ConditionServices conditionServices,
-                            final ObservationService observationService){
+                            final ObservationService observationService, final PatientServices patientServices){
         this.patientDAO = patientDAO;
         this.encounterDAO = encounterDAO;
         this.conditionServices = conditionServices;
         this.observationService = observationService;
+        this.patientServices = patientServices;
     }
 
     public ResponseEntity<List<Encounter>> getAllEncounters(final String ppsn){
-        List<Encounter> encounters = encounterDAO.findAllEncountersOrderedByDate(ppsn);
-        if(encounters.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(patientDAO.exists(ppsn)){
+            List<Encounter> encounters = encounterDAO.findAllEncountersOrderedByDate(ppsn);
+            return new ResponseEntity<>(encounters, HttpStatus.OK);
         }
-        return new ResponseEntity<>(encounters, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<Encounter> getEncounterById(final int id){
@@ -51,21 +53,21 @@ public class EncounterService {
     }
 
     public ResponseEntity<List<Encounter>> getRecentEncounters(final String ppsn){
-        Pageable pageable = (Pageable) PageRequest.of(0, 10);
-        List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
-        if(encounters.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(patientDAO.exists(ppsn)){
+            Pageable pageable = (Pageable) PageRequest.of(0, 10);
+            List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
+            return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
         }
-        return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<List<Encounter>> getRecentEncounters(final String ppsn, int count){
-        Pageable pageable = (Pageable) PageRequest.of(0, count);
-        List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
-        if(encounters.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(patientDAO.exists(ppsn)){
+            Pageable pageable = (Pageable) PageRequest.of(0, count);
+            List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
+            return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
         }
-        return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

@@ -57,14 +57,14 @@ public class PatientCondition {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = "patientConditions", allowSetters = true)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "PPSN")
+    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"}, allowSetters = true)
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
     private Patient patient;
 
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient","condition"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedure"}, allowSetters = true)
     private Encounter encounter;
 }

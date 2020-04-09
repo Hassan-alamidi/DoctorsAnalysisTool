@@ -4,7 +4,9 @@ import auth from "../components/auth"
 import { Redirect } from "react-router-dom"
 import NavBar from '../components/navBar'
 import Sidebar from '../components/sidebar'
-import ConditionsList from "../components/conditionsList"
+import {ConditionsListTransparent} from "../components/conditionsList"
+import {MedicationListTransparent} from "../components/medicationList"
+import EncounterList from "../components/encounterList"
 
 const axios = require('axios').default;
 
@@ -104,23 +106,53 @@ class HistoryPage extends React.Component {
                         }
                     } />
                 )
-            }else {
+            } else if(this.state.historicalDataType === "medication") {
                 return (
                     <div>
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <ConditionsList conditions={this.state.hisoricalData} />
+                            <MedicationListTransparent medications={this.state.hisoricalData} />
                         </div>
                     </div>
                 );
+            }else if(this.state.historicalDataType === "condition"){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <ConditionsListTransparent conditions={this.state.hisoricalData} />
+                        </div>
+                    </div>
+                );
+            }else if(this.state.historicalDataType === "encounter"){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <EncounterList encounters={this.state.hisoricalData} />
+                        </div>
+                    </div>
+                );
+            }else{
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" style={{textAlign:"center", top: "80px", position: "relative"}}>
+                            <h1>Something Went Wrong Please Try Again</h1>
+                        </div>
+                    </div>
+                )
             }
         } else {
             return (
                 <div>
                     <NavBar />
                     <Sidebar callback={this.requestHistory} />
-                    <div className="container" style={{textAlign:"center"}}>
+                    <div className="fluid-container" style={{textAlign:"center", top: "80px", position: "relative"}}>
                         <h1>"Loading Please Wait..."</h1>
                     </div>
                 </div>

@@ -39,7 +39,7 @@ public class PatientObservation {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties("observation")
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedure", "observations"}, allowSetters = true)
     private Encounter encounter;
 
     //value could be an amount, true or false and so on, so string is best for this

@@ -57,9 +57,9 @@ public class EncounterServiceTest {
     public void setup(){
         date = new SimpleDateFormat("yyyy-MM-dd").parse("2020-02-12");
         patient = new Patient(1,"fistName","secondName","Male", date,null, "ppsn","address",
-                "ajd", "jsoidja", new HashSet<PatientCondition>(), new HashSet<>());
+                 new HashSet<PatientCondition>(), new HashSet<>());
+
         observation = new PatientObservation();
-        observation.setDescription("");
         observation.setDateTaken(date);
         observation.setType("blood test");
         observation.setResultValue("blood everywhere");
@@ -77,6 +77,7 @@ public class EncounterServiceTest {
     @Test
     public void getAllEncounters_thenOk(){
         when(encounterDAO.findAllEncountersOrderedByDate(any(String.class))).thenReturn(encounters);
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getAllEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertFalse(entity.getBody().isEmpty());
@@ -85,6 +86,7 @@ public class EncounterServiceTest {
     @Test
     public void getAllEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findAllEncountersOrderedByDate(any(String.class))).thenReturn(new ArrayList<>());
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getAllEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertTrue(entity.getBody().isEmpty());
@@ -92,21 +94,22 @@ public class EncounterServiceTest {
 
     @Test
     public void getEncountersById_thenOk(){
-        when(encounterDAO.findById(anyInt())).thenReturn(java.util.Optional.ofNullable(encounter));
-        ResponseEntity<Encounter> entity = encounterService.getEncounterById(1);
+        when(encounterDAO.findById(any())).thenReturn(java.util.Optional.ofNullable(encounter));
+        ResponseEntity<Encounter> entity = encounterService.getEncounterById("1");
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 
     @Test
     public void getEncountersByFakeId_thenNotFound(){
-        when(encounterDAO.findById(anyInt())).thenReturn(Optional.empty());
-        ResponseEntity<Encounter> entity = encounterService.getEncounterById(1);
+        when(encounterDAO.findById(any())).thenReturn(Optional.empty());
+        ResponseEntity<Encounter> entity = encounterService.getEncounterById("1");
         Assert.assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     }
 
     @Test
     public void getRecentEncounters_thenOk(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(encounters);
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertFalse(entity.getBody().isEmpty());
@@ -115,6 +118,7 @@ public class EncounterServiceTest {
     @Test
     public void getRecentEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN");
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertTrue(entity.getBody().isEmpty());
@@ -123,6 +127,7 @@ public class EncounterServiceTest {
     @Test
     public void getANumberOfRecentEncounters_thenOk(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(encounters);
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN", 2);
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertFalse(entity.getBody().isEmpty());
@@ -131,6 +136,7 @@ public class EncounterServiceTest {
     @Test
     public void getANumberOfRecentEncountersWherePPSNHasNone_thenEmptyListReturned(){
         when(encounterDAO.findRecentEncountersOrderedByDate(any(String.class), any())).thenReturn(new ArrayList<>());
+        when(patientDAO.exists(any(String.class))).thenReturn(true);
         ResponseEntity<List<Encounter>> entity = encounterService.getRecentEncounters("anyPPSN", 1);
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertTrue(entity.getBody().isEmpty());

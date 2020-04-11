@@ -46,7 +46,7 @@ public class EncounterService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<Encounter> getEncounterById(final int id){
+    public ResponseEntity<Encounter> getEncounterById(final String id){
         Optional<Encounter> encounter = encounterDAO.findById(id);
         return encounter.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -72,12 +72,12 @@ public class EncounterService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity<?> createEncounter(final Encounter encounter){
-        if(!patientDAO.exists(encounter.getPatient().getPPSN())){
+        if(!patientDAO.exists(encounter.getPatient().getPpsn())){
             return new ResponseEntity<String>("Patient Not Found",HttpStatus.NOT_FOUND);
         }
 
         //TODO before going forward with this database restructure needed, more thought needs to be put into the database
-        if(encounter.getId() == 0 && encounter.getObservations() != null && !encounter.getObservations().isEmpty()) {
+        if(encounter.getId() == null && encounter.getObservations() != null && !encounter.getObservations().isEmpty()) {
             Set<PatientObservation> observations = encounter.getObservations();
             Encounter savedEncounter = encounterDAO.save(encounter);
             //observations is mandatory

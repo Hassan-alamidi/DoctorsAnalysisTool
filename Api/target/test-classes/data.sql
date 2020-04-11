@@ -2,9 +2,9 @@
 --- Create Patient Data
 ---
 
-INSERT INTO patient (first_name, last_name, dob, ppsn, address, mother_ppsn, father_ppsn) VALUES
-('Test', 'Subject', TO_DATE('1990-10-19', 'yyyy-MM-dd'), '87937M', 'Our Lab', 'UNKNOWN', 'UNKNOWN'),
-('Test', 'Subject2', TO_DATE('1990-10-19', 'yyyy-MM-dd'), '87937N', 'Our Lab', 'UNKNOWN', 'UNKNOWN');
+INSERT INTO patient (first_name, last_name, dob, dod, ppsn, address, gender) VALUES
+('Test', 'Subject', TO_DATE('1990-10-19', 'yyyy-MM-dd'), null, '87937M', 'Our Lab', 'Male'),
+('Test', 'Subject2', TO_DATE('1990-10-19', 'yyyy-MM-dd'), null, '87937N', 'Our Lab', 'Female');
 
 ---
 --- Create Organization Data
@@ -28,25 +28,25 @@ INSERT INTO doctor (medical_licence_number, first_name, last_name, dob, ppsn, ad
 --- Create Encounter Data
 ---
 
-INSERT INTO `encounter` (type, date_visited, date_left, patient_ppsn, organization_id) VALUES
-('checkup','2020-01-12',NULL,'87937M',1),
-('checkup','2020-01-13',NULL,'87937M',1),
-('checkup','2020-01-14',NULL,'87937M',1),
-('checkup','2020-01-15',NULL,'87937M',1),
-('checkup','2020-01-16',NULL,'87937M',1),
-('checkup','2020-01-17',NULL,'87937M',1),
-('checkup','2020-01-18',NULL,'87937M',1),
-('checkup','2020-01-19',NULL,'87937M',1),
-('checkup','2020-01-20',NULL,'87937M',1),
-('checkup','2020-01-21',NULL,'87937M',1),
-('checkup','2020-01-22',NULL,'87937M',1);
+INSERT INTO `encounter` (id, type, date_visited, date_left, patient_ppsn, description) VALUES
+('a','checkup','2020-01-12',NULL,'87937M','any val'),
+('b','checkup','2020-01-13',NULL,'87937M','any val'),
+('c','checkup','2020-01-14',NULL,'87937M','any val'),
+('d','checkup','2020-01-15',NULL,'87937M','any val'),
+('e','checkup','2020-01-16',NULL,'87937M','any val'),
+('f','checkup','2020-01-17',NULL,'87937M','any val'),
+('g','checkup','2020-01-18',NULL,'87937M','any val'),
+('h','checkup','2020-01-19',NULL,'87937M','any val'),
+('i','checkup','2020-01-20',NULL,'87937M','any val'),
+('j','checkup','2020-01-21',NULL,'87937M','any val'),
+('k','checkup','2020-01-22',NULL,'87937M','any val');
 
 ---
 --- Create Patient Observations
 ---
 
-INSERT INTO `patient_observation` (type, description, date_taken, encounter_id, result_value, result_unit) VALUES
-('ECG','checking heart rate due to concerns','2020-01-12',1,'160','BPM');
+INSERT INTO `patient_observation` (type, date_taken, encounter_id, result_value, result_unit, patient_ppsn) VALUES
+('ECG','2020-01-12','a','160','BPM','87937M');
 
 ---
 --- Create condition

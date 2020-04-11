@@ -22,13 +22,18 @@ public class PatientMedication {
 
     @Getter
     @Setter
-    @Column(name = "name")
-    private String name;
+    @Column(name = "description")
+    private String description;
 
     @Getter
     @Setter
     @Column(name = "type")
     private String type;
+
+    @Getter
+    @Setter
+    @Column
+    private String code;
 
     @Getter
     @Setter
@@ -56,23 +61,17 @@ public class PatientMedication {
 
     @Getter
     @Setter
-    @Column(name = "description")
-    private String description;
+    @Column
+    private String reasonDescription;
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reason_for_medication")
-    @JsonIgnoreProperties(value = {"patient", "encounter"}, allowSetters = true)
-    private PatientCondition reasonForMedication;
+    @Column
+    private String reasonCode;
 
     @Getter
     @Setter
     @Column(name = "prescribed_amount")
-    private double prescribedAmount;
+    private int prescribedAmount;
 
-    @Getter
-    @Setter
-    @Column(name = "unit_type")
-    private String unitType;
 }

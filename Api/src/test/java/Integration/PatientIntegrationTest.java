@@ -19,7 +19,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(NEW_PATIENT, doctorHeader), Patient.class);
         Assert.assertEquals(HttpStatus.CREATED, createdPatient.getStatusCode());
 
-        doctorHeader.add("ppsn", NEW_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", NEW_PATIENT.getPpsn());
         ResponseEntity<Patient> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
 
@@ -30,7 +30,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     @Test
     public void createExistingPatient_thenPatientIsNotCreated(){
         //check still exists
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<String> testValid =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(testValid.toString());
@@ -46,14 +46,14 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     @Test
     public void createPatientWithPreExistingPPSN_thenPatientIsNotCreatedAndPreExistingPatientIsNotUpdated(){
         //check still exists
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<String> testValid =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(testValid.toString());
         Assert.assertEquals(HttpStatus.OK, testValid.getStatusCode());
         //try to create duplicate
         System.out.println("Attempting to create patient with PPSN number of which has already been taken");
-        NEVER_GETS_ADDED_PATIENT.setPPSN(EXISTING_PATIENT.getPPSN());
+        NEVER_GETS_ADDED_PATIENT.setPpsn(EXISTING_PATIENT.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(NEVER_GETS_ADDED_PATIENT, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
@@ -64,7 +64,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     public void createPatientWithoutFirstName_ThenFail(){
         //ensure tests do not interfere with eachother
         Patient patient = NEVER_GETS_ADDED_PATIENT;
-        patient.setPPSN("93hjoaj");
+        patient.setPpsn("93hjoaj");
         patient.setFirstName(null);
 
         ResponseEntity<?> createdPatient =
@@ -73,7 +73,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(createdPatient.toString());
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, createdPatient.getStatusCode());
 
-        doctorHeader.add("ppsn", patient.getPPSN());
+        doctorHeader.add("ppsn", patient.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
 
@@ -84,7 +84,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     public void createPatientWithoutLastName_ThenFail(){
         //ensure tests do not interfere with eachother
         Patient patient = NEVER_GETS_ADDED_PATIENT;
-        patient.setPPSN("935hjoaj");
+        patient.setPpsn("935hjoaj");
         patient.setLastName(null);
 
         ResponseEntity<?> createdPatient =
@@ -93,7 +93,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(createdPatient.toString());
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, createdPatient.getStatusCode());
 
-        doctorHeader.add("ppsn", patient.getPPSN());
+        doctorHeader.add("ppsn", patient.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
 
@@ -104,8 +104,8 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     public void createPatientWithoutDOB_ThenFail(){
         //ensure tests do not interfere with eachother
         Patient patient = NEVER_GETS_ADDED_PATIENT;
-        patient.setPPSN("933hjoaj");
-        patient.setDOB(null);
+        patient.setPpsn("933hjoaj");
+        patient.setDob(null);
 
         ResponseEntity<?> createdPatient =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(patient, doctorHeader), String.class);
@@ -113,7 +113,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(createdPatient.toString());
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, createdPatient.getStatusCode());
 
-        doctorHeader.add("ppsn", patient.getPPSN());
+        doctorHeader.add("ppsn", patient.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
 
@@ -124,8 +124,8 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     public void createPatientWithoutPPSN_ThenFail(){
         //ensure tests do not interfere with eachother
         Patient patient = NEVER_GETS_ADDED_PATIENT;
-        patient.setPPSN("993hjoaj");
-        patient.setPPSN(null);
+        patient.setPpsn("993hjoaj");
+        patient.setPpsn(null);
 
         ResponseEntity<?> createdPatient =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(patient, doctorHeader), String.class);
@@ -133,7 +133,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(createdPatient.toString());
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, createdPatient.getStatusCode());
 
-        doctorHeader.add("ppsn", patient.getPPSN());
+        doctorHeader.add("ppsn", patient.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
 
@@ -142,7 +142,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void getExistingPatient(){
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<String> testValid =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(testValid.toString());
@@ -151,7 +151,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void getNonExistingPatient_thenPatientNotFound(){
-        doctorHeader.add("ppsn", NEVER_GETS_ADDED_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", NEVER_GETS_ADDED_PATIENT.getPpsn());
         ResponseEntity<String> testValid =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(testValid.toString());
@@ -160,7 +160,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void updatePatientDetailsExceptDOBAndPPSN(){
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<Patient> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
         System.out.println(responseEntity.toString());
@@ -181,13 +181,13 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void updatePatientDOB_thenDOBIsNotUpdated(){
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<Patient> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Patient patient = responseEntity.getBody();
-        patient.setDOB(Date.valueOf("2003-02-10"));
+        patient.setDob(Date.valueOf("2003-02-10"));
 
         ResponseEntity<String> failedResponse = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, failedResponse.getStatusCode());
@@ -195,13 +195,13 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
 
     @Test
     public void updatePatientPPSN_thenPPSNIsNotUpdated(){
-        doctorHeader.add("ppsn", EXISTING_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<?> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Patient patient = (Patient) responseEntity.getBody();
-        patient.setPPSN("2345N");
+        patient.setPpsn("2345N");
 
         ResponseEntity<?> failedResponse = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.NOT_FOUND, failedResponse.getStatusCode());
@@ -210,7 +210,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     @Test
     public void updateNonExistingPatient_thenPatientIsNotUpdatedOrCreated(){
         //validate patient is not in database
-        doctorHeader.add("ppsn", NEVER_GETS_ADDED_PATIENT.getPPSN());
+        doctorHeader.add("ppsn", NEVER_GETS_ADDED_PATIENT.getPpsn());
         ResponseEntity<?> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(responseEntity.toString());
@@ -231,7 +231,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
     @Test
     public void getPatientWhileLoggedOut_thenFail(){
         HttpHeaders headers = new HttpHeaders();
-        headers.add("ppsn", EXISTING_PATIENT.getPPSN());
+        headers.add("ppsn", EXISTING_PATIENT.getPpsn());
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange("/patient", HttpMethod.GET, new HttpEntity<>(headers), String.class);
         System.out.println(responseEntity.toString());

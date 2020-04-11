@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
@@ -21,8 +22,10 @@ public class Encounter {
     @Id
     @Getter
     @Setter
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column
+    private String id;
 
     @Getter
     @Setter
@@ -38,6 +41,16 @@ public class Encounter {
     @Setter
     @Column(name = "date_left")
     private Date dateLeft;
+
+    @Getter
+    @Setter
+    @Column
+    private String description;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonDescription;
 
     @Getter
     @Setter
@@ -69,7 +82,7 @@ public class Encounter {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
     private PatientProcedure procedure;
-
+// TODO remove
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY)

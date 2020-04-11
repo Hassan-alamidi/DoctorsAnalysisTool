@@ -44,34 +44,24 @@ public class Patient implements Serializable {
     @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
-    private Date DOB;
+    private Date dob;
 
     @Getter
     @Setter
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dod")
-    private Date DOD;
+    private Date dod;
 
     //I don't want a setter here but jackson seems to insist on it must find a solution later
     @Setter
     @Getter
     @Column(name = "ppsn")
-    private String PPSN;
+    private String ppsn;
 
     @Getter
     @Setter
     @Column(name = "address")
     private String address;
-
-    @Getter
-    @Setter
-    @Column(name = "mother_ppsn")
-    private String motherPPSN;
-
-    @Getter
-    @Setter
-    @Column(name = "father_ppsn")
-    private String fatherPPSN;
 
     @Getter
     @JsonIgnoreProperties(value = "patient", allowSetters = true)
@@ -86,7 +76,7 @@ public class Patient implements Serializable {
     private Set<PatientMedication> currentMedication;
 
     public Patient(final String ppsn){
-        this.PPSN = ppsn;
+        this.ppsn = ppsn;
         patientConditions = new HashSet<PatientCondition>();
         currentMedication = new HashSet<PatientMedication>();
     }

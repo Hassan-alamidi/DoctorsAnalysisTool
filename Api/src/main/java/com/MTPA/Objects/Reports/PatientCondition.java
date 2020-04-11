@@ -23,16 +23,16 @@ public class PatientCondition {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column
     private int id;
-
+//TODO for consistency change in database to description
     @Getter
     @Setter
-    @Column(name = "name")
+    @Column(name = "description")
     private String name;
 
     @Getter
     @Setter
-    @Column(name = "condition_code")
-    private int conditionCode;
+    @Column(name = "code")
+    private String code;
 
     @Getter
     @Setter

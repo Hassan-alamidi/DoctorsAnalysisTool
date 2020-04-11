@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface MedicationDAO extends JpaRepository<PatientMedication, Integer> {
 
-    @Query("SELECT m FROM PatientMedication m WHERE m.patient.PPSN = ?1")
+    @Query("SELECT m FROM PatientMedication m WHERE m.patient.ppsn = ?1")
     List<PatientMedication> getPatientMedicationHistory(String ppsn);
 
-    @Query("SELECT m FROM PatientMedication m WHERE m.treatmentEnd > ?1 OR m.treatmentEnd IS NULL AND m.patient.PPSN = ?2")
+    @Query("SELECT m FROM PatientMedication m WHERE m.treatmentEnd > ?1 OR m.treatmentEnd IS NULL AND m.patient.ppsn = ?2")
     List<PatientMedication> getCurrentPatientMedication(LocalDate currentDate, String ppsn);
 }

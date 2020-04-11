@@ -1,5 +1,6 @@
 package com.MTPA.Objects.Reports;
 
+import com.MTPA.Objects.Patient;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.Date;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class TreatmentPlan {
-
+//TODO need to add reasonCode and reasonDescription
     @Id
     @Getter
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -29,8 +30,10 @@ public class TreatmentPlan {
 
     @Getter
     @Setter
-    @Column(name = "patient_ppsn")
-    private String patientPPSN;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"}, allowSetters = true)
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+    private Patient patient;
 
     @Getter
     @Setter
@@ -41,41 +44,52 @@ public class TreatmentPlan {
 
     @Getter
     @Setter
+    @Column
     private String description;
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_condition_id")
-    private PatientCondition condition;
+    @Column
+    private String code;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonCode;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonDescription;
+
     //the below is only generated when prediction is requested might move to a separate class
-
-    @Getter
-    @Setter
-    private int successChance;
-
-    @Getter
-    @Setter
-    private String bestPredictedOutcome;
-
-    @Getter
-    @Setter
-    private String worstPredictedOutcome;
-
-    @Getter
-    @Setter
-    private String likelyNegativeSideEffects;
-    //effecting chance of success
-
-    @Getter
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "condition_code")
-    private PatientMedication medicationEffecting;
-
-    @Getter
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private PatientCondition conditionEffecting;
+    //This should probably be removed or be placed in its own object as a report object
+//    @Getter
+//    @Setter
+//    private int successChance;
+//
+//    @Getter
+//    @Setter
+//    private String bestPredictedOutcome;
+//
+//    @Getter
+//    @Setter
+//    private String worstPredictedOutcome;
+//
+//    @Getter
+//    @Setter
+//    private String likelyNegativeSideEffects;
+//    //effecting chance of success
+//
+//    @Getter
+//    @Setter
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "condition_code")
+//    private PatientMedication medicationEffecting;
+//
+//    @Getter
+//    @Setter
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+//    private PatientCondition conditionEffecting;
 }

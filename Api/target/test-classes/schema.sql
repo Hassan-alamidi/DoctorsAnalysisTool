@@ -108,11 +108,11 @@ CREATE TABLE `patient` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `first_name` varchar(45) NOT NULL,
   `dob` date NOT NULL,
+  `dod` date,
   `ppsn` varchar(45) NOT NULL,
   `address` varchar(200) NOT NULL,
-  `mother_ppsn` varchar(45) DEFAULT NULL,
-  `father_ppsn` varchar(45) DEFAULT NULL,
-  `last_name` varchar(45) NOT NULL
+  `last_name` varchar(45) NOT NULL,
+  `gender` varchar(45) NOT NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,14 +126,14 @@ DROP TABLE IF EXISTS `patient_condition`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient_condition` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(200) NOT NULL,
+  `description` varchar(200) NOT NULL,
   `symptoms` varchar(200) NOT NULL,
-  `condition_code` int(11) NOT NULL,
-  `details` longtext,
+  `code` varchar(45) NOT NULL,
+  `details` varchar(200) NULL,
   `discovered` date NOT NULL,
   `cured_on` date DEFAULT NULL,
   `patient_ppsn` varchar(200) NOT NULL,
-  `encounter_id` int(11) NOT NULL
+  `encounter_id` varchar(200) NOT NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,16 +146,16 @@ DROP TABLE IF EXISTS `patient_medication`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient_medication` (
   `id` int(11) NOT NULL,
-  `name` varchar(200) NOT NULL,
   `type` varchar(200) NOT NULL,
   `treatment_start` date NOT NULL,
   `treatment_end` date DEFAULT NULL,
   `patient_ppsn` varchar(200) NOT NULL,
-  `encounter_id` int(11) NOT NULL,
+  `encounter_id` varchar(200) NOT NULL,
   `description` longtext NOT NULL,
-  `reason_for_medication` int(11) NOT NULL,
-  `prescribed_amount` double NOT NULL,
-  `unit_type` varchar(45) NOT NULL
+  `reason_code` varchar(45) NOT NULL,
+  `prescribed_amount` int(11) NOT NULL,
+  `code` varchar(45) NULL,
+  `reason_description` varchar(200) NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -169,11 +169,12 @@ DROP TABLE IF EXISTS `patient_observation`;
 CREATE TABLE `patient_observation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(200) NOT NULL,
-  `description` longtext NOT NULL,
   `date_taken` date NOT NULL,
-  `encounter_id` int(11) NOT NULL,
+  `encounter_id` varchar(200) NOT NULL,
   `result_value` varchar(45) NOT NULL,
-  `result_unit` varchar(45) NOT NULL
+  `result_unit` varchar(45) NOT NULL,
+  `code` varchar(45) NULL,
+  `patient_ppsn` varchar(200) NOT NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -186,13 +187,14 @@ DROP TABLE IF EXISTS `patient_procedure`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `patient_procedure` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `procedure_code` int(11) NOT NULL,
-  `name` varchar(200) NOT NULL,
+  `code` varchar(45) NOT NULL,
+  `description` varchar(200) NOT NULL,
   `carried_out_on` date NOT NULL,
-  `patient_ppsn` varchar(45) NOT NULL,
-  `encounter_id` int(11) NOT NULL,
-  `details` longtext,
-  `reason_for_procedure` int(11) NOT NULL
+  `patient_ppsn` varchar(200) NOT NULL,
+  `encounter_id` varchar(200) NOT NULL,
+  `details` varchar(200) NULL,
+  `reason_description` varchar(200) NULL,
+  `reason_code` varchar(45) NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,9 +227,11 @@ CREATE TABLE `treatment_plan` (
   `start_date` date NOT NULL,
   `end_date` date DEFAULT NULL,
   `patient_ppsn` varchar(200) NOT NULL,
-  `encounter_id` int(11) NOT NULL,
-  `description` longtext NOT NULL,
-  `patient_condition_id` int(11) NOT NULL
+  `encounter_id` varchar(200) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `code` varchar(45) NOT NULL,
+  `reason_code` varchar(45) NULL,
+  `reason_description` varchar(200) NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -281,12 +285,13 @@ DROP TABLE IF EXISTS `encounter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `encounter` (
-  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `id` varchar(200) NOT NULL PRIMARY KEY,
   `type` varchar(200) NOT NULL,
   `date_visited` date NOT NULL,
   `date_left` date DEFAULT NULL,
   `patient_ppsn` varchar(200) NOT NULL,
-  `organization_id` int(11) NOT NULL
+  `description` varchar(200) NOT NULL,
+  `reason_description` varchar(200) NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

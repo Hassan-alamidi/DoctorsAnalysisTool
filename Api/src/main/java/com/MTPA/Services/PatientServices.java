@@ -23,9 +23,9 @@ public class PatientServices {
 
     public ResponseEntity<?> updatePatient(Patient patient){
         //get patient by PPSN then make sure only the unimportant data is changed like address or phone number
-        Patient patientOldDetails = patientDAO.findByPPSN(patient.getPPSN());
-        if(patientOldDetails != null && patient.getId() == patientOldDetails.getId() && patient.getPPSN().equals(patientOldDetails.getPPSN())){
-            if(patient.getDOB().compareTo(patientOldDetails.getDOB()) == 0){
+        Patient patientOldDetails = patientDAO.findByPPSN(patient.getPpsn());
+        if(patientOldDetails != null && patient.getId() == patientOldDetails.getId() && patient.getPpsn().equals(patientOldDetails.getPpsn())){
+            if(patient.getDob().compareTo(patientOldDetails.getDob()) == 0){
                 patientDAO.save(patient);
                 return new ResponseEntity<Patient>(patient, HttpStatus.OK);
             }
@@ -35,7 +35,7 @@ public class PatientServices {
     }
 
     public ResponseEntity<?> createPatient(Patient patient){
-        if(!patientDAO.exists(patient.getPPSN())){
+        if(!patientDAO.exists(patient.getPpsn())){
             patientDAO.save(patient);
             return new ResponseEntity<Patient>(patient,HttpStatus.CREATED);
         }

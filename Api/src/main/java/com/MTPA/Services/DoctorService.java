@@ -39,7 +39,6 @@ public class DoctorService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String licenceNum) {
-        System.out.println(licenceNum);
         Doctor doctor = doctorDAO.findByLicenceNumber(licenceNum);
 
         if (doctor == null) {

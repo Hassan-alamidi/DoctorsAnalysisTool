@@ -42,17 +42,17 @@ public class PatientServiceTest {
         patient = Patient.builder()
                 .firstName("test")
                 .address("anyAddress")
-                .PPSN("ppsn")
+                .ppsn("ppsn")
                 .lastName("test")
-                .DOB(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
+                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
                 .id(1)
                 .build();
         patientDuplicate = Patient.builder()
                 .firstName("test")
                 .address("anyAddress")
-                .PPSN("ppsn")
+                .ppsn("ppsn")
                 .lastName("test")
-                .DOB(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
+                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
                 .id(1)
                 .build();
     }
@@ -67,7 +67,7 @@ public class PatientServiceTest {
     @Test
     public void patientInDatabaseGetsUpdated_thenResponseUpdatedPatientAnd200(){
         patientDuplicate.setFirstName("hello");
-        when(patientDAO.findByPPSN(patient.getPPSN())).thenReturn(patient);
+        when(patientDAO.findByPPSN(patient.getPpsn())).thenReturn(patient);
         when(patientDAO.save(patientDuplicate)).thenReturn(patientDuplicate);
         try{
             ResponseEntity<?> responseEntity = patientServices.updatePatient(patient);
@@ -92,7 +92,7 @@ public class PatientServiceTest {
     @SneakyThrows
     public void patientGetsDOBUpdated_thenUnprocessableEntity(){
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
-        patientDuplicate.setDOB(new SimpleDateFormat("yyyy-MM-dd").parse("1803-02-02"));
+        patientDuplicate.setDob(new SimpleDateFormat("yyyy-MM-dd").parse("1803-02-02"));
         try{
             ResponseEntity<?> responseEntity = patientServices.updatePatient(patientDuplicate);
             Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
@@ -127,7 +127,7 @@ public class PatientServiceTest {
     @Test
     public void getExistingPatient(){
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
-        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPPSN());
+        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPpsn());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
@@ -135,7 +135,7 @@ public class PatientServiceTest {
     @Test
     public void getNonExistingPatient(){
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(null);
-        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPPSN());
+        ResponseEntity<?> responseEntity = patientServices.getPatient(patient.getPpsn());
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 }

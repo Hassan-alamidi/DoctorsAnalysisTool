@@ -32,21 +32,23 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
         observations = new HashSet<>();
         PatientObservation observation = new PatientObservation();
         observation.setDateTaken(date);
-        observation.setDescription("patient is sick as a dog");
         observation.setType("blood test");
         observation.setResultValue("Holy fuck");
         observation.setUnit("Shock value");
+        observation.setPatient(EXISTING_PATIENT);
         observations.add(observation);
 
         PatientCondition condition = new PatientCondition();
-        condition.setConditionCode(1);
+        condition.setCode("");
         condition.setDetails("patient has a cold");
         condition.setDiscovered(date);
         condition.setName("cold");
         condition.setSymptoms("runny nose");
+        //condition.setPatient(E);
 
         encounter = new Encounter();
         encounter.setType("checkup");
+        encounter.setDescription("some random description");
         encounter.setDateVisited(date);
         encounter.setDateLeft(date);
         encounter.setPatient(EXISTING_PATIENT);
@@ -72,13 +74,13 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void getPatientEncounterById_thenEncounterIsReturned(){
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/1", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/a", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void getPatientEncounterByFakeId_thenNotFound(){
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT+ "/45", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT+ "/34fsd", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
@@ -116,12 +118,10 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
 
     //get specified number of recent encounters
     @Test
-    public void getSpecifiedNumberRecentEncountersWithFakePPSN_thenEmptyArrayReturned(){
+    public void getSpecifiedNumberRecentEncountersWithFakePPSN_thenNotFound(){
         doctorHeader.add("ppsn", "FAKEPPSN");
         ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/10", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
-        Assert.assertTrue(encounters.isEmpty());
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
@@ -162,7 +162,7 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void tryToUpdateEncounterThroughCreateEncounter_thenUnprocessable(){
-        encounter.setId(1);
+        encounter.setId("a");
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
     }
@@ -194,10 +194,10 @@ public class EncounterIntegrationTest extends BaseIntegrationTest {
         observation.setResultValue("60");
         observation.setType("weight check");
         observation.setDateTaken(encounter.getDateVisited());
-        observation.setDescription("random words");
+        observation.setPatient(encounter.getPatient());
         observations.add(observation);
         encounter.setObservations(observations);
-        System.out.println(encounter.getPatient().getPPSN());
+        System.out.println(encounter.getPatient().getPpsn());
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }

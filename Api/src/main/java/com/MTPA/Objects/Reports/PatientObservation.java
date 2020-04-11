@@ -1,5 +1,6 @@
 package com.MTPA.Objects.Reports;
 
+import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.Encounter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,15 +22,11 @@ public class PatientObservation {
 
     @Getter
     @Setter
-    private String observationCode;
+    private String code;
 
     @Getter
     @Setter
     private String type;
-
-    @Getter
-    @Setter
-    private String description;
 
     @Getter
     @Setter
@@ -51,4 +48,11 @@ public class PatientObservation {
     @Setter
     @Column(name = "result_unit")
     private String unit;
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"}, allowSetters = true)
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+    private Patient patient;
 }

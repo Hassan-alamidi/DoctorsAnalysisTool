@@ -22,22 +22,15 @@ public class PatientProcedure {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-// explained commented out code in patient condition the same reason applies
-//    @Getter
-//    @Setter
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "procedure_code", referencedColumnName = "procedure_code")
-//    private Procedure procedure;
+    @Getter
+    @Setter
+    @Column(name = "description")
+    private String description;
 
     @Getter
     @Setter
-    @Column(name = "name")
-    private String name;
-
-    @Getter
-    @Setter
-    @Column(name = "procedure_code")
-    private int procedureCode;
+    @Column(name = "code")
+    private int code;
 
     @Getter
     @Setter
@@ -48,12 +41,6 @@ public class PatientProcedure {
     @Setter
     @Column(name = "details")
     private String details;
-
-//    @Getter
-//    @Setter
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-//    private Patient patient;
 
     @Getter
     @Setter
@@ -71,8 +58,11 @@ public class PatientProcedure {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reason_for_procedure")
-    @JsonIgnoreProperties(value = {"patient", "encounter"}, allowSetters = true)
-    private PatientCondition reasonForProcedure;
+    @Column
+    private String reasonDescription;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonCode;
 }

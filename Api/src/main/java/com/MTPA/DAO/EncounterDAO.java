@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EncounterDAO extends JpaRepository<Encounter, Integer> {
+public interface EncounterDAO extends JpaRepository<Encounter, String> {
 
-    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.PPSN = ?1 ORDER BY e.dateVisited DESC")
+    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.ppsn = ?1 ORDER BY e.dateVisited DESC")
     List<Encounter> findAllEncountersOrderedByDate(final String ppsn);
 
-    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.PPSN = ?1 ORDER BY e.dateVisited DESC")
+    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.ppsn = ?1 ORDER BY e.dateVisited DESC")
     List<Encounter> findRecentEncountersOrderedByDate(final String ppsn, final Pageable pageable);
 
-    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.PPSN = ?1 ORDER BY e.dateVisited DESC")
+    @Query("SELECT e FROM Encounter e JOIN e.patient p WHERE p.ppsn = ?1 ORDER BY e.dateVisited DESC")
     Optional<Encounter> findLastEncounter(final String ppsn);
 }

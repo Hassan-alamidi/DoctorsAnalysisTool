@@ -28,7 +28,7 @@ public class EncounterResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Encounter> getEncounterById(@PathVariable("id") final int id){
+    public ResponseEntity<Encounter> getEncounterById(@PathVariable("id") final String id){
         return encounterService.getEncounterById(id);
     }
 

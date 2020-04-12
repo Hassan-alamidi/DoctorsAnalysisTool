@@ -16,22 +16,22 @@ public class ProcedureResource {
     private ProcedureService procedureService;
 
     @Autowired
-    public void ProcedureResource(ProcedureService procedureService){
+    public void ProcedureResource(final ProcedureService procedureService){
         this.procedureService = procedureService;
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientProcedure>> getAllProcedures(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<List<PatientProcedure>> getAllProcedures(@RequestHeader("ppsn") final String ppsn){
         return procedureService.getAllProcedures(ppsn);
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<PatientProcedure>> getRecentProcedures(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<List<PatientProcedure>> getRecentProcedures(@RequestHeader("ppsn") final String ppsn){
         return procedureService.getRecentProcedures(ppsn);
     }
 
     @PostMapping
-    public ResponseEntity<PatientProcedure> createProcedure(@RequestBody final PatientProcedure procedure){
+    public ResponseEntity<?> createProcedure(@RequestBody final PatientProcedure procedure){
         return procedureService.createProcedure(procedure);
     }
 

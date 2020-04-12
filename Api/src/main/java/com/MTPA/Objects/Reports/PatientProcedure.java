@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @JsonDeserialize
@@ -35,7 +36,7 @@ public class PatientProcedure {
     @Getter
     @Setter
     @Column(name = "carried_out_on")
-    private Date carriedOutOn;
+    private LocalDate carriedOutOn;
 
     @Getter
     @Setter
@@ -53,7 +54,7 @@ public class PatientProcedure {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedure", "observations"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations"}, allowSetters = true)
     private Encounter encounter;
 
     @Getter

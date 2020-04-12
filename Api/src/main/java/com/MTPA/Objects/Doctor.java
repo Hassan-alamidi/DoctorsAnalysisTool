@@ -49,7 +49,7 @@ public class Doctor implements Serializable {
     @Setter
     @Getter
     @Column(name = "ppsn")
-    private String PPSN;
+    private String ppsn;
 
     @Getter
     @Setter

@@ -1,6 +1,7 @@
 package com.MTPA.Services;
 
 import com.MTPA.DAO.ConditionDAO;
+import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Reports.PatientCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,13 @@ import java.util.Set;
 @Service
 public class ConditionServices {
 
-    ConditionDAO conditionDAO;
+    private final ConditionDAO conditionDAO;
+    private final PatientDAO patientDAO;
 
     @Autowired
-    public ConditionServices(ConditionDAO conditionDAO){
+    public ConditionServices(ConditionDAO conditionDAO, PatientDAO patientDAO){
         this.conditionDAO = conditionDAO;
+        this.patientDAO = patientDAO;
     }
 
     public ResponseEntity<List<PatientCondition>> getAllPatientConditions(String ppsn){
@@ -29,7 +32,10 @@ public class ConditionServices {
     }
 
     public ResponseEntity<PatientCondition> getPatientCondition(int id){
-        return new ResponseEntity<>(conditionDAO.findSpecificPatientCondition(id), HttpStatus.OK);
+        if(conditionDAO.existsById(id)){
+            return new ResponseEntity<>(conditionDAO.findSpecificPatientCondition(id), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<List<PatientCondition>> getOnGoingPatientConditions(String ppsn){
@@ -37,12 +43,15 @@ public class ConditionServices {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public ResponseEntity<PatientCondition> addPatientCondition(PatientCondition condition){
-        try {
-            conditionDAO.save(condition);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+    public ResponseEntity<?> addPatientCondition(PatientCondition condition){
+        if(condition.getPatient() != null && patientDAO.exists(condition.getPatient().getPpsn())){
+            try {
+                conditionDAO.save(condition);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            return new ResponseEntity<>(condition, HttpStatus.OK);
         }
-        return new ResponseEntity<>(condition, HttpStatus.OK);
+        return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
 }

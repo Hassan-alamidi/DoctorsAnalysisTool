@@ -52,7 +52,7 @@ public class DoctorServiceTest {
         doctor = Doctor.builder()
                 .firstName("testDoc")
                 .DOB(new SimpleDateFormat("yyyy-MM-dd").parse("1972-03-06"))
-                .PPSN("ppssn")
+                .ppsn("ppssn")
                 .lastName("t")
                 .password("notDefault")
                 .medicalLicenceNumber("licence234")

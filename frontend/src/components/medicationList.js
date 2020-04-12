@@ -12,12 +12,12 @@ export const MedicationList = ({medications}) => {
                     medication.treatmentEnd = medication.treatmentEnd.split('T')[0];
                     return(
                         <div className="panel" key={"medicationitem" + i} >
-                            <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.name}</p></a>
+                            <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.description}</p></a>
                             <div id={"medicationId" + i} className="panel-collapse collapse">
                                 <div className="panel-body">
                                     <p>Start Date: {medication.treatmentStart}</p> <br />
-                                    <p>End Date: {medication.treatmentStart}</p> <br />
-                                    <p>Reason: need to implement reason int application</p>
+                                    <p>End Date: {medication.treatmentEnd}</p> <br />
+                                    <p>Reason: {medication.reasonDescription}</p>
                                 </div>
                             </div>
                         </div>)
@@ -34,15 +34,15 @@ export const MedicationListTransparent = ({medications}) => {
             <ul className="panel-group accordion" id="medication">
                 {medications.map((medication, i) => {
                     medication.treatmentStart = medication.treatmentStart.split('T')[0];
-                    medication.treatmentEnd = medication.treatmentEnd.split('T')[0];
+                    medication.treatmentEnd = medication.treatmentEnd ? medication.treatmentEnd.split('T')[0] : "Not Specified";
                     return(
                         <div className="panel" key={"medicationitem" + i} >
-                            <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.name}</p></a>
+                            <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.description}</p></a>
                             <div id={"medicationId" + i} className="panel-collapse collapse">
                                 <div className="panel-body">
                                     <p>Start Date: {medication.treatmentStart}</p> <br />
-                                    <p>End Date: {medication.treatmentStart}</p> <br />
-                                    <p>Reason: need to implement reason int application</p>
+                                    <p>End Date: {medication.treatmentEnd}</p> <br />
+                                    <p>Reason: {medication.reasonDescription}</p>
                                 </div>
                             </div>
                         </div>)

@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.http.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class PatientIntegrationTest extends BaseIntegrationTest{
 
@@ -187,7 +188,7 @@ public class PatientIntegrationTest extends BaseIntegrationTest{
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Patient patient = responseEntity.getBody();
-        patient.setDob(Date.valueOf("2003-02-10"));
+        patient.setDob(LocalDate.parse("2003-02-10"));
 
         ResponseEntity<String> failedResponse = restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Patient>(patient, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, failedResponse.getStatusCode());

@@ -36,14 +36,13 @@ public class PatientServices {
 
     public ResponseEntity<?> createPatient(Patient patient){
         if(!patientDAO.exists(patient.getPpsn())){
-            patientDAO.save(patient);
+            patient = patientDAO.save(patient);
             return new ResponseEntity<Patient>(patient,HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Patient already exists", HttpStatus.UNPROCESSABLE_ENTITY);
-
     }
 
-    public ResponseEntity<?> getPatient(String ppsn){
+    public ResponseEntity<?> getPatient(final String ppsn){
         Patient patient = patientDAO.findByPPSN(ppsn);
         if (patient != null) {
             return new ResponseEntity<>(patient, HttpStatus.OK);

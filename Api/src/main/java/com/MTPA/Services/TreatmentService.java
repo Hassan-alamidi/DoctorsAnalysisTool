@@ -1,5 +1,6 @@
 package com.MTPA.Services;
 
+import com.MTPA.DAO.PatientDAO;
 import com.MTPA.DAO.TreatmentPlanDAO;
 import com.MTPA.Objects.Reports.TreatmentPlan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,19 @@ import java.util.Optional;
 public class TreatmentService {
 
     private final TreatmentPlanDAO treatmentPlanDAO;
+    private final PatientDAO patientDAO;
 
     @Autowired
-    public TreatmentService(final TreatmentPlanDAO treatmentPlanDAO){
+    public TreatmentService(final TreatmentPlanDAO treatmentPlanDAO, final PatientDAO patientDAO){
         this.treatmentPlanDAO = treatmentPlanDAO;
+        this.patientDAO = patientDAO;
     }
 
-    public ResponseEntity<TreatmentPlan> createTreatmentPlan(final TreatmentPlan treatmentPlan){
-        return new ResponseEntity<>(treatmentPlanDAO.save(treatmentPlan), HttpStatus.OK);
+    public ResponseEntity<?> createTreatmentPlan(final TreatmentPlan treatmentPlan){
+        if(treatmentPlan.getPatient() != null && patientDAO.exists(treatmentPlan.getPatient().getPpsn())) {
+            return new ResponseEntity<>(treatmentPlanDAO.save(treatmentPlan), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> updateTreatmentPlan(final TreatmentPlan treatmentPlan){
@@ -34,9 +40,8 @@ public class TreatmentService {
                 return t;
             });
             return new ResponseEntity<>(treatmentPlanDAO.save(planWithRestrictions.get()), HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>("Plan does not exist", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<List<TreatmentPlan>> getAllTreatments(final String ppsn){

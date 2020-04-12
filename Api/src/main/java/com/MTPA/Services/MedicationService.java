@@ -2,6 +2,7 @@ package com.MTPA.Services;
 
 import com.MTPA.DAO.EncounterDAO;
 import com.MTPA.DAO.MedicationDAO;
+import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Reports.PatientMedication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,16 @@ import java.util.Set;
 @Service
 public class MedicationService {
 
-    private MedicationDAO medicationDAO;
-    private EncounterDAO encounterDAO;
+    private final MedicationDAO medicationDAO;
+    private final EncounterDAO encounterDAO;
+    private final PatientDAO patientDAO;
 
     @Autowired
-    public MedicationService(final MedicationDAO medicationDAO, final EncounterDAO encounterDAO){
+    public MedicationService(final MedicationDAO medicationDAO, final EncounterDAO encounterDAO,
+                             final PatientDAO patientDAO){
         this.medicationDAO = medicationDAO;
         this.encounterDAO = encounterDAO;
+        this.patientDAO = patientDAO;
     }
 
     public ResponseEntity<List<PatientMedication>> getAllMedication(final String ppsn){
@@ -30,13 +34,15 @@ public class MedicationService {
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> prescribeMedication(final PatientMedication patientMedication){
-        if(encounterDAO.findById(patientMedication.getEncounter().getId()).isPresent()){
-            PatientMedication prescribed = medicationDAO.save(patientMedication);
-            return new ResponseEntity<>(prescribed, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<String>("must have valid encounter linked",HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<?> prescribeMedication(final PatientMedication patientMedication) {
+        if (patientMedication.getPatient() != null && patientDAO.exists(patientMedication.getPatient().getPpsn())){
+            if (encounterDAO.findById(patientMedication.getEncounter().getId()).isPresent()) {
+                PatientMedication prescribed = medicationDAO.save(patientMedication);
+                return new ResponseEntity<>(prescribed, HttpStatus.OK);
+            }
+            return new ResponseEntity<String>("must have valid encounter linked", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        return new ResponseEntity<String>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> getPatientCurrentMedication(final String ppsn){

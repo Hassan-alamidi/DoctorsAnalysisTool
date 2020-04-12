@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +45,7 @@ public class PatientServiceTest {
                 .address("anyAddress")
                 .ppsn("ppsn")
                 .lastName("test")
-                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
+                .dob(LocalDate.parse("1984-02-12"))
                 .id(1)
                 .build();
         patientDuplicate = Patient.builder()
@@ -52,7 +53,7 @@ public class PatientServiceTest {
                 .address("anyAddress")
                 .ppsn("ppsn")
                 .lastName("test")
-                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1984-02-12"))
+                .dob(LocalDate.parse("1984-02-12"))
                 .id(1)
                 .build();
     }
@@ -92,7 +93,7 @@ public class PatientServiceTest {
     @SneakyThrows
     public void patientGetsDOBUpdated_thenUnprocessableEntity(){
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
-        patientDuplicate.setDob(new SimpleDateFormat("yyyy-MM-dd").parse("1803-02-02"));
+        patientDuplicate.setDob(LocalDate.parse("1803-02-02"));
         try{
             ResponseEntity<?> responseEntity = patientServices.updatePatient(patientDuplicate);
             Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());

@@ -14,15 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseIntegrationTest {
 
@@ -89,7 +91,7 @@ public abstract class BaseIntegrationTest {
                 .firstName("Test")
                 .lastName("Subject")
                 .gender("Male")
-                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1990-10-19"))
+                .dob(LocalDate.parse("1990-10-19"))
                 .ppsn("87937M")
                 .address("Our Lab")
                 .build();
@@ -97,7 +99,7 @@ public abstract class BaseIntegrationTest {
                 .firstName("OffThe")
                 .lastName("Books")
                 .gender("Male")
-                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1995-12-28"))
+                .dob(LocalDate.parse("1995-12-28"))
                 .ppsn("5889M")
                 .address("Test Tube")
                 .build();
@@ -105,7 +107,7 @@ public abstract class BaseIntegrationTest {
                 .firstName("john")
                 .lastName("doe")
                 .gender("Female")
-                .dob(new SimpleDateFormat("yyyy-MM-dd").parse("1995-12-28"))
+                .dob(LocalDate.parse("1995-12-28"))
                 .ppsn("123N")
                 .address("123 easy street")
                 .build();
@@ -121,7 +123,7 @@ public abstract class BaseIntegrationTest {
                 .lastName("jife")
                 .medicalLicenceNumber("986987M")
                 .privilegeLevel("User")
-                .PPSN("PPPPPPSSSSSNNNNN")
+                .ppsn("PPPPPPSSSSSNNNNN")
                 .phoneNumber(9899)
                 .password("anyPass")
                 .workPlace(organization)
@@ -133,7 +135,7 @@ public abstract class BaseIntegrationTest {
                 .lastName("jife")
                 .medicalLicenceNumber("72648987N")
                 .privilegeLevel("User")
-                .PPSN("PP1224454SSSNNN")
+                .ppsn("PP1224454SSSNNN")
                 .phoneNumber(9899)
                 .password("anyPass")
                 .workPlace(organization)

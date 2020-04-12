@@ -21,7 +21,7 @@ public class MedicationResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientMedication>> getAllMedication(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<List<PatientMedication>> getAllMedication(@RequestHeader("ppsn") final String ppsn){
         return medicationService.getAllMedication(ppsn);
     }
 
@@ -31,7 +31,7 @@ public class MedicationResource {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<?> getCurrentMedication(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<?> getCurrentMedication(@RequestHeader("ppsn") final String ppsn){
         return medicationService.getPatientCurrentMedication(ppsn);
     }
 

@@ -202,18 +202,18 @@ CREATE TABLE `patient_procedure` (
 -- Table structure for table `procedure`
 --
 
-DROP TABLE IF EXISTS `procedure`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `procedure` (
-  `procedure_code` int(11) NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `type` varchar(200) NOT NULL,
-  `description` longtext NOT NULL
-);
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-ALTER TABLE `procedure` ADD CONSTRAINT procedure_unique_cols UNIQUE ( procedure_code, name );
+--DROP TABLE IF EXISTS `procedure`;
+--/*!40101 SET @saved_cs_client     = @@character_set_client */;
+--/*!40101 SET character_set_client = utf8 */;
+--CREATE TABLE `procedure` (
+--  `procedure_code` int(11) NOT NULL,
+--  `name` varchar(200) NOT NULL,
+--  `type` varchar(200) NOT NULL,
+--  `description` longtext NOT NULL
+--);
+--/*!40101 SET character_set_client = @saved_cs_client */;
+--
+--ALTER TABLE `procedure` ADD CONSTRAINT procedure_unique_cols UNIQUE ( procedure_code, name );
 
 --
 -- Table structure for table `treatment_plan`

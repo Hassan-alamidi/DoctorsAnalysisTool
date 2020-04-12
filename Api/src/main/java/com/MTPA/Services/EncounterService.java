@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,11 +40,8 @@ public class EncounterService {
     }
 
     public ResponseEntity<List<Encounter>> getAllEncounters(final String ppsn){
-        if(patientDAO.exists(ppsn)){
-            List<Encounter> encounters = encounterDAO.findAllEncountersOrderedByDate(ppsn);
-            return new ResponseEntity<>(encounters, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Encounter> encounters = encounterDAO.findAllEncountersOrderedByDate(ppsn);
+        return new ResponseEntity<>(encounters, HttpStatus.OK);
     }
 
     public ResponseEntity<Encounter> getEncounterById(final String id){
@@ -53,43 +51,41 @@ public class EncounterService {
     }
 
     public ResponseEntity<List<Encounter>> getRecentEncounters(final String ppsn){
-        if(patientDAO.exists(ppsn)){
-            Pageable pageable = (Pageable) PageRequest.of(0, 10);
-            List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
-            return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Pageable pageable = (Pageable) PageRequest.of(0, 10);
+        List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
+        return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
     }
 
     public ResponseEntity<List<Encounter>> getRecentEncounters(final String ppsn, int count){
-        if(patientDAO.exists(ppsn)){
-            Pageable pageable = (Pageable) PageRequest.of(0, count);
-            List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
-            return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Pageable pageable = (Pageable) PageRequest.of(0, count);
+        List<Encounter> encounters = encounterDAO.findRecentEncountersOrderedByDate(ppsn, pageable);
+        return new ResponseEntity<List<Encounter>>(encounters, HttpStatus.OK);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity<?> createEncounter(final Encounter encounter){
         if(!patientDAO.exists(encounter.getPatient().getPpsn())){
             return new ResponseEntity<String>("Patient Not Found",HttpStatus.NOT_FOUND);
         }
 
-        //TODO before going forward with this database restructure needed, more thought needs to be put into the database
-        if(encounter.getId() == null && encounter.getObservations() != null && !encounter.getObservations().isEmpty()) {
-            Set<PatientObservation> observations = encounter.getObservations();
+        if(encounter.getId() == null) {
+            LocalDate creationDate = LocalDate.now();
+            encounter.setDateVisited(creationDate);
             Encounter savedEncounter = encounterDAO.save(encounter);
-            //observations is mandatory
-            observationService.saveAllObservations(observations, savedEncounter);
-            if(encounter.getCondition() != null){
-                PatientCondition condition = encounter.getCondition();
-                condition.setEncounter(savedEncounter);
-                condition.setPatient(encounter.getPatient());
-                conditionServices.addPatientCondition(condition).getBody();
-            }
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }
         return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    public ResponseEntity<?> updateEncounter(final Encounter encounter){
+        Optional<Encounter> currentStateOpt = encounterDAO.findById(encounter.getId());
+        if(currentStateOpt.isPresent()){
+            Encounter currentState = currentStateOpt.get();
+            //ensure values that should never be updated do not get updated
+            encounter.setDateVisited(currentState.getDateVisited());
+            encounter.setPatient(currentState.getPatient());
+            Encounter savedEncounter = encounterDAO.save(encounter);
+            return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

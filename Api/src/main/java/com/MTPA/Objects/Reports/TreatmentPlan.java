@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 //this class needs to be extended
@@ -22,11 +23,11 @@ public class TreatmentPlan {
 
     @Getter
     @Setter
-    private Date startDate;
+    private LocalDate startDate;
 
     @Getter
     @Setter
-    private Date endDate;
+    private LocalDate endDate;
 
     @Getter
     @Setter
@@ -39,7 +40,7 @@ public class TreatmentPlan {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations"}, allowSetters = true)
     private Encounter encounter;
 
     @Getter

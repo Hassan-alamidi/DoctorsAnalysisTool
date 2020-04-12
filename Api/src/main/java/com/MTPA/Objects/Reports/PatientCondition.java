@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 //patientConditions are medical patientConditions like allergies, illnesses
 @Entity
@@ -47,12 +48,12 @@ public class PatientCondition {
     @Getter
     @Setter
     @Column(name = "discovered")
-    private Date discovered;
+    private LocalDate discovered;
 
     @Getter
     @Setter
     @Column(name = "cured_on")
-    private Date curedOn;
+    private LocalDate curedOn;
 
     @Getter
     @Setter
@@ -65,6 +66,6 @@ public class PatientCondition {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedure"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures"}, allowSetters = true)
     private Encounter encounter;
 }

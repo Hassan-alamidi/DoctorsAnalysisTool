@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.fail;
@@ -47,7 +48,7 @@ public class EncounterServiceTest {
 
     Encounter encounter;
     List<Encounter> encounters;
-    Date date;
+    LocalDate date;
     Patient patient;
     PatientObservation observation;
     Set<PatientObservation> observations;
@@ -55,7 +56,7 @@ public class EncounterServiceTest {
     @Before
     @SneakyThrows
     public void setup(){
-        date = new SimpleDateFormat("yyyy-MM-dd").parse("2020-02-12");
+        date = LocalDate.parse("2020-02-12");
         patient = new Patient(1,"fistName","secondName","Male", date,null, "ppsn","address",
                  new HashSet<PatientCondition>(), new HashSet<>());
 
@@ -159,13 +160,12 @@ public class EncounterServiceTest {
     }
 
     @Test
-    public void createEncounterWithValidPatientAndWithNoObservations_thenFail(){
+    public void createEncounterWithValidPatientAndWithNoChildren_thenOK(){
         encounter.setObservations(null);
         when(patientDAO.exists(any(String.class))).thenReturn(true);
         when(encounterDAO.save(any())).thenReturn(encounter);
-        when(observationService.saveAllObservations(any(), any())).thenReturn(observations);
         ResponseEntity entity = encounterService.createEncounter(encounter);
-        Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 
     @Test

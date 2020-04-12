@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -30,13 +31,13 @@ public class PatientObservation {
 
     @Getter
     @Setter
-    private Date dateTaken;
+    private LocalDate dateTaken;
 
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedure", "observations"}, allowSetters = true)
+    @JoinColumn(name = "encounter_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations"}, allowSetters = true)
     private Encounter encounter;
 
     //value could be an amount, true or false and so on, so string is best for this

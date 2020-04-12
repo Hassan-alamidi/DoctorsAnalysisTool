@@ -33,7 +33,7 @@ public class TreatmentResource {
     }
 
     @PostMapping
-    public ResponseEntity<TreatmentPlan> createTreatmentPlan(@RequestBody final TreatmentPlan treatmentPlan){
+    public ResponseEntity<?> createTreatmentPlan(@RequestBody final TreatmentPlan treatmentPlan){
         return treatmentService.createTreatmentPlan(treatmentPlan);
     }
 

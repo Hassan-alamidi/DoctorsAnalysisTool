@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -35,12 +36,12 @@ public class Encounter {
     @Getter
     @Setter
     @Column(name = "date_visited")
-    private Date dateVisited;
+    private LocalDate dateVisited;
 
     @Getter
     @Setter
     @Column(name = "date_left")
-    private Date dateLeft;
+    private LocalDate dateLeft;
 
     @Getter
     @Setter
@@ -61,7 +62,7 @@ public class Encounter {
 
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = "encounter", allowSetters = true)
     private Set<PatientObservation> observations;
 
@@ -73,20 +74,14 @@ public class Encounter {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
     private PatientMedication medication;
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private PatientProcedure procedure;
-// TODO remove
-    @Getter
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
-    @JsonIgnoreProperties(value = "hiredDoctors", allowSetters = true)
-    private Organization organization;
+    private Set<PatientProcedure> procedures;
+
 }

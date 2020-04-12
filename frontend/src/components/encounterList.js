@@ -11,15 +11,16 @@ export const EncounterList = ({encounters}) => {
                     encounter.dateVisited = encounter.dateVisited.split('T')[0]
                     return(
                     <div className="panel" key={"encounteritem" + i} >
-                        <a data-toggle="collapse" data-parent="#encounter" href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{encounter.type}</p> <p>Visited On: {encounter.dateVisited}</p></a>
+                        <a data-toggle="collapse" data-parent="#encounter" href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>Description: {encounter.description}</p> <p>Visited On: {encounter.dateVisited}</p></a>
                         <div id={"encounterId" + i} className="panel-collapse collapse">
                             <div className="panel-body">
-                                {(encounter.observations) && <p>Observations Taken</p>}
+                                <p>Type of encounter: {encounter.type}</p>
+                                {(encounter.observations.length > 0) && <p>Observations Taken</p>}
                                 {encounter.observations.map((observation, i) => {
                                         return(
                                             <div className="panel observations" key={"observation"+i}>
                                                 <p>Type: {observation.type}</p>  
-                                                <p>Result:{observation.resultValue} {observation.unit}</p>
+                                                <p>Result: {observation.resultValue} {observation.unit}</p>
                                             </div>)
                                     })}
                                 {(encounter.condition) && 
@@ -34,9 +35,9 @@ export const EncounterList = ({encounters}) => {
                                 <div>
                                     <p>Perscribed Medication</p>
                                     <div className="panel observations">
-                                        <p>Name: {encounter.medication.name}</p>  
-                                        <p>Start:{encounter.medication.treatmentStart}</p>
-                                        {(encounter.medication.treatmentEnd) && <p>End:{encounter.medication.treatmentEnd}</p>}
+                                        <p>Name: {encounter.medication.description}</p>  
+                                        <p>Start: {encounter.medication.treatmentStart}</p>
+                                        {(encounter.medication.treatmentEnd) && <p>End: {encounter.medication.treatmentEnd}</p>}
                                     </div>
                                 </div>}
                                 {(encounter.procedure) && 

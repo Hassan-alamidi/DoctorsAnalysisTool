@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: Integration.PatientIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 16.777 s <<< FAILURE! - in Integration.PatientIntegrationTest
+updatePatientDetailsExceptDOBAndPPSN  Time elapsed: 1.348 s  <<< FAILURE!
+java.lang.AssertionError: expected:<200 OK> but was:<500 INTERNAL_SERVER_ERROR>
+	at Integration.PatientIntegrationTest.updatePatientDetailsExceptDOBAndPPSN(PatientIntegrationTest.java:175)
+

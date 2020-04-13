@@ -63,7 +63,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
+                    <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <forkCount>3</forkCount>
                     <reuseForks>true</reuseForks>
                     <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>

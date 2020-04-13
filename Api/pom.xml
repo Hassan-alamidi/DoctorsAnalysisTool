@@ -78,7 +78,6 @@
                 <configuration>
                     <forkCount>0</forkCount>
                     <reuseForks>false</reuseForks>
-                    <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                     <skipTests>${skipUTs}</skipTests>
                     <skipTests>${skipTests}</skipTests>
                 </configuration>

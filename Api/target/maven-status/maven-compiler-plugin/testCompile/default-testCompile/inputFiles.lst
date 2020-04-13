@@ -1,7 +1,7 @@
 /home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Unit/Services/PatientServiceTest.java
-/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/BaseIntegrationTest.java
+/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/PatientIT.java
 /home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Unit/Services/DoctorServiceTest.java
 /home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Unit/Services/EncounterServiceTest.java
-/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/EncounterIntegrationTest.java
-/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/PatientIntegrationTest.java
-/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/DoctorIntegrationTest.java
+/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/DoctorIT.java
+/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/BaseIT.java
+/home/hassan/Documents/CollegeProjects/DoctorsAnalysisTool/Api/src/test/java/Integration/EncounterIT.java

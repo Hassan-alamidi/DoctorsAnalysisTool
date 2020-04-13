@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: Unit.Services.PatientServiceTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.169 s - in Unit.Services.PatientServiceTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.547 s - in Unit.Services.PatientServiceTest

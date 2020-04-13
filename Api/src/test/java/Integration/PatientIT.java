@@ -15,15 +15,9 @@ public class PatientIT extends BaseIT {
 
     @Test
     public void createNonExistingPatient(){
-        ResponseEntity<Patient> createdPatient =
-                restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(NEW_PATIENT, doctorHeader), Patient.class);
-        Assert.assertEquals(HttpStatus.CREATED, createdPatient.getStatusCode());
-
-        doctorHeader.add("ppsn", NEW_PATIENT.getPpsn());
         ResponseEntity<Patient> responseEntity =
-                restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), Patient.class);
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Patient>(NEW_PATIENT, doctorHeader), Patient.class);
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(responseEntity.getBody().getAddress(),NEW_PATIENT.getAddress());
     }
 

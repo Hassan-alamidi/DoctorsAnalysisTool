@@ -20,5 +20,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Running Unit and Integration tests
-      run: mvn clean test --file Api/pom.xml
+    - name: Running Unit Tests
+      run: mvn clean verify -DskipITs=true --file Api/pom.xml
+    - name: Running Integration Tests
+      run: mvn clean verify -DskipUTs=true --file Api/pom.xml

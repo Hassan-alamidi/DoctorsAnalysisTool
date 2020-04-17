@@ -2,10 +2,10 @@ import React from 'react';
 import "../resources/css/shared.scss"
 import "bootstrap";
 
-export const EncounterList = ({encounters}) => {
+export const EncounterList = ({encounters, header}) => {
     return(
         <div className="card-body" id="transparentList">
-            <h5 className="card-title">Patient Current Conditions</h5>
+            <h5 className="card-title">{header}</h5>
             <div className="panel-group accordion" id="encounter">
                 {encounters.map((encounter, i) => {
                     encounter.dateVisited = encounter.dateVisited.split('T')[0]
@@ -23,30 +23,31 @@ export const EncounterList = ({encounters}) => {
                                                 <p>Result: {observation.resultValue} {observation.unit}</p>
                                             </div>)
                                     })}
-                                {(encounter.condition) && 
-                                <div>
-                                    <p>condition</p>
-                                    <div className="panel observations">
-                                        <p>Name: {encounter.condition.name}</p>  
-                                        <p>Start:{encounter.condition.discovered}</p>
-                                    </div>
-                                </div>}
-                                {(encounter.medication) && 
-                                <div>
-                                    <p>Perscribed Medication</p>
-                                    <div className="panel observations">
-                                        <p>Name: {encounter.medication.description}</p>  
-                                        <p>Start: {encounter.medication.treatmentStart}</p>
-                                        {(encounter.medication.treatmentEnd) && <p>End: {encounter.medication.treatmentEnd}</p>}
-                                    </div>
-                                </div>}
-                                {(encounter.procedure) && 
-                                <div>
-                                    <p>Procedure Undergone</p>
-                                    <div className="panel observations">
-                                        <p>Name: {encounter.procedure.name}</p>  
-                                    </div>
-                                </div>}
+                                {(encounter.conditions.length > 0) && <p>condition</p>}
+                                    {encounter.conditions.map((condition, i) => {
+                                    return(
+                                        <div className="panel observations"  key={"condition"+i}>
+                                            <p>Name: {condition.name}</p>  
+                                            <p>Start:{condition.discovered}</p>
+                                        </div>)
+                                })}
+                
+                                {(encounter.medications.length > 0) && <p>Perscribed Medication</p>}
+                                    {encounter.medications.map((medication, i) => {
+                                    return(
+                                        <div className="panel observations"  key={"medication"+i}>
+                                            <p>Name: {medication.description}</p>  
+                                            <p>Start: {medication.treatmentStart}</p>
+                                            {(medication.treatmentEnd) && <p>End: {medication.treatmentEnd}</p>}
+                                        </div>)
+                                    })}
+                                {(encounter.procedures.length > 0) && <p>Procedure Undergone</p>}
+                                    {encounter.procedures.map((procedure, i) => {
+                                    return(
+                                        <div className="panel observations"  key={"procedure"+i}>
+                                            <p>Name: {procedure.description}</p> {(procedure.reasonDescription) &&<p>Reason for: {procedure.reasonDescription}</p>}
+                                        </div>)
+                                    })}
                             </div>
                         </div>
                     </div>)

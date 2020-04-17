@@ -68,15 +68,15 @@ public class Encounter {
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private PatientCondition condition;
+    private Set<PatientCondition> conditions;
 
     @Getter
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private PatientMedication medication;
+    private Set<PatientMedication> medications;
 
     @Getter
     @Setter

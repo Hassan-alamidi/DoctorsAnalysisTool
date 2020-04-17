@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./components/protectedRoute"
 import LoginPage from './pages/login'
 import HomePage from './pages/home'
 import PatientControlPanel from './pages/patientControlPanel'
+import EncounterPage from './pages/encounter'
 import HistoryPage from './pages/history'
 import NavBar from './components/navBar'
 
@@ -19,6 +20,7 @@ function App() {
         <Switch>
             <ProtectedRoute component={HomePage} exact path="/hub/home" />
             <ProtectedRoute component={PatientControlPanel} exact path="/hub/patient" />
+            <ProtectedRoute component={EncounterPage} exact path="/hub/patient/encounter" />
             <ProtectedRoute path="*" component={() => "404 Page Not Found"} />
         </Switch></div>
     );

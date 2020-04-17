@@ -1,6 +1,6 @@
 import React from 'react';
 import "../resources/css/shared.scss"
-import bootstrap from "bootstrap";
+import "bootstrap";
 
 class NavigationBar extends React.Component {
 

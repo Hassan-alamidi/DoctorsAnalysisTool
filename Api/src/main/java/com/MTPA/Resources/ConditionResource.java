@@ -26,7 +26,7 @@ public class ConditionResource {
         return conditionServices.getAllPatientConditions(ppsn);
     }
 
-    @GetMapping("/on-going")
+    @GetMapping("/current")
     public ResponseEntity<List<PatientCondition>> getOnGoingConditions(@RequestHeader("ppsn") String ppsn){
         return conditionServices.getOnGoingPatientConditions(ppsn);
     }

@@ -1,11 +1,13 @@
 import React from 'react';
 import "../resources/css/shared.scss"
 import auth from "../components/auth"
-import { Redirect } from "react-router-dom"
+import { Redirect, withRouter } from "react-router-dom"
 import NavBar from '../components/navBar'
 import Sidebar from '../components/sidebar'
 import {ConditionsListTransparent} from "../components/conditionsList"
 import {MedicationListTransparent} from "../components/medicationList"
+import {ObservationListTransparent} from "../components/observationList"
+import ProcedureListTransparent from "../components/procedureList"
 import EncounterList from "../components/encounterList"
 
 const axios = require('axios').default;
@@ -17,7 +19,7 @@ class HistoryPage extends React.Component {
             patientPPSN: "",
             tokenExpired: false,
             hisoricalData:"",
-            historicalDataType:"condition",
+            historicalDataType:"Full Condition History",
             patientNotFound:false,
             loading: true
         }
@@ -28,17 +30,18 @@ class HistoryPage extends React.Component {
     componentDidMount() {
         document.getElementById("background").src = require("../resources/images/DNA.jpg");
         document.getElementById("topNav").classList.add("fixed");
+        //set state not used as it triggers page reload and redirects back to home
         this.state.patientPPSN = sessionStorage.getItem("patient");
         if (this.state.patientPPSN === undefined || this.state.patientPPSN === "") {
             this.setState({ patientNotFound: true, loading: false });
             return;
         }
        
-        this.apiRequest("/conditions/on-going");
+        this.apiRequest("/conditions");
     }
 
     apiRequest(endpoint){
-        axios('http://localhost:8080' + endpoint, { method: "get", withCredentials: true, headers: { "PPSN": this.state.patientPPSN } })
+        axios('http://localhost:8080' + endpoint, { method: "get", withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 this.setState({ loading: false, hisoricalData:response.data })
@@ -55,30 +58,8 @@ class HistoryPage extends React.Component {
             }.bind(this));
     }
 
-    requestHistory(history){
-        let endpoint = ""
-        const bkUp = this.state.historicalDataType;
+    requestHistory(endpoint, history){
         this.setState({ loading: true, historicalDataType:history });
-        switch(history){
-            case 'condition':
-                endpoint = "/conditions/on-going"
-                break;
-            case 'observation':
-                endpoint = "/observations/recent"
-                break;
-            case 'medication':
-                endpoint = "/medication/current"
-                break;
-            case 'procedure':
-                endpoint = "/procedure/recent"
-                break;
-            case 'encounter':
-                endpoint = "/encounter/recent"
-                break;
-            default:
-                this.setState({ loading: false, historicalDataType:bkUp });
-                return;
-        }
         this.apiRequest(endpoint)
     }
 
@@ -106,37 +87,57 @@ class HistoryPage extends React.Component {
                         }
                     } />
                 )
-            } else if(this.state.historicalDataType === "medication") {
+            } else if(this.state.historicalDataType.includes("Procedure")) {
                 return (
                     <div>
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <MedicationListTransparent medications={this.state.hisoricalData} />
+                            <ProcedureListTransparent procedures={this.state.hisoricalData} header={this.state.historicalDataType} />
                         </div>
                     </div>
                 );
-            }else if(this.state.historicalDataType === "condition"){
+            }else if(this.state.historicalDataType.includes("Medication")) {
                 return (
                     <div>
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <ConditionsListTransparent conditions={this.state.hisoricalData} />
+                            <MedicationListTransparent medications={this.state.hisoricalData} header={this.state.historicalDataType} />
                         </div>
                     </div>
                 );
-            }else if(this.state.historicalDataType === "encounter"){
+            } else if(this.state.historicalDataType.includes("Observation")){
                 return (
                     <div>
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <EncounterList encounters={this.state.hisoricalData} />
+                            <ObservationListTransparent observations={this.state.hisoricalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );
-            }else{
+            } else if(this.state.historicalDataType.includes("Condition")){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <ConditionsListTransparent conditions={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                        </div>
+                    </div>
+                );
+            } else if(this.state.historicalDataType.includes("Encounter")){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <EncounterList encounters={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                        </div>
+                    </div>
+                );
+            } else{
                 return (
                     <div>
                         <NavBar />
@@ -161,4 +162,4 @@ class HistoryPage extends React.Component {
     }
 }
 
-export default HistoryPage;
+export default withRouter(HistoryPage);

@@ -7,7 +7,7 @@ class Auth {
             this.authenticated = false;
         }else{
             //convert the string to boolean and store the boolean in authenticated
-            this.authenticated = (this.stored == 'true');
+            this.authenticated = (Boolean(this.stored) === true);
         }
     }
 

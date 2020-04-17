@@ -159,7 +159,11 @@ html{
         text-align: center;
     }
 
-    li{
+    .panel-body{
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    .li-button{
         border-top-style: solid;
         border-width: 1px;
         border-color: #9f9f9f;

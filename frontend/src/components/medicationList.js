@@ -9,7 +9,7 @@ export const MedicationList = ({medications}) => {
             <ul className="panel-group accordion" id="medication">
                 {medications.map((medication, i) => {
                     medication.treatmentStart = medication.treatmentStart.split('T')[0];
-                    medication.treatmentEnd = medication.treatmentEnd.split('T')[0];
+                    medication.treatmentEnd = medication.treatmentEnd ? medication.treatmentEnd.split('T')[0] : "Not Specified";
                     return(
                         <div className="panel" key={"medicationitem" + i} >
                             <a data-toggle="collapse" data-parent="#medication" href={"#medicationId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>{medication.description}</p></a>
@@ -20,17 +20,18 @@ export const MedicationList = ({medications}) => {
                                     <p>Reason: {medication.reasonDescription}</p>
                                 </div>
                             </div>
-                        </div>)
+                        </div>
+                    )
                 })}
             </ul>
         </div>
     )
 }
 
-export const MedicationListTransparent = ({medications}) => {
+export const MedicationListTransparent = ({medications, header}) => {
     return(
         <div className="card-body" id="transparentList">
-            <h5 className="card-title">Patient Current Medications</h5>
+            <h5 className="card-title">{header}</h5>
             <ul className="panel-group accordion" id="medication">
                 {medications.map((medication, i) => {
                     medication.treatmentStart = medication.treatmentStart.split('T')[0];

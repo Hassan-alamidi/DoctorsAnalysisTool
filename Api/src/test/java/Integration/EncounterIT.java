@@ -2,6 +2,7 @@ package Integration;
 
 import com.MTPA.Objects.Reports.Encounter;
 import com.MTPA.Objects.Reports.PatientCondition;
+import com.MTPA.Objects.Reports.PatientMedication;
 import com.MTPA.Objects.Reports.PatientObservation;
 import lombok.SneakyThrows;
 import org.junit.Assert;
@@ -20,11 +21,15 @@ public class EncounterIT extends BaseIT {
     private final String ENCOUNTER_ENDPOINT = "/encounter";
     private Encounter encounter;
     private Set<PatientObservation> observations;
+    private Set<PatientCondition> conditions;
+    private Set<PatientMedication> medication;
 
     @SneakyThrows
     public void setupTest(){
         LocalDate date = LocalDate.parse("2020-05-12");
         observations = new HashSet<>();
+        conditions = new HashSet<>();
+        medication = new HashSet<>();
         PatientObservation observation = new PatientObservation();
         observation.setDateTaken(date);
         observation.setType("blood test");
@@ -39,6 +44,7 @@ public class EncounterIT extends BaseIT {
         condition.setDiscovered(date);
         condition.setName("cold");
         condition.setSymptoms("runny nose");
+        conditions.add(condition);
         //condition.setPatient(E);
 
         encounter = new Encounter();
@@ -48,13 +54,13 @@ public class EncounterIT extends BaseIT {
         encounter.setDateLeft(date);
         encounter.setPatient(EXISTING_PATIENT);
         encounter.setObservations(observations);
-        encounter.setCondition(condition);
+        encounter.setConditions(conditions);
     }
 
     //get all patient encounters
     @Test
     public void getAllPatientEncountersWithFakePPSN_thenEmptyListReturned(){
-        doctorHeader.add("PPSN", "FAKEPPSN");
+        doctorHeader.add("ppsn", "FAKEPPSN");
         ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         List<Encounter> encounters = responseEntity.getBody();
@@ -63,7 +69,7 @@ public class EncounterIT extends BaseIT {
 
     @Test
     public void getAllPatientEncounters_thenAllEncountersReturned(){
-        doctorHeader.add("PPSN", REAL_PATIENT_PPSN);
+        doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -83,36 +89,36 @@ public class EncounterIT extends BaseIT {
     @Test
     public void getRecentEncountersWithFakePPSN_thenNotFound(){
         doctorHeader.add("ppsn", "fakePPSN");
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
         Assert.assertTrue(encounters.isEmpty());
     }
 
     @Test
     public void getRecentEncountersWithPPSN_thenListOfTenEncountersReturned(){
         doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
-        Assert.assertTrue(encounters.size() == 10);
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
+        Assert.assertEquals(10, encounters.size());
     }
 
     @Test
     public void getRecentEncountersWithPatientThatHasNoEncounters_thenEmptyArrayReturned(){
         doctorHeader.add("ppsn", REAL_PATIENT_WITH_NOTHING_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
         Assert.assertTrue(encounters.isEmpty());
     }
 
     @Test
     public void getRecentEncountersWithFakePatient_thenEmptyListReturned(){
         doctorHeader.add("ppsn", FAKE_PATIENT_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
         Assert.assertTrue(encounters.isEmpty());
     }
 
@@ -120,37 +126,37 @@ public class EncounterIT extends BaseIT {
     @Test
     public void getSpecifiedNumberRecentEncountersWithFakePPSN_thenEmptyListReturned(){
         doctorHeader.add("ppsn", "FAKEPPSN");
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/10", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/10", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
         Assert.assertTrue(encounters.isEmpty());
     }
 
     @Test
     public void getSpecifiedNumberRecentEncountersWithPPSN_thenListOfEncountersReturned(){
         doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/11", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/11", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
-        Assert.assertTrue(encounters.size() == 11);
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
+        Assert.assertEquals(11, encounters.size());
     }
 
     @Test
     public void getSpecifiedNumberRecentEncountersWithPatientThatHasMostOfTheEncounters_thenReturnAllExisting(){
         //this patient has only got 11 encounters so looking for 15 should still only return 11
         doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
-        Assert.assertTrue(encounters.size() == 11);
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
+        Assert.assertEquals(11, encounters.size());
     }
 
     @Test
     public void getSpecifiedNumberRecentEncountersWithPatientThatHasNoEncounters_thenEmptyListReturned(){
         doctorHeader.add("ppsn", REAL_PATIENT_WITH_NOTHING_PPSN);
-        ResponseEntity<List<Encounter>> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Encounter>>() {});
+        ResponseEntity<?> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT + "/recent/15", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<Encounter> encounters = responseEntity.getBody();
+        List<Encounter> encounters = (List<Encounter>) responseEntity.getBody();
         Assert.assertTrue(encounters.isEmpty());
     }
 
@@ -204,7 +210,6 @@ public class EncounterIT extends BaseIT {
         observation.setDateTaken(encounter.getDateVisited());
         observations.add(observation);
         encounter.setObservations(observations);
-
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
@@ -215,11 +220,11 @@ public class EncounterIT extends BaseIT {
         ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
     }
-
-    @Test
-    public void createEncounterWithConditionWithoutMandatoryFields_thenEncounterIsNotSaved(){
-        encounter.getCondition().setSymptoms(null);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-    }
+//not valid anymore
+//    @Test
+//    public void createEncounterWithConditionWithoutMandatoryFields_thenEncounterIsNotSaved(){
+//        encounter.getCondition();
+//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
+//        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+//    }
 }

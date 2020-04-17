@@ -1,10 +1,10 @@
 import React from 'react';
 import "../resources/css/shared.scss"
 import PatientInfoCard from "../components/PatientInfoCard"
+import CardButton from "../components/cardButton"
 import CardAlt from "../components/card-alt"
 import auth from "../components/auth"
 import { Redirect, withRouter } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const axios = require('axios').default;
 
@@ -12,9 +12,8 @@ class PatientControlPanelPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            patientPPSN: "",
             patient: "",
-            nextPage:"",
+            nextPage:"current",
             tokenExpired: false,
             patientNotFound: false,
             loading: true
@@ -26,13 +25,13 @@ class PatientControlPanelPage extends React.Component {
 
     componentDidMount() {
         document.getElementById("background").src = require("../resources/images/woman-girl-silhouette-jogger-40751.jpg");
-        this.state.patientPPSN = sessionStorage.getItem("patient");
-        if (this.state.patientPPSN === undefined || this.state.patientPPSN === "") {
+        const patientPPSN = sessionStorage.getItem("patient");
+        if (patientPPSN === undefined || patientPPSN === "") {
             this.setState({ patientNotFound: true, loading: false });
             return;
         }
 
-        axios('http://localhost:8080/patient', { method: "get", withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
+        axios('http://localhost:8080/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 response.data.detailed = false;
@@ -82,11 +81,11 @@ class PatientControlPanelPage extends React.Component {
                         }
                     } />
                 )
-            } else if (this.state.nextPage === "history") {
+            } else if (this.state.nextPage !== "current") {
                 return(
                 <Redirect to={
                     {
-                        pathname: "/dashboard/history",
+                        pathname: this.state.nextPage,
                         state: {
                             from: "/hub/patient"
                         }
@@ -101,42 +100,18 @@ class PatientControlPanelPage extends React.Component {
                             <div className="row">
                                 <div className="col-xl-6">
                                     <div className="row" style={{height:"100%"}}>
-                                        <div className="cardButton col">
-                                            <h5>Personal Information</h5>
-                                            <hr />
-                                            <div>
-                                                <p>Update patients personal information</p>
-                                                <FontAwesomeIcon icon="address-card" />
-                                            </div>
-                                        </div>
-                                        <div className="cardButton col">
-                                            <h5>Document Encounter</h5>
-                                            <hr />
-                                            <div>
-                                                <p>Document recent encounter with patient</p>
-                                                <FontAwesomeIcon icon="notes-medical" />
-                                            </div>
-                                        </div>
+                                        <CardButton header="Personal Information" details="Update patients personal information"
+                                                    icon="address-card" callback={() => {this.pageChange("")}} />
+                                        <CardButton header="Document Encounter" details="Document encounter with patient"
+                                                    icon="notes-medical" callback={() => {this.pageChange("/hub/patient/encounter")}} />
                                     </div>
                                 </div>
                                 <div className="col-xl-6">
                                     <div className="row" style={{height:"100%"}}>
-                                        <div className="cardButton col" onClick={() => {this.pageChange("history")}}>
-                                            <h5>Patient Medical History</h5>
-                                            <hr />
-                                            <div>
-                                                <p>View patients medical history</p>
-                                                <FontAwesomeIcon icon="archive" />
-                                            </div>
-                                        </div>
-                                        <div className="cardButton col">
-                                            <h5>Build Prediction Report</h5>
-                                            <hr />
-                                            <div>
-                                                <p>Generated report with predictions on patients health based on most recent encounters</p>
-                                                <FontAwesomeIcon icon="file-medical-alt" />
-                                            </div>
-                                        </div>
+                                        <CardButton header="Patient Medical History" details="View patients medical history"
+                                                    icon="archive" callback={() => {this.pageChange("/dashboard/history")}} />
+                                        <CardButton header="Build Prediction Report" details="Generated report with predictions on patients health based on most recent encounters"
+                                                    icon="file-medical-alt" callback={() => {this.pageChange("")}} />
                                     </div>
                                 </div>
                             </div>

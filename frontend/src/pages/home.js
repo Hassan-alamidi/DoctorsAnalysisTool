@@ -2,7 +2,7 @@ import React from 'react';
 import "../resources/css/shared.scss"
 import PatientInfoCard from "../components/PatientInfoCard"
 import auth from "../components/auth"
-import {Redirect} from "react-router-dom"
+import {Redirect, withRouter} from "react-router-dom"
 const axios = require('axios').default;
 
 class HomePage extends React.Component {
@@ -98,4 +98,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+export default withRouter(HomePage);

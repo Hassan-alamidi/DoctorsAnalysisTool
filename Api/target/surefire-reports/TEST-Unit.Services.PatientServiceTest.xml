@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.PatientServiceTest" time="3.737" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.PatientServiceTest" time="15.24" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -63,12 +63,12 @@
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="createPatientWithUniquePPSN_thenPatientIsCreatedAnd201" classname="Unit.Services.PatientServiceTest" time="0.123"/>
-  <testcase name="patientInDatabaseGetsUpdated_thenResponseUpdatedPatientAnd200" classname="Unit.Services.PatientServiceTest" time="2.004"/>
-  <testcase name="getExistingPatient" classname="Unit.Services.PatientServiceTest" time="0.553"/>
-  <testcase name="patientNotInDatabaseGetsUpdated_thenResponse404" classname="Unit.Services.PatientServiceTest" time="0.12"/>
-  <testcase name="getNonExistingPatient" classname="Unit.Services.PatientServiceTest" time="0.076"/>
-  <testcase name="patientGetsDOBUpdated_thenUnprocessableEntity" classname="Unit.Services.PatientServiceTest" time="0.118"/>
-  <testcase name="patientGetsPPSNUpdated_thenNotFound" classname="Unit.Services.PatientServiceTest" time="0.082"/>
-  <testcase name="createPatientWithNonUniquePPSN_thenPatientIsNotCreatedAnd422" classname="Unit.Services.PatientServiceTest" time="0.06"/>
+  <testcase name="createPatientWithUniquePPSN_thenPatientIsCreatedAnd201" classname="Unit.Services.PatientServiceTest" time="0.009"/>
+  <testcase name="patientInDatabaseGetsUpdated_thenResponseUpdatedPatientAnd200" classname="Unit.Services.PatientServiceTest" time="0.035"/>
+  <testcase name="getExistingPatient" classname="Unit.Services.PatientServiceTest" time="0.17"/>
+  <testcase name="patientNotInDatabaseGetsUpdated_thenResponse404" classname="Unit.Services.PatientServiceTest" time="1.35"/>
+  <testcase name="getNonExistingPatient" classname="Unit.Services.PatientServiceTest" time="4.573"/>
+  <testcase name="patientGetsDOBUpdated_thenUnprocessableEntity" classname="Unit.Services.PatientServiceTest" time="0.009"/>
+  <testcase name="patientGetsPPSNUpdated_thenNotFound" classname="Unit.Services.PatientServiceTest" time="5.509"/>
+  <testcase name="createPatientWithNonUniquePPSN_thenPatientIsNotCreatedAnd422" classname="Unit.Services.PatientServiceTest" time="0.008"/>
 </testsuite>

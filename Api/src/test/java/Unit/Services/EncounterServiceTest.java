@@ -145,7 +145,7 @@ public class EncounterServiceTest {
 
     @Test
     public void createEncounterWithValidPatient_thenOk(){
-        when(patientDAO.exists(any(String.class))).thenReturn(true);
+        when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
         when(encounterDAO.save(any())).thenReturn(encounter);
         when(observationService.saveAllObservations(any(), any())).thenReturn(observations);
         ResponseEntity entity = encounterService.createEncounter(encounter);
@@ -162,7 +162,7 @@ public class EncounterServiceTest {
     @Test
     public void createEncounterWithValidPatientAndWithNoChildren_thenOK(){
         encounter.setObservations(null);
-        when(patientDAO.exists(any(String.class))).thenReturn(true);
+        when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
         when(encounterDAO.save(any())).thenReturn(encounter);
         ResponseEntity entity = encounterService.createEncounter(encounter);
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());

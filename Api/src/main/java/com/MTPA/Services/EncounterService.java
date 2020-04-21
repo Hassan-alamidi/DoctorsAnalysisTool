@@ -3,6 +3,7 @@ package com.MTPA.Services;
 import com.MTPA.DAO.EncounterDAO;
 import com.MTPA.DAO.ObservationDAO;
 import com.MTPA.DAO.PatientDAO;
+import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.Encounter;
 import com.MTPA.Objects.Reports.PatientCondition;
 import com.MTPA.Objects.Reports.PatientObservation;
@@ -44,6 +45,11 @@ public class EncounterService {
         return new ResponseEntity<>(encounters, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Encounter>> getOpenEncounters(final String ppsn){
+        List<Encounter> encounters = encounterDAO.findOpenEncounters(ppsn);
+        return new ResponseEntity<>(encounters, HttpStatus.OK);
+    }
+
     public ResponseEntity<Encounter> getEncounterById(final String id){
         Optional<Encounter> encounter = encounterDAO.findById(id);
         return encounter.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -63,7 +69,8 @@ public class EncounterService {
     }
 
     public ResponseEntity<?> createEncounter(final Encounter encounter){
-        if(!patientDAO.exists(encounter.getPatient().getPpsn())){
+        Patient patient = patientDAO.findByPPSN(encounter.getPatient().getPpsn());
+        if(patient == null){
             return new ResponseEntity<String>("Patient Not Found",HttpStatus.NOT_FOUND);
         }
 
@@ -86,6 +93,6 @@ public class EncounterService {
             Encounter savedEncounter = encounterDAO.save(encounter);
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("can not find encounter to update", HttpStatus.NOT_FOUND);
     }
 }

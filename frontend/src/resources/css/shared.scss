@@ -36,9 +36,7 @@ html{
     text-align: justify;
 }
 
-#left-panel-link {
-    position: relative;
-    left: 5%;
+%panel-link-base{
     background-color: #555;
     color: white;
     font-size: 16px;
@@ -47,16 +45,17 @@ html{
     cursor: pointer;
     border-radius: 5px;
 }
+
+#left-panel-link {
+    @extend %panel-link-base;
+    position: relative;
+    left: 5%;
+    
+}
 #right-panel-link {
+    @extend %panel-link-base;
     position: absolute;
     right: 10%;
-    background-color: #555;
-    color: white;
-    font-size: 16px;
-    padding: 12px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .errorMessage{
@@ -203,7 +202,7 @@ html{
     z-index: 99 !important;
 }
 
-#transparentList{
+%transparentListBase{
     opacity: 0.95;
     .panel{
         background-color: #4d4c4c;
@@ -214,6 +213,10 @@ html{
             text-decoration: none; 
         }
     }
+}
+
+#transparentList{
+    @extend %transparentListBase;
 
     .list-group-item-dark.list-group-item-action:focus{
         background-color: #1e1e1e;
@@ -222,4 +225,12 @@ html{
     .list-group-item-dark.list-group-item-action:hover{
         background-color: #1e1e1e;
     }
+}
+
+#transparentSmallList{
+    @extend %transparentListBase;
+}
+
+.space-please{
+    margin: 20px;
 }

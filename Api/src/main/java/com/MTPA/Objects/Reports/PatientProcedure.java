@@ -31,7 +31,7 @@ public class PatientProcedure {
     @Getter
     @Setter
     @Column(name = "code")
-    private int code;
+    private String code;
 
     @Getter
     @Setter

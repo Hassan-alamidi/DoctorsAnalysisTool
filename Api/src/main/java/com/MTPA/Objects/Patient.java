@@ -73,7 +73,7 @@ public class Patient implements Serializable {
     @Getter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @JsonIgnoreProperties(value = {"patient", "reasonForMedication"}, allowSetters = true)
-    @Where(clause = "treatment_end > CURRENT_DATE() OR treatment_end IS NULL")
+    @Where(clause = "(treatment_end > CURRENT_DATE() OR treatment_end IS NULL) AND type NOT LIKE 'immunization'")
     private Set<PatientMedication> currentMedication;
 
     public Patient(final String ppsn){

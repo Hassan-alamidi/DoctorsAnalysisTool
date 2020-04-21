@@ -72,6 +72,6 @@ public class PatientMedication {
     @Getter
     @Setter
     @Column(name = "prescribed_amount")
-    private int prescribedAmount;
+    private Integer prescribedAmount;
 
 }

@@ -16,7 +16,7 @@ const PatientInfoCard = ({header, patient, detailed, callback}) => {
                 <ul className="list-group">
                     <li className="list-group-item list-group-item-success">Patient PPSN: {patient.ppsn}</li>
                     <li className="list-group-item list-group-item-success">Patient Date of birth: {patient.dob}</li>
-                    <li className="list-group-item list-group-item-success">Patient Gender: {patient.gender === "M" ? <p>Male</p> : <p>Femail</p>}</li>
+                    <li className="list-group-item list-group-item-success">Patient Gender: {patient.gender === "M" ? "Male" : "Femail"}</li>
                     <li className="list-group-item list-group-item-success">Patient Address: {patient.address}</li>
                     {(detailed) && 
                         <div className="row">

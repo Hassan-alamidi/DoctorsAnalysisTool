@@ -2,6 +2,26 @@ import React from 'react';
 import "../resources/css/shared.scss"
 import "bootstrap";
 
+export const SimpleEncounterList = ({encounters, callback}) => {
+    return(
+        <div className="card-body" id="transparentSmallList">
+            <div className="panel-group accordion" id="encounter">
+                {encounters.map((encounter, i) => {
+                    encounter.dateVisited = encounter.dateVisited.split('T')[0]
+                    return(
+                    <div className="panel" key={"encounteritem" + i} >
+                        <div href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark">
+                            <p>Description: {encounter.description}</p> 
+                            <p>Visited On: {encounter.dateVisited}</p>
+                            <button type="button" className="btn btn-secondary" onClick={() => {callback(encounter)}}>Update</button>
+                        </div>
+                    </div>)
+                })}
+            </div>
+        </div>
+    )
+}
+
 export const EncounterList = ({encounters, header}) => {
     return(
         <div className="card-body" id="transparentList">
@@ -11,7 +31,10 @@ export const EncounterList = ({encounters, header}) => {
                     encounter.dateVisited = encounter.dateVisited.split('T')[0]
                     return(
                     <div className="panel" key={"encounteritem" + i} >
-                        <a data-toggle="collapse" data-parent="#encounter" href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark"><p>Description: {encounter.description}</p> <p>Visited On: {encounter.dateVisited}</p></a>
+                        <a data-toggle="collapse" data-parent="#encounter" href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark">
+                            <p>Description: {encounter.description}</p> 
+                            <p>Visited On: {encounter.dateVisited}</p>
+                        </a>
                         <div id={"encounterId" + i} className="panel-collapse collapse">
                             <div className="panel-body">
                                 <p>Type of encounter: {encounter.type}</p>

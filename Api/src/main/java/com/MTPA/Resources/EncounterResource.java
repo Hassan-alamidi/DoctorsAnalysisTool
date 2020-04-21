@@ -37,6 +37,11 @@ public class EncounterResource {
         return encounterService.getRecentEncounters(ppsn);
     }
 
+    @GetMapping("/open")
+    public ResponseEntity<List<Encounter>> getOpenEncounters(@RequestHeader("ppsn") final String ppsn){
+        return encounterService.getOpenEncounters(ppsn);
+    }
+
     @GetMapping("/recent/{count}")
     public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("PPSN") final String ppsn, @PathVariable("count") int count){
         return encounterService.getRecentEncounters(ppsn, count);
@@ -45,5 +50,10 @@ public class EncounterResource {
     @PostMapping
     public ResponseEntity<?> createEncounter(@RequestBody final Encounter encounter){
         return encounterService.createEncounter(encounter);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateEncounter(@RequestBody final Encounter encounter){
+        return encounterService.updateEncounter(encounter);
     }
 }

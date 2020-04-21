@@ -40,7 +40,7 @@ public class Encounter {
 
     @Getter
     @Setter
-    @Column(name = "date_left")
+    @Column(name = "date_left", columnDefinition = "DATE")
     private LocalDate dateLeft;
 
     @Getter

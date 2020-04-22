@@ -1,7 +1,7 @@
 import React from 'react';
-import "../resources/css/shared.scss"
+import "../../resources/css/shared.scss"
 import "bootstrap";
-import { Redirect, withRouter } from "react-router-dom"
+import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
 const axios = require('axios').default;
@@ -11,11 +11,10 @@ class EncounterConfirmModal extends React.Component {
         super(props);
         this.state = {
             error:"",
-            encounter:props.currentEncounter !== undefined ? props.currentEncounter : {
+            encounter: {
                 description:"",
                 type:"",
-                reasonDescription:"",
-                patient:props.patient
+                reasonDescription:""
             },
             close:false
         }
@@ -26,14 +25,18 @@ class EncounterConfirmModal extends React.Component {
         this.reasonChangeHandler = this.reasonChangeHandler.bind(this);
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
+        this.createRequestData = this.createRequestData.bind(this);
     }
 
     componentDidMount() {
         if(this.props.currentEncounter !== undefined){
-            document.getElementById("typeInput").value=this.state.encounter.type;
-            document.getElementById("descriptionInput").value=this.state.encounter.description;
-            if(this.state.encounter.reasonDescription !== undefined && this.state.encounter.reasonDescription.trim() !== ""){
-                document.getElementById("reasonInput").value=this.state.encounter.reasonDescription;
+            //if(this.state.encounter === undefined){
+                this.setState({encounter:this.props.currentEncounter});
+            //}
+            document.getElementById("typeInput").value=this.props.currentEncounter.type;
+            document.getElementById("descriptionInput").value=this.props.currentEncounter.description;
+            if(this.props.currentEncounter.reasonDescription !== undefined && this.props.currentEncounter.reasonDescription.trim() !== ""){
+                document.getElementById("reasonInput").value=this.props.currentEncounter.reasonDescription;
             }
         }else if(this.props.requestType === "post"){
             $('#createEncounterModal').modal('show');
@@ -43,8 +46,9 @@ class EncounterConfirmModal extends React.Component {
     submitEncounter(){
         if(this.state.encounter !== undefined && this.state.encounter.description !== undefined && this.state.encounter.type !== undefined 
             && this.state.encounter.description.trim() !== "" && this.state.encounter.type.trim() !== ""){
+            const request = this.createRequestData();
             axios('http://localhost:8080/encounter', { 
-                data:this.state.encounter,
+                data:request,
                     method: this.props.requestType, 
                     withCredentials: true})
                 .then(function (response) {
@@ -55,6 +59,15 @@ class EncounterConfirmModal extends React.Component {
         }else{
             this.setState({error:"You must enter the type and description of encounter"})
         }
+    }
+
+    createRequestData(){
+        let request = this.props.currentEncounter === undefined ? this.state.encounter : this.props.currentEncounter;
+        request.type = this.state.encounter.type;
+        request.description = this.state.encounter.description;
+        request.reasonDescription = this.state.encounter.reasonDescription;
+        request.patient = this.props.patient;
+        return request;
     }
 
     returnToPatientPage(){
@@ -123,7 +136,7 @@ class EncounterConfirmModal extends React.Component {
     updateFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.submitEncounter} >Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" onClick={this.submitEncounter} className="btn btn-primary">Update Encounter</button>
             </div>
         )

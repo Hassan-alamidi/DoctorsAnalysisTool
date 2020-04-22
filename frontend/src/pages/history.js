@@ -4,11 +4,11 @@ import auth from "../components/auth"
 import { Redirect, withRouter } from "react-router-dom"
 import NavBar from '../components/navBar'
 import Sidebar from '../components/sidebar'
-import {ConditionsListTransparent} from "../components/conditionsList"
-import {MedicationListTransparent} from "../components/medicationList"
-import {ObservationListTransparent} from "../components/observationList"
-import ProcedureListTransparent from "../components/procedureList"
-import EncounterList from "../components/encounterList"
+import {ConditionsListTransparent} from "../components/reportLists/conditionsList"
+import {MedicationListTransparent} from "../components/reportLists/medicationList"
+import {ObservationListTransparent} from "../components/reportLists/observationList"
+import ProcedureListTransparent from "../components/reportLists/procedureList"
+import EncounterList from "../components/reportLists/encounterList"
 
 const axios = require('axios').default;
 

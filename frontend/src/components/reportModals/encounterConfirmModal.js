@@ -1,8 +1,8 @@
 import React from 'react';
-import "../resources/css/shared.scss"
+import "../../resources/css/shared.scss"
 import "bootstrap";
 import EncounterCreationModal from "./encounterCreationModal"
-import {SimpleEncounterList} from "./encounterList"
+import {SimpleEncounterList} from "../reportLists/encounterList"
 import $ from "jquery";
 
 const axios = require('axios').default;

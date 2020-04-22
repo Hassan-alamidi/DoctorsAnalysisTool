@@ -24,7 +24,7 @@ public class PatientCondition {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column
     private int id;
-//TODO for consistency change in database to description
+
     @Getter
     @Setter
     @Column(name = "description")

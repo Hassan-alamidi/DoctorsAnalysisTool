@@ -1,8 +1,8 @@
 import React from 'react';
 import "../resources/css/shared.scss"
 import "bootstrap";
-import ConditionsList from "./conditionsList"
-import MedicationList from "./medicationList"
+import ConditionsList from "./reportLists/conditionsList"
+import MedicationList from "./reportLists/medicationList"
 
 
 const PatientInfoCard = ({header, patient, detailed, callback}) => {

@@ -3,8 +3,9 @@ import "../resources/css/shared.scss"
 import {CardButton, CardButtonModal} from "../components/cardButton"
 import CardAlt from "../components/card-alt"
 import auth from "../components/auth"
-import EncounterConfirmModal from "../components/encounterConfirmModal"
-import EncounterCreationModal from "../components/encounterCreationModal"
+import EncounterConfirmModal from "../components/reportModals/encounterConfirmModal"
+import EncounterCreationModal from "../components/reportModals/encounterCreationModal"
+import ProcdureModal from "../components/reportModals/procedureModal"
 import { Redirect, withRouter } from "react-router-dom"
 import $ from "jquery";
 
@@ -66,7 +67,7 @@ class EncounterPage extends React.Component {
         $('#encounterModal').modal('hide');
         $('#LoadingModal').modal('hide');
         $('#createEncounterModal').modal('hide');
-        this.setState({currentEncounter:encounter});
+        this.setState({updating:true,currentEncounter:encounter});
     }
 
     render() {
@@ -112,13 +113,13 @@ class EncounterPage extends React.Component {
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
                                     <CardButtonModal header="Update Encounter" details="Update the details of this encounter"
-                                                            icon="archive" callback={() => {this.setState({updating:true})}} modalId="#createEncounterModal" />
+                                                            icon="archive" modalId="#createEncounterModal" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButton header="Document Procedure" details="Document any procedures made today"
-                                                            icon="archive" callback={() => {this.pageChange("")}} />
+                                    <CardButtonModal header="Document Procedure" details="Document any procedures made today"
+                                                            icon="archive" modalId="#createprocedureModal" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
@@ -153,6 +154,7 @@ class EncounterPage extends React.Component {
                         </div>
                     </CardAlt>
                     {(this.state.updating) && <EncounterCreationModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="put" currentEncounter={this.state.currentEncounter} />}
+                    <ProcdureModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
                 </div>
             )
         }

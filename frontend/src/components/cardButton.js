@@ -20,7 +20,7 @@ export const CardButton = ({header,details, icon, callback}) => {
 export const CardButtonModal = ({header,details, icon, callback, modalId}) => {
 
     return(
-        <div className="cardButton col" data-toggle="modal" data-target={modalId} onClick={() => {callback()}} >
+        <div className="cardButton col" data-toggle="modal" data-target={modalId} onClick={() => {if(callback !== undefined){callback()}}} >
             <h5>{header}</h5>
             <hr />
             <div>

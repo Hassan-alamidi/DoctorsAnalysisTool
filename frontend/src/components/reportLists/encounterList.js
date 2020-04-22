@@ -1,5 +1,5 @@
 import React from 'react';
-import "../resources/css/shared.scss"
+import "../../resources/css/shared.scss"
 import "bootstrap";
 
 export const SimpleEncounterList = ({encounters, callback}) => {

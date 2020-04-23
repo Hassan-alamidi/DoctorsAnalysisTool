@@ -1,9 +1,6 @@
 package com.MTPA.Objects.Reports;
 
-import com.MTPA.Objects.Information.Procedure;
 import com.MTPA.Objects.Patient;
-import com.MTPA.Objects.Reports.Encounter;
-import com.MTPA.Objects.Reports.PatientCondition;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -11,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @JsonDeserialize
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

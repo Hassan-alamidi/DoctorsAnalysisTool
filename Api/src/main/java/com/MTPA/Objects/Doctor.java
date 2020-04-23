@@ -66,12 +66,4 @@ public class Doctor implements Serializable {
     @Getter
     @Setter
     private String password;
-
-    //TODO find better solution to jsonIgnoreProperties as it still loads all of the ignored properties
-    @Getter
-    @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
-    @JsonIgnoreProperties("hiredDoctors")
-    private Organization workPlace;
 }

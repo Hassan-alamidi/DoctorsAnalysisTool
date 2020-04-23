@@ -2,7 +2,6 @@ package Integration;
 
 import com.MTPA.HealthApp;
 import com.MTPA.Objects.Doctor;
-import com.MTPA.Objects.Organization;
 import com.MTPA.Objects.Patient;
 import lombok.SneakyThrows;
 import org.junit.Assert;
@@ -15,11 +14,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -44,7 +41,6 @@ public abstract class BaseIT {
     protected Patient NEVER_GETS_ADDED_PATIENT;
     protected Doctor NEVER_GETS_ADDED_DOCTOR;
     protected Doctor DOCTOR_GETS_ADDED_TO_DB;
-    protected Organization organization;
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
@@ -72,7 +68,6 @@ public abstract class BaseIT {
         doctorHeader = generateHeader(NON_ADMIN_TOKEN);
         patientCreation();
         doctorCreation();
-        setupOrganization();
         setupTest();
     }
 
@@ -114,8 +109,6 @@ public abstract class BaseIT {
     }
 
     private void doctorCreation(){
-        Organization organization = new Organization();
-        organization.setId(1);
         NEVER_GETS_ADDED_DOCTOR = Doctor.builder()
                 .address("iajd")
                 .DOB(Date.valueOf("1999-08-09"))
@@ -126,7 +119,6 @@ public abstract class BaseIT {
                 .ppsn("PPPPPPSSSSSNNNNN")
                 .phoneNumber(9899)
                 .password("anyPass")
-                .workPlace(organization)
                 .build();
         DOCTOR_GETS_ADDED_TO_DB = Doctor.builder()
                 .address("iajd")
@@ -138,17 +130,8 @@ public abstract class BaseIT {
                 .ppsn("PP1224454SSSNNN")
                 .phoneNumber(9899)
                 .password("anyPass")
-                .workPlace(organization)
                 .build();
 
-    }
-
-    public void setupOrganization(){
-        organization = new Organization();
-        organization.setId(1);
-        organization.setAddress("pain in the ass");
-        organization.setName("testHospt");
-        organization.setPhoneNumber(9774);
     }
 
     private String getToken(Doctor doctor){

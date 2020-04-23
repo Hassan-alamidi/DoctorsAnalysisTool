@@ -6,7 +6,6 @@ com/MTPA/DAO/TreatmentPlanDAO.class
 com/MTPA/Objects/Patient$PatientBuilder.class
 com/MTPA/HealthApp$healthCheck.class
 com/MTPA/Objects/Doctor$DoctorBuilder.class
-com/MTPA/Objects/Information/Medication.class
 com/MTPA/Resources/ProcedureResource.class
 com/MTPA/Utility/Security/AuthenticationFilter.class
 com/MTPA/Objects/Reports/PatientMedication.class
@@ -18,7 +17,6 @@ com/MTPA/Resources/AuthenticationResource.class
 com/MTPA/Objects/Patient.class
 com/MTPA/Objects/Reports/PatientCondition.class
 com/MTPA/Resources/EncounterResource.class
-com/MTPA/Objects/Information/Condition.class
 com/MTPA/Objects/Reports/TreatmentPlan.class
 com/MTPA/DAO/PatientDAO.class
 com/MTPA/Services/ConditionServices.class
@@ -28,14 +26,11 @@ com/MTPA/Objects/Reports/Encounter.class
 com/MTPA/DAO/DoctorDAO.class
 com/MTPA/DAO/ObservationDAO.class
 com/MTPA/DAO/EncounterDAO.class
-com/MTPA/DAO/OrganizationDAO.class
 com/MTPA/Services/ProcedureService.class
 com/MTPA/Objects/Reports/PatientObservation.class
 com/MTPA/Resources/ConditionResource.class
 com/MTPA/DAO/ConditionDAO.class
 com/MTPA/Utility/Security/AuthorizationFilter.class
-com/MTPA/Objects/Information/Procedure.class
-com/MTPA/Objects/Organization.class
 com/MTPA/Utility/Security/WebSecurity.class
 com/MTPA/Services/DoctorService.class
 com/MTPA/Services/MedicationService.class

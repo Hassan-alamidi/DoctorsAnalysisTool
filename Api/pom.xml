@@ -63,6 +63,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!--H2 database seems to fail to create tables on occasion so running tests 3 times to ensure its not my code that is failing-->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <forkCount>3</forkCount>
                     <reuseForks>true</reuseForks>

@@ -84,4 +84,10 @@ public class Encounter {
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
     private Set<PatientProcedure> procedures;
 
+    @Getter
+    @Setter
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
+    @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
+    private Set<TreatmentPlan> treatments;
+
 }

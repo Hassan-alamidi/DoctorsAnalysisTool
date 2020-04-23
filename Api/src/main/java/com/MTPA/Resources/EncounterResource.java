@@ -43,7 +43,7 @@ public class EncounterResource {
     }
 
     @GetMapping("/recent/{count}")
-    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("PPSN") final String ppsn, @PathVariable("count") int count){
+    public ResponseEntity<List<Encounter>> getRecentEncounters(@RequestHeader("ppsn") final String ppsn, @PathVariable("count") final int count){
         return encounterService.getRecentEncounters(ppsn, count);
     }
 
@@ -55,5 +55,10 @@ public class EncounterResource {
     @PutMapping
     public ResponseEntity<?> updateEncounter(@RequestBody final Encounter encounter){
         return encounterService.updateEncounter(encounter);
+    }
+
+    @PutMapping("/finalize/{id}")
+    public ResponseEntity<?> finalizeEncounter(@PathVariable("id") final String id){
+        return encounterService.finalizeEncounter(id);
     }
 }

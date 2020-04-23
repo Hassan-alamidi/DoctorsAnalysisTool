@@ -23,10 +23,10 @@ class EncounterConfirmModal extends React.Component {
         axios('http://localhost:8080/encounter/open', { method: "get", withCredentials: true, headers: { "ppsn": this.props.patient.ppsn } })
             .then(function (response) {
                 console.log(response)
-                $('#LoadingModal').modal('hide');
                 this.setState({ openEncounters: response.data, loading: false })
-            }.bind(this));
-
+            }.bind(this)).finally(function(){
+                $('#LoadingModal').modal('hide');
+            });
             $('#LoadingModal').modal('show');
     }
 
@@ -35,9 +35,11 @@ class EncounterConfirmModal extends React.Component {
     }
 
     render(){
+        console.log(this.state.openEncounters);
+        console.log(this.state.createNew);
         if(this.state.loading === true){
             return (
-                <div className="modal fade" id="LoadingModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div className="modal fade" id="LoadingModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -48,7 +50,7 @@ class EncounterConfirmModal extends React.Component {
                 </div>
             );
         }else if(this.state.openEncounters.length > 0 && this.state.createNew === false){
-            $('#encounterModal').modal('show');
+            //$('#encounterModal').modal('show');
             return(
                 <div className="modal fade" id="encounterModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -61,15 +63,15 @@ class EncounterConfirmModal extends React.Component {
                                 <SimpleEncounterList encounters={this.state.openEncounters} callback={this.props.callback}/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" onClick={this.createNew} className="btn btn-primary">Create New</button>
+                                <button type="button" onClick={this.createNew} data-dismiss="modal" className="btn btn-primary">Create New</button>
                             </div>
                         </div>
                     </div>
                 </div>
             );
         }else{
-            $('#LoadingModal').modal('hide');
-            $('#encounterModal').modal('hide');
+             //$('.modal').modal('hide');
+             $('#LoadingModal').modal('hide');
             return(
                 <EncounterCreationModal patient={this.props.patient} callback={this.props.callback} requestType="post" />
             );

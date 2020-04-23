@@ -40,4 +40,9 @@ public class ConditionResource {
     public ResponseEntity<?> addPatientCondition(@RequestBody PatientCondition condition){
         return conditionServices.addPatientCondition(condition);
     }
+
+    @PutMapping
+    public ResponseEntity<?> updatePatientCondition(@RequestBody PatientCondition condition){
+        return conditionServices.updatePatientCondition(condition);
+    }
 }

@@ -7,10 +7,10 @@ class SideBar extends React.Component {
         super();
         this.state = {
             currentSelection:"conditions",
-            currentOption:"Full Condition History",
-            currentFilter:"/conditions",
-            alternateFilter:"/conditions/current",
-            filterOption:"Recent Conditions"
+            currentOption:"On Going Conditions",
+            currentFilter:"/conditions/current",
+            alternateFilter:"/conditions",
+            filterOption:"Full Condition History"
         }
         this.filterOption = this.filterOption.bind(this);
         this.switchState = this.switchState.bind(this);
@@ -25,16 +25,28 @@ class SideBar extends React.Component {
     }
 
     filterOption(){
-        return(
-            <div className="panel-body">
-                <p>Filter Options</p>
-                <button className="btn btn-outline-light"
-                    onClick={() => {this.props.callback(this.state.alternateFilter, this.state.filterOption)
-                                    this.switchState()}}>
-                    Filter {this.state.filterOption}
-                </button>
-            </div>
-        )
+        if(this.state.currentOption === "Immunization"){
+            return(
+                <div className="panel-body">
+                    <p>Filter Options</p>
+                    <button className="btn btn-outline-light"
+                        onClick={() => {}}>
+                        No Filter Options Available
+                    </button>
+                </div>
+            )
+        }else{
+            return(
+                <div className="panel-body">
+                    <p>Filter Options</p>
+                    <button className="btn btn-outline-light"
+                        onClick={() => {this.props.callback(this.state.alternateFilter, this.state.filterOption)
+                                        this.switchState()}}>
+                        Filter {this.state.filterOption}
+                    </button>
+                </div>
+            )
+        }
     }
 
     render(){
@@ -46,53 +58,73 @@ class SideBar extends React.Component {
                     <ul className="navbar-nav">
                         <li className="nav-item li-button">
                             <button className="nav-link btn btn-link"
-                                onClick={() => {this.props.callback("/conditions","Full Condition History")
+                                onClick={() => {this.props.callback("/conditions/current","On Going Conditions")
                                                 this.setState({
-                                                currentOption:"Full Condition History",
-                                                currentFilter:"/conditions",
-                                                alternateFilter:"/conditions/current",
-                                                filterOption:"Recent Conditions"})}}>
+                                                currentOption:"On Going Conditions",
+                                                currentFilter:"/conditions/current",
+                                                alternateFilter:"/conditions",
+                                                filterOption:"Full Condition History"})}}>
                                 Condition History
                             </button>
                         </li>
                         <li className="nav-item li-button">
                             <button className="nav-link btn btn-link"
-                                onClick={() => {this.props.callback("/medication","Full Medication History")
-                                this.setState({currentOption:"Full Medication History",
-                                                currentFilter:"/medication",
-                                                alternateFilter:"/medication/current",
-                                                filterOption:"Current Medication"})}}>
+                                onClick={() => {this.props.callback("/medication/current","Current Medication")
+                                this.setState({currentOption:"Current Medication",
+                                                currentFilter:"/medication/current",
+                                                alternateFilter:"/medication",
+                                                filterOption:"Full Medication History"})}}>
                                 Medication History
                             </button>
                         </li>
                         <li className="nav-item li-button">
                             <button className="nav-link btn btn-link"
-                                onClick={() => {this.props.callback("/procedure","Full Procedure History")
-                                this.setState({currentOption:"Full Procedure History",
-                                                currentFilter:"/procedure",
-                                                alternateFilter:"/procedure/recent",
-                                                filterOption:"Recent Procedures"})}}> 
+                                onClick={() => {this.props.callback("/medication/immunization","Immunization")
+                                this.setState({currentOption:"Immunization",
+                                                currentFilter:"/medication/Immunization",
+                                                alternateFilter:"/medication/Immunization",
+                                                filterOption:"Immunization"})}}>
+                                Immunizations
+                            </button>
+                        </li>
+                        <li className="nav-item li-button">
+                            <button className="nav-link btn btn-link"
+                                onClick={() => {this.props.callback("/procedure/recent","Recent Procedures")
+                                this.setState({currentOption:"Recent Procedures",
+                                                currentFilter:"/procedure/recent",
+                                                alternateFilter:"/procedure",
+                                                filterOption:"Full Procedure History"})}}> 
                                 Procedure History
                             </button>
                         </li>
                         <li className="nav-item li-button">
                         <button className="nav-link btn btn-link"
-                            onClick={() => {this.props.callback("/observations","Full Observation History")
-                            this.setState({currentOption:"Full Observation History",
-                                                currentFilter:"/observations",
-                                                alternateFilter:"/observations/recent",
-                                                filterOption:"Recent Observations"})}}>
+                            onClick={() => {this.props.callback("/observations/recent","Recent Observations")
+                            this.setState({currentOption:"Recent Observations",
+                                                currentFilter:"/observations/recent",
+                                                alternateFilter:"/observations",
+                                                filterOption:"Full Observation History"})}}>
                                 Observation History
                             </button>
                         </li>
                         <li className="nav-item li-button">
                             <button className="nav-link btn btn-link"
-                                onClick={() => {this.props.callback("/encounter", "Full Encounter History")
-                                this.setState({currentOption:"Full Encounter History",
-                                                currentFilter:"/encounter",
-                                                alternateFilter:"/encounter/recent",
-                                                filterOption:"Recent Encounters"})}}>
+                                onClick={() => {this.props.callback("/encounter/recent", "Recent Encounters")
+                                this.setState({currentOption:"Recent Encounters",
+                                                currentFilter:"/encounter/recent",
+                                                alternateFilter:"/encounter",
+                                                filterOption:"Full Encounter History"})}}>
                                 Encounter History
+                            </button>
+                        </li>
+                        <li className="nav-item li-button">
+                            <button className="nav-link btn btn-link"
+                                onClick={() => {this.props.callback("/treatment/current", "On Going Treatments")
+                                this.setState({currentOption:"On Going Treatments",
+                                                currentFilter:"/treatment/current",
+                                                alternateFilter:"/treatment",
+                                                filterOption:"Full Treatment History"})}}>
+                                Treatment History
                             </button>
                         </li>
                     </ul>

@@ -30,6 +30,11 @@ public class MedicationResource {
         return medicationService.prescribeMedication(patientMedication);
     }
 
+    @GetMapping("/immunization")
+    public ResponseEntity<?> getImmunizations(@RequestHeader("ppsn") final String ppsn){
+        return medicationService.getPatientImmunization(ppsn);
+    }
+
     @GetMapping("/current")
     public ResponseEntity<?> getCurrentMedication(@RequestHeader("ppsn") final String ppsn){
         return medicationService.getPatientCurrentMedication(ppsn);

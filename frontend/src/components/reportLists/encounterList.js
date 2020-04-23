@@ -13,7 +13,7 @@ export const SimpleEncounterList = ({encounters, callback}) => {
                         <div href={"#encounterId" + i} className="list-group-item list-group-item-action list-group-item-dark">
                             <p>Description: {encounter.description}</p> 
                             <p>Visited On: {encounter.dateVisited}</p>
-                            <button type="button" className="btn btn-secondary" onClick={() => {callback(encounter)}}>Update</button>
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {callback(encounter)}}>Update</button>
                         </div>
                     </div>)
                 })}

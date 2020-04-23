@@ -1,7 +1,6 @@
 import React from 'react';
 import "../../resources/css/shared.scss"
 import "bootstrap";
-import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
 const axios = require('axios').default;
@@ -17,18 +16,27 @@ class TreatmentPlanModal extends React.Component {
                 code:"ignored",
                 reasonDescription:"",
                 reasonCode:"ignored"
-            },
-            close:false
+            }
         }
 
         this.submitTreatmentPlan = this.submitTreatmentPlan.bind(this);
-        this.returnToPatientPage = this.returnToPatientPage.bind(this);
         this.descriptionChangeHandler = this.descriptionChangeHandler.bind(this);
         this.reasonChangeHandler = this.reasonChangeHandler.bind(this);
         this.startDateChangeHandler = this.startDateChangeHandler.bind(this);
         this.endDateChangeHandler = this.endDateChangeHandler.bind(this);
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
+        this.resetObjectState = this.resetObjectState.bind(this);
+    }
+
+    resetObjectState(){
+        this.setState({
+            treatmentPlan:{
+                code:"ignored",
+                reasonDescription:"",
+                reasonCode:"ignored"
+            }
+        });
     }
 
     submitTreatmentPlan(){
@@ -37,11 +45,12 @@ class TreatmentPlanModal extends React.Component {
             let requestData = this.state.treatmentPlan;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/treatmentPlan', { 
+            axios('http://localhost:8080/treatment', { 
                     data:requestData,
-                        method: this.props.requestType, 
-                        withCredentials: true})
+                    method: this.props.requestType, 
+                    withCredentials: true})
                 .then(function (response) {
+                    this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
                     axios('http://localhost:8080/encounter/' + encounterId, { 
@@ -56,10 +65,6 @@ class TreatmentPlanModal extends React.Component {
         }else{
             this.setState({error:"You must enter the name and date of treatmentPlan"})
         }
-    }
-
-    returnToPatientPage(){
-        this.setState({close:true});
     }
 
     descriptionChangeHandler(val){
@@ -91,43 +96,29 @@ class TreatmentPlanModal extends React.Component {
     }
 
     render(){
-        if(this.state.close){
-            $('#createTreatmentPlanModal').modal('hide');
-            return (
-                <Redirect to={
-                    {
-                        pathname: "/hub/patient",
-                        state: {
-                            from: "/hub/patient/encounter"
-                        }
-                    }
-                } />
-            );
-        }else{
-            return(
-                <div className="modal fade" id="createTreatmentPlanModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Treatment Plan Details</h5>
-                            </div>
-                            <div className="modal-body">
-                                <p className="text-danger">{this.state.error}</p>
-                                <p>* description Of Treatment Plan </p>
-                                <input className="form-control form-control-lg" id="descriptionInput" type="text" placeholder="Description" name="description" onChange={this.descriptionChangeHandler} />
-                                <p>* Date Treatment Starts on</p>
-                                <input className="form-control form-control-lg" id="startDateInput" type="date" placeholder="yyyy-mm-dd" name="startDate" onChange={this.startDateChangeHandler} />
-                                <p>Date Treatment Ends</p>
-                                <input className="form-control form-control-lg" id="endDateInput" type="date" placeholder="yyyy-mm-dd" name="endDate" onChange={this.endDateChangeHandler} />
-                                <p>Reason For Treatment, i.e. name of condition</p>
-                                <input className="form-control form-control-lg" id="reasonInput" type="text" placeholder="Reason" name="reasonDescription" onChange={this.reasonChangeHandler} />
-                            </div>
-                            {this.props.requestType === "post" ? <this.creationFooter/> : <this.updateFooter/>}
+        return(
+            <div className="modal fade" id="createTreatmentPlanModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Treatment Plan Details</h5>
                         </div>
+                        <div className="modal-body">
+                            <p className="text-danger">{this.state.error}</p>
+                            <p>* description Of Treatment Plan </p>
+                            <input className="form-control form-control-lg" id="descriptionInput" type="text" placeholder="Description" name="description" onChange={this.descriptionChangeHandler} />
+                            <p>* Date Treatment Starts on</p>
+                            <input className="form-control form-control-lg" id="startDateInput" type="date" placeholder="yyyy-mm-dd" name="startDate" onChange={this.startDateChangeHandler} />
+                            <p>Date Treatment Ends</p>
+                            <input className="form-control form-control-lg" id="endDateInput" type="date" placeholder="yyyy-mm-dd" name="endDate" onChange={this.endDateChangeHandler} />
+                            <p>Reason For Treatment, i.e. name of condition</p>
+                            <input className="form-control form-control-lg" id="reasonInput" type="text" placeholder="Reason" name="reasonDescription" onChange={this.reasonChangeHandler} />
+                        </div>
+                        {this.props.requestType === "post" ? <this.creationFooter/> : <this.updateFooter/>}
                     </div>
                 </div>
-            );
-        }
+            </div>
+        );
     }
 
     updateFooter(){

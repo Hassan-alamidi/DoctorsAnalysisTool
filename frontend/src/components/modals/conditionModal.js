@@ -6,41 +6,46 @@ import $ from "jquery";
 
 const axios = require('axios').default;
 
-class ProcedureModal extends React.Component {
+class ConditionModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error:"",
-            procedure:{
-                //procedures were originally meant to be searchable via autosuggestion, which would then add a procedures assigned code.
+            condition:{
+                //condition were originally meant to be searchable via autosuggestion, which would then add a condition assigned code.
                 //but that is low priority on my list of things todo and it is unlikly I will have time to get this completed so setting code to ignore
-                code:"ignored",
-                reasonCode:"ignored"
+                code:"ignored"
             },
             close:false
         }
 
-        this.submitProcedure = this.submitProcedure.bind(this);
+        this.submitCondition = this.submitCondition.bind(this);
         this.returnToPatientPage = this.returnToPatientPage.bind(this);
         this.detailsChangeHandler = this.detailsChangeHandler.bind(this);
-        this.descriptionChangeHandler = this.descriptionChangeHandler.bind(this);
-        this.reasonChangeHandler = this.reasonChangeHandler.bind(this);
-        this.dateChangeHandler = this.dateChangeHandler.bind(this);
+        this.nameChangeHandler = this.nameChangeHandler.bind(this);
+        this.symptomsChangeHandler = this.symptomsChangeHandler.bind(this);
+        this.discoveredChangeHandler = this.discoveredChangeHandler.bind(this);
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
+        this.resetObjectState = this.resetObjectState.bind(this);
     }
 
-    submitProcedure(){
-        if(this.state.procedure !== undefined && this.state.procedure.description !== undefined && this.state.procedure.description.trim() !== "" 
-            && this.state.procedure.carriedOutOn !== undefined && this.state.procedure.carriedOutOn.trim() !== ""){
-            let requestData = this.state.procedure;
+    resetObjectState(){
+        this.setState({condition:{code:"ignored"}});
+    }
+
+    submitCondition(){
+        if(this.state.condition !== undefined && this.state.condition.name !== undefined && this.state.condition.name.trim() !== "" 
+            && this.state.condition.discovered !== undefined && this.state.condition.discovered.trim() !== ""){
+            let requestData = this.state.condition;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/procedure', { 
+            axios('http://localhost:8080/conditions', { 
                     data:requestData,
                         method: this.props.requestType, 
                         withCredentials: true})
                 .then(function (response) {
+                    this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
                     axios('http://localhost:8080/encounter/' + encounterId, { 
@@ -53,7 +58,7 @@ class ProcedureModal extends React.Component {
 
                 }.bind(this));
         }else{
-            this.setState({error:"You must enter the name and date of procedure"})
+            this.setState({error:"You must enter the name and date of the condition"})
         }
     }
 
@@ -63,37 +68,37 @@ class ProcedureModal extends React.Component {
 
     detailsChangeHandler(val){
         const value = val.target.value;
-        let backup = this.state.procedure;
+        let backup = this.state.condition;
         backup.details = value
-        this.setState({ procedure: backup });
+        this.setState({ condition: backup });
     }
 
-    descriptionChangeHandler(val){
+    nameChangeHandler(val){
         const value = val.target.value;
-        let backup = this.state.procedure;
-        backup.description = value
-        this.setState({ procedure: backup });
+        let backup = this.state.condition;
+        backup.name = value
+        this.setState({ condition: backup });
     }
 
-    reasonChangeHandler(val){
+    symptomsChangeHandler(val){
         const value = val.target.value;
-        let backup = this.state.procedure;
-        backup.reasonDescription = value
-        this.setState({ procedure: backup });
+        let backup = this.state.condition;
+        backup.symptoms = value
+        this.setState({ condition: backup });
     }
 
-    dateChangeHandler(val){
+    discoveredChangeHandler(val){
         const value = val.target.value;
-        let backup = this.state.procedure;
-        backup.carriedOutOn = value
-        this.setState({ procedure: backup });
+        let backup = this.state.condition;
+        backup.discovered = value
+        this.setState({ condition: backup });
     }
 
     render(){
         if(this.state.close){
-            $('#createprocedureModal').modal('hide');
+            $('#createConditionModal').modal('hide');
             return (
-                <Redirect to={
+                <Redirect push to={
                     {
                         pathname: "/hub/patient",
                         state: {
@@ -104,20 +109,20 @@ class ProcedureModal extends React.Component {
             );
         }else{
             return(
-                <div className="modal fade" id="createprocedureModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id="createConditionModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Procedure Details</h5>
+                                <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Condition Details</h5>
                             </div>
                             <div className="modal-body">
                                 <p className="text-danger">{this.state.error}</p>
-                                <p>* Name Of Procedure </p>
-                                <input className="form-control form-control-lg" id="descriptionInput" type="text" placeholder="Name" name="description" onChange={this.descriptionChangeHandler} />
-                                <p>* Date Carried Out On</p>
-                                <input className="form-control form-control-lg" id="dateInput" type="date" placeholder="yyyy-mm-dd" name="carriedOutOn" onChange={this.dateChangeHandler} />
-                                <p>Reason For Procedure, i.e. name of condition</p>
-                                <input className="form-control form-control-lg" id="reasonInput" type="text" placeholder="Reason" name="reasonDescription" onChange={this.reasonChangeHandler} />
+                                <p>* Name Of Condition </p>
+                                <input className="form-control form-control-lg" id="conditionInput" type="text" placeholder="Name" name="name" onChange={this.nameChangeHandler} />
+                                <p>* Date This Condition was discovered</p>
+                                <input className="form-control form-control-lg" id="discoveredInput" type="date" placeholder="yyyy-mm-dd" name="discovered" onChange={this.discoveredChangeHandler} />
+                                <p>Symptoms Alongside This Condition</p>
+                                <input className="form-control form-control-lg" id="symptomsInput" type="text" placeholder="Symptoms" name="symptoms" onChange={this.symptomsChangeHandler} />
                                 <p>Extra Details</p>
                                 <input className="form-control form-control-lg" id="detailsInput" type="text" placeholder="Details" name="details" onChange={this.detailsChangeHandler} />
                             </div>
@@ -133,7 +138,7 @@ class ProcedureModal extends React.Component {
         return(
             <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal" >Cancel</button>
-                <button type="button" onClick={this.submitProcedure} className="btn btn-primary">Update Procedure</button>
+                <button type="button" onClick={this.submitCondition} className="btn btn-primary">Update condition</button>
             </div>
         )
     }
@@ -142,10 +147,10 @@ class ProcedureModal extends React.Component {
         return(
             <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" onClick={this.submitProcedure} className="btn btn-primary">Create New</button>
+                <button type="button" onClick={this.submitCondition} className="btn btn-primary">Create New</button>
             </div>
         );
     }
 }
 
-export default ProcedureModal;
+export default ConditionModal;

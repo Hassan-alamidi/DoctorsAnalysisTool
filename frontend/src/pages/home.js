@@ -74,7 +74,7 @@ class HomePage extends React.Component {
     }else if(this.state.managePatient === true){
       return(
         //redirect here
-        <Redirect to={
+        <Redirect push to={
           {
               pathname:"/hub/patient",
               state:{

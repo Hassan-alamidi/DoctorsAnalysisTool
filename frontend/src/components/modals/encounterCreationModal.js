@@ -35,7 +35,7 @@ class EncounterConfirmModal extends React.Component {
             //}
             document.getElementById("typeInput").value=this.props.currentEncounter.type;
             document.getElementById("descriptionInput").value=this.props.currentEncounter.description;
-            if(this.props.currentEncounter.reasonDescription !== undefined && this.props.currentEncounter.reasonDescription.trim() !== ""){
+            if((this.props.currentEncounter.reasonDescription) && this.props.currentEncounter.reasonDescription.trim() !== ""){
                 document.getElementById("reasonInput").value=this.props.currentEncounter.reasonDescription;
             }
         }else if(this.props.requestType === "post"){
@@ -53,6 +53,7 @@ class EncounterConfirmModal extends React.Component {
                     withCredentials: true})
                 .then(function (response) {
                     console.log(response)
+                    $('#createEncounterModal').modal('show');
                     this.setState({ encounter: response.data, loading: false })
                     this.props.callback(response.data)
                 }.bind(this));
@@ -97,9 +98,9 @@ class EncounterConfirmModal extends React.Component {
 
     render(){
         if(this.state.close){
-            $('#createEncounterModal').modal('hide');
+            $('.modal').modal('hide');
             return (
-                <Redirect to={
+                <Redirect push to={
                     {
                         pathname: "/hub/patient",
                         state: {
@@ -137,7 +138,7 @@ class EncounterConfirmModal extends React.Component {
         return(
             <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" onClick={this.submitEncounter} className="btn btn-primary">Update Encounter</button>
+                <button type="button" onClick={this.submitEncounter} data-dismiss="modal" className="btn btn-primary">Update Encounter</button>
             </div>
         )
     }
@@ -145,8 +146,8 @@ class EncounterConfirmModal extends React.Component {
     creationFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={this.returnToPatientPage}>Return To Patient Menu</button>
-                <button type="button" onClick={this.submitEncounter} className="btn btn-primary">Create New</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.returnToPatientPage}>Return To Patient Menu</button>
+                <button type="button" onClick={this.submitEncounter} data-dismiss="modal" className="btn btn-primary">Create New</button>
             </div>
         );
     }

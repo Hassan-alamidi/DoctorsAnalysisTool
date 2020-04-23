@@ -9,6 +9,7 @@ import {MedicationListTransparent} from "../components/reportLists/medicationLis
 import {ObservationListTransparent} from "../components/reportLists/observationList"
 import ProcedureListTransparent from "../components/reportLists/procedureList"
 import EncounterList from "../components/reportLists/encounterList"
+import TreatmentList from "../components/reportLists/treatmentList"
 
 const axios = require('axios').default;
 
@@ -19,7 +20,7 @@ class HistoryPage extends React.Component {
             patientPPSN: "",
             tokenExpired: false,
             hisoricalData:"",
-            historicalDataType:"Full Condition History",
+            historicalDataType:"On Going Conditions",
             patientNotFound:false,
             loading: true
         }
@@ -37,7 +38,7 @@ class HistoryPage extends React.Component {
             return;
         }
        
-        this.apiRequest("/conditions");
+        this.apiRequest("/conditions/current");
     }
 
     apiRequest(endpoint){
@@ -67,7 +68,7 @@ class HistoryPage extends React.Component {
         if (!this.state.loading) {
             if (this.state.tokenExpired) {
                 return (
-                    <Redirect to={
+                    <Redirect push to={
                         {
                             pathname: "/",
                             state: {
@@ -78,7 +79,7 @@ class HistoryPage extends React.Component {
                 )
             } else if (this.state.patientNotFound) {
                 return (
-                    <Redirect to={
+                    <Redirect push to={
                         {
                             pathname: "/hub/home",
                             state: {
@@ -97,7 +98,7 @@ class HistoryPage extends React.Component {
                         </div>
                     </div>
                 );
-            }else if(this.state.historicalDataType.includes("Medication")) {
+            }else if(this.state.historicalDataType.includes("Medication") || this.state.historicalDataType.includes("Immunization")) {
                 return (
                     <div>
                         <NavBar />
@@ -134,6 +135,16 @@ class HistoryPage extends React.Component {
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
                             <EncounterList encounters={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                        </div>
+                    </div>
+                );
+            } else if(this.state.historicalDataType.includes("Treatment")){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <TreatmentList treatments={this.state.hisoricalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );

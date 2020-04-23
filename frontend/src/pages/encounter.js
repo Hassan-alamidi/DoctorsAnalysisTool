@@ -1,11 +1,17 @@
 import React from 'react';
 import "../resources/css/shared.scss"
-import {CardButton, CardButtonModal} from "../components/cardButton"
+import {CardButtonModal} from "../components/cardButton"
 import CardAlt from "../components/card-alt"
 import auth from "../components/auth"
-import EncounterConfirmModal from "../components/reportModals/encounterConfirmModal"
-import EncounterCreationModal from "../components/reportModals/encounterCreationModal"
-import ProcdureModal from "../components/reportModals/procedureModal"
+import EncounterConfirmModal from "../components/modals/encounterConfirmModal"
+import EncounterCreationModal from "../components/modals/encounterCreationModal"
+import ProcdureModal from "../components/modals/procedureModal"
+import ConditionModal from "../components/modals/conditionModal"
+import ObservationModal from "../components/modals/observationModal"
+import MedicationModal from "../components/modals/medicationModal"
+import ProcedureModal from "../components/modals/procedureModal"
+import TreatmentPlanModal from "../components/modals/treatmentPlanModal"
+import GenericModal from "../components/modals/confirmationModal"
 import { Redirect, withRouter } from "react-router-dom"
 import $ from "jquery";
 
@@ -16,24 +22,23 @@ class EncounterPage extends React.Component {
         super();
         this.state = {
             patient: "",
-            nextPage:"",
             currentEncounter:undefined,
             tokenExpired: false,
             patientNotFound: false,
             loading: true,
-            updating:false
+            updating:false,
+            finalized:false
         }
         
-        this.pageChange = this.pageChange.bind(this);
-        this.getTitle = this.getTitle.bind(this);
         this.setCurrentEncounter = this.setCurrentEncounter.bind(this);
+        this.finalizeEncounter = this.finalizeEncounter.bind(this);
     }
 
     componentDidMount() {
         document.getElementById("background").src = require("../resources/images/woman-girl-silhouette-jogger-40751.jpg");
         const patientPPSN = sessionStorage.getItem("patient");
         if (patientPPSN === undefined || patientPPSN.trim() === "") {
-            this.setState({ patientNotFound: true, loading: false });
+            this.setState({ patientNotFound: true});
             return;
         }
 
@@ -45,61 +50,71 @@ class EncounterPage extends React.Component {
             }.bind(this)).catch(function (error) {
                 console.log(error)
                 if (error.response.status === 404) {
-                    this.setState({ patientNotFound: true, loading: false });
+                    console.log("patient Not Found")
+                    this.setState({ patientNotFound: true});
                 } else if (error.response.status === 403) {
+                    console.log("Token expired");
                     auth.logout();
-                    this.setState({ tokenExpired: true, loading: false });
+                    this.setState({ tokenExpired: true});
                 } else {
-                    this.setState({ patientNotFound: true, loading: false });
+                    console.log("Something went wrong")
+                    this.setState({ patientNotFound: true});
                 }
             }.bind(this));
     }
 
-    getTitle() {
-        return (this.state.patient.firstName + " " + this.state.patient.lastName);
-    }
-
-    pageChange(page){
-        this.setState({nextPage:page});
+    finalizeEncounter(){
+        //need to componitize axios requests to reduce redundant code, in a rush now to get work done though so that will come later if time presents itself
+        axios('http://localhost:8080/encounter/finalize/' + this.state.currentEncounter.id, { 
+                method: "put", 
+                withCredentials: true})
+            .then(function (response) {
+                console.log(response.data)
+                this.setState({finalized:true});
+            }.bind(this))
     }
 
     setCurrentEncounter(encounter){
-        $('#encounterModal').modal('hide');
-        $('#LoadingModal').modal('hide');
-        $('#createEncounterModal').modal('hide');
+        console.log("called")
+        $('.modal').modal('hide');
+        //$('#LoadingModal').modal('hide');
+        //$('#createEncounterModal').modal('hide');
         this.setState({updating:true,currentEncounter:encounter});
     }
 
     render() {
         if (this.state.tokenExpired) {
+            $('.modal').modal('hide');
             return (
                 <Redirect to={
                     {
                         pathname: "/",
                         state: {
-                            from: "/hub/patient"
+                            from: "/hub/patient/encounter"
                         }
                     }
                 } />
             )
         } else if (this.state.patientNotFound) {
+            $('.modal').modal('hide');
             return (
                 <Redirect to={
                     {
                         pathname: "/hub/home",
                         state: {
-                            from: "/hub/patient"
+                            from: "/hub/patient/encounter"
                         }
                     }
                 } />
             )
-        } else if (this.state.nextPage === "not implemented yet") {
+        } else if (this.state.finalized === true) {
+            $('.modal').modal('hide');
             return(
             <Redirect to={
                 {
-                    pathname: "/dashboard/history",
+                    pathname: "/hub/patient",
                     state: {
-                        from: "/hub/patient"
+                        from: "/hub/patient/encounter"
                     }
                 }
             } />)
@@ -119,42 +134,50 @@ class EncounterPage extends React.Component {
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
                                     <CardButtonModal header="Document Procedure" details="Document any procedures made today"
-                                                            icon="archive" modalId="#createprocedureModal" />
+                                                            icon="archive" modalId="#createProcedureModal" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButton header="Document Condition" details="Document any conditions discovered today"
-                                                            icon="archive" callback={() => {this.pageChange("")}} />
+                                    <CardButtonModal header="Document Condition" details="Document any conditions discovered today"
+                                                            icon="archive" modalId="#createConditionModal" />
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButton header="Document Observation" details="Document any observations made today"
-                                                            icon="archive" callback={() => {this.pageChange("")}} />
+                                    <CardButtonModal header="Document Observation" details="Document any observations made today"
+                                                            icon="archive" modalId="#createObservationModal" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButton header="Document medications" details="Document any medications perscribed today"
-                                                            icon="archive" callback={() => {this.pageChange("")}} />
+                                    <CardButtonModal header="Document medications" details="Document any medications perscribed today"
+                                                            icon="archive" modalId="#createMedicationModal" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButton header="Document treatment plan" details="Document any treatment plans made today"
-                                                            icon="archive" callback={() => {this.pageChange("")}} />
+                                    <CardButtonModal header="Document treatment plan" details="Document any treatment plans made today"
+                                                            icon="archive" modalId="#createTreatmentPlanModal" />
                                 </div>
                             </div>
                         </div>
                         <div className="row">
-                            <button type="button" className="btn btn-secondary space-please btn-lg btn-block" onClick="">Finalize</button>
+                            <button type="button" className="btn btn-secondary space-please btn-lg btn-block" data-toggle="modal" data-target="#genericModal">Finalize Encounter</button>
                         </div>
                     </CardAlt>
                     {(this.state.updating) && <EncounterCreationModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="put" currentEncounter={this.state.currentEncounter} />}
                     <ProcdureModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
+                    <ConditionModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
+                    <ObservationModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
+                    <MedicationModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
+                    <ProcedureModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />
+                    <TreatmentPlanModal patient={this.state.patient} callback={this.setCurrentEncounter} requestType="post" currentEncounter={this.state.currentEncounter} />   
+                    <GenericModal header="Finalize Encounter" callback={this.finalizeEncounter} >
+                        <h6>Are you sure you wish to finalize this encounter? <br/><br/> Finalization means that the patient has left your care and all documentation related to this encounter is complete. <br/><br/> Once finalized no further updates to this encounter will be permitted.</h6>
+                    </GenericModal>     
                 </div>
             )
         }

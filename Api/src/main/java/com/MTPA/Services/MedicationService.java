@@ -51,6 +51,12 @@ public class MedicationService {
         return new ResponseEntity<>(currentMedication, HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getPatientImmunization(final String ppsn){
+        LocalDate currentDate = LocalDate.now();
+        List<PatientMedication> currentMedication = medicationDAO.getPatientImmunizations(currentDate, ppsn);
+        return new ResponseEntity<>(currentMedication, HttpStatus.OK);
+    }
+
     public ResponseEntity<PatientMedication> extendMedicationTreatment(final PatientMedication medication){
         Optional<PatientMedication> med = medicationDAO.findById(medication.getId());
         if(med.isPresent()){

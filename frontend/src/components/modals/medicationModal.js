@@ -34,10 +34,24 @@ class MedicationModal extends React.Component {
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
         this.valueEntered = this.valueEntered.bind(this);
+        this.resetObjectState = this.resetObjectState.bind(this);
     }
 
     valueEntered(val){
+        console.log(val);
         return (val !== undefined && val.trim() !== "")
+    }
+
+    resetObjectState(){
+        this.setState({
+            medication:{
+                code:"ignored",
+                type:"",
+                reasonDescription:"",
+                reasonCode:"ignore",
+                prescribedAmount:0
+            }
+        });
     }
 
     submitMedication(){
@@ -51,6 +65,7 @@ class MedicationModal extends React.Component {
                         method: this.props.requestType, 
                         withCredentials: true})
                 .then(function (response) {
+                    this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
                     axios('http://localhost:8080/encounter/' + encounterId, { 
@@ -63,7 +78,7 @@ class MedicationModal extends React.Component {
 
                 }.bind(this));
         }else{
-            this.setState({error:"You must enter all details of medication"})
+            this.setState({error:"You must enter all details marked with *"})
         }
     }
 
@@ -109,9 +124,12 @@ class MedicationModal extends React.Component {
 
     prescribedAmountChangeHandler(val){
         const value = val.target.value;
-        let backup = this.state.medication;
-        backup.prescribedAmount = value
-        this.setState({ medication: backup });
+        const re = /^[0-9\b]+$/;
+      //if (value === '' || re.test(value)) {
+            let backup = this.state.medication;
+            backup.prescribedAmount = value.replace(/\D/g, "")
+            this.setState({ medication: backup });
+        //}else{console.log("failed")}
     }
 
     render(){
@@ -138,7 +156,7 @@ class MedicationModal extends React.Component {
                             <div className="modal-body">
                                 <p className="text-danger">{this.state.error}</p>
                                 <p>* Medication Details </p>
-                                <input className="form-control form-control-lg" id="descriptionInput" type="text" placeholder="Details, i.e. Penicillin V Potassium 250 MG Oral Tablet" name="type" onChange={this.typeChangeHandler} />
+                                <input className="form-control form-control-lg" id="descriptionInput" type="text" placeholder="Details, i.e. Penicillin V Potassium 250 MG Oral Tablet" name="type" onChange={this.descriptionChangeHandler} />
                                 <p>* Type Of Medication i.e. immunization.......CHANGE THIS TO CHECKBOX</p>
                                 <input className="form-control form-control-lg" id="typeInput" type="text" placeholder="Name" name="type" onChange={this.typeChangeHandler} />
                                 <p>* Date This Treatment Started</p>
@@ -146,7 +164,7 @@ class MedicationModal extends React.Component {
                                 <p>Date This Treatment Is Scheduled To End, (if immunization leave blank)</p>
                                 <input className="form-control form-control-lg" id="treatmentEndInput" type="date" placeholder="yyyy-mm-dd" name="treatmentEnd" onChange={this.treatmentEndChangeHandler} />
                                 <p>* Number Of Dispenses For Prescriptions The Patient May Need During This Period, i.e. Maximum Dispensed Allowed Without Revist</p>
-                                <input className="form-control form-control-lg" id="prescribedAmountInput" type="text" placeholder="Number Of Dispenses For Prescriptions" name="prescribedAmount" onChange={this.prescribedAmountChangeHandler} />
+                                <input className="form-control form-control-lg" id="prescribedAmountInput" type="text" value={this.state.medication.prescribedAmount} placeholder="Number Of Dispenses For Prescriptions" name="prescribedAmount" onChange={this.prescribedAmountChangeHandler} />
                                 <p>* Reason For Medication</p>
                                 <input className="form-control form-control-lg" id="reasonDescriptionInput" type="text" placeholder="Reason, i.e. Chest Infection" name="reasonDescription" onChange={this.reasonDescriptionChangeHandler} />
                             </div>

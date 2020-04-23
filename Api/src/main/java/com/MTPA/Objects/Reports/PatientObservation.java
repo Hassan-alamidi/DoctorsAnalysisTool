@@ -39,7 +39,7 @@ public class PatientObservation {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id",nullable = true)
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations", "treatments"}, allowSetters = true)
     //this is only used as the importation of dataset to database ends up in some data loss and in turn caused parent objects to be dropped but child objects stayed
     @NotFound(action = NotFoundAction.IGNORE)
     private Encounter encounter;

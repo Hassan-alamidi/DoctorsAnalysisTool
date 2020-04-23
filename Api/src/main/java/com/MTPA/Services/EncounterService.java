@@ -75,12 +75,22 @@ public class EncounterService {
         }
 
         if(encounter.getId() == null) {
-            LocalDate creationDate = LocalDate.now();
-            encounter.setDateVisited(creationDate);
+            encounter.setDateVisited(LocalDate.now());
             Encounter savedEncounter = encounterDAO.save(encounter);
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }
         return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    public ResponseEntity<?> finalizeEncounter(final String id){
+        Optional<Encounter> currentStateOpt = encounterDAO.findById(id);
+        if(currentStateOpt.isPresent()){
+            Encounter encounter = currentStateOpt.get();
+            encounter.setDateLeft(LocalDate.now());
+            Encounter savedEncounter = encounterDAO.save(encounter);
+            return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("can not find encounter to finalize", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> updateEncounter(final Encounter encounter){

@@ -28,10 +28,15 @@ class ObservationModal extends React.Component {
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
         this.valueEntered = this.valueEntered.bind(this);
+        this.resetObjectState = this.resetObjectState.bind(this);
     }
 
     valueEntered(val){
         return (val !== undefined && val.trim() !== "")
+    }
+
+    resetObjectState(){
+        this.setState({observation:{code:"ignored"}});
     }
 
     submitObservation(){
@@ -40,11 +45,12 @@ class ObservationModal extends React.Component {
             let requestData = this.state.observation;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/observation', { 
+            axios('http://localhost:8080/observations', { 
                     data:requestData,
                         method: this.props.requestType, 
                         withCredentials: true})
                 .then(function (response) {
+                    this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
                     axios('http://localhost:8080/encounter/' + encounterId, { 
@@ -52,6 +58,7 @@ class ObservationModal extends React.Component {
                             withCredentials: true})
                         .then(function (response) {
                             console.log(response.data)
+                            $('#createObservationModal').modal('hide');
                             this.props.callback(response.data)
                         }.bind(this))
 
@@ -95,7 +102,7 @@ class ObservationModal extends React.Component {
 
     render(){
         if(this.state.close){
-            $('#createobservationModal').modal('hide');
+            $('#createObservationModal').modal('hide');
             return (
                 <Redirect to={
                     {
@@ -108,7 +115,7 @@ class ObservationModal extends React.Component {
             );
         }else{
             return(
-                <div className="modal fade" id="createobservationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id="createObservationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">

@@ -5,6 +5,7 @@ import CardButton from "../components/cardButton"
 import CardAlt from "../components/card-alt"
 import auth from "../components/auth"
 import { Redirect, withRouter } from "react-router-dom"
+import $ from "jquery";
 
 const axios = require('axios').default;
 
@@ -26,6 +27,7 @@ class PatientControlPanelPage extends React.Component {
     componentDidMount() {
         document.getElementById("background").src = require("../resources/images/woman-girl-silhouette-jogger-40751.jpg");
         const patientPPSN = sessionStorage.getItem("patient");
+        
         if (patientPPSN === undefined || patientPPSN === "") {
             this.setState({ patientNotFound: true, loading: false });
             return;
@@ -58,6 +60,7 @@ class PatientControlPanelPage extends React.Component {
     }
 
     render() {
+        $('.modal').modal('hide');
         if (!this.state.loading) {
             if (this.state.tokenExpired) {
                 return (
@@ -83,7 +86,7 @@ class PatientControlPanelPage extends React.Component {
                 )
             } else if (this.state.nextPage !== "current") {
                 return(
-                <Redirect to={
+                <Redirect push to={
                     {
                         pathname: this.state.nextPage,
                         state: {

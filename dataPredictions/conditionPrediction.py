@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Spyder Editor
@@ -17,6 +18,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint
 from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.layers import BatchNormalization
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -61,16 +63,21 @@ xTrain, xTest, yTrain, yTest = train_test_split(x,y, test_size=0.1)
 #cannot find difinitive answer on number of hidden layers/neurons so plan is to use two hidden layers 
 #first the same size of input and the second double the size of the output
 #although I believe the first hidden layer would probably work best at 2/3 the size of input
-outputSize = y.shape[1]
+outputSize = numClass
 print(outputSize)
 model = Sequential()
 model.add(Dense((numCol*1.8),input_dim=numCol,activation='relu'))
-model.add(Dense((numCol/1.5),activation='relu'))
-model.add(Dense((outputSize/1.2),activation='relu'))
+#model.add(Dense((numCol*1.3),activation='relu'))
+model.add(Dense((outputSize*1.8),activation='relu'))
+#model.add(Dense((outputSize*1.2),activation='relu'))
+#model.add(BatchNormalization())
+#model.add(Dropout(0.5))
+model.add(Dense((outputSize*1.4),activation='tanh'))
 model.add(Dense(outputSize,activation='softmax'))
-model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
+#model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-history = model.fit(xTrain,yTrain, epochs=400, batch_size=32)
+history = model.fit(xTrain,yTrain, epochs=400, batch_size=128)
 
 
 print("Begining Testing Phase")

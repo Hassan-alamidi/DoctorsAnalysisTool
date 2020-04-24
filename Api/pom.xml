@@ -63,9 +63,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--H2 database seems to fail to create tables on occasion so running tests 3 times to ensure its not my code that is failing-->
+                    <!--H2 database seems to fail to create tables on occasion so running tests 5 times to ensure its not my code that is failing-->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
-                    <forkCount>3</forkCount>
+                    <forkCount>5</forkCount>
                     <reuseForks>true</reuseForks>
                     <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                     <skipTests>${skipTests}</skipTests>

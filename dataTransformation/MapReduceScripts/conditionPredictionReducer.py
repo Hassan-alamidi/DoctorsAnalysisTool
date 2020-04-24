@@ -15,17 +15,30 @@ with open("MapReduceOutput/setOfBool.txt", "r") as file:
     for boolColumns in file:
         booleanColumns.add(boolColumns.strip())
 
-output = pd.read_csv("MapReduceOutput/predictionSplit1.txt")
-split = pd.read_csv("MapReduceOutput/predictionSplit2.txt")
+try:
+    output = pd.read_csv("MapReduceOutput/predictionSplit1.txt")
+except:
+    print("split 1 was empty")
+    output = pd.DataFrame()
+try:
+    split = pd.read_csv("MapReduceOutput/predictionSplit2.txt")
+    output = pd.concat([output,split])
+except:
+    print("split 2 was empty or failed to concat dfs")
 
-output = pd.concat([output,split])
-split = pd.read_csv("MapReduceOutput/predictionSplit3.txt")
-
-output = pd.concat([output,split])
-split = pd.read_csv("MapReduceOutput/predictionSplit4.txt")
-output = pd.concat([output,split])
+try:    
+    split = pd.read_csv("MapReduceOutput/predictionSplit3.txt")
+    output = pd.concat([output,split])
+except:
+    print("split 3 was empty or failed to concat dfs")
+try:
+    split = pd.read_csv("MapReduceOutput/predictionSplit4.txt")
+    output = pd.concat([output,split])
+except:
+    print("split 4 was empty or failed to concat dfs")
 
 for col in booleanColumns:
     output[col].fillna(0, inplace=True)
-    
+
+output.fillna(0,inplace=True)
 output.to_csv(r"MapReduceOutput/PatientCurrentCondition.csv", header=True)

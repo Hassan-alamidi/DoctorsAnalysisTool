@@ -56,6 +56,15 @@ public class DoctorService implements UserDetailsService {
                 .build();
     }
 
+    public ResponseEntity<Doctor> registerAdmin(final Doctor doctor){
+        if(doctorDAO.count() > 0){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+        Doctor retVal = doctorDAO.save(doctor);
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
     public ResponseEntity<?> registerDoctor(final Doctor doctor){
         doctor.setPassword(bCryptPasswordEncoder.encode(TEMP_PASSWORD));
         Doctor retVal = doctorDAO.save(doctor);

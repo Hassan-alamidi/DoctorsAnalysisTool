@@ -19,6 +19,12 @@ public class AuthenticationResource {
         this.doctorService = doctorService;
     }
 
+    //this endpoint is used to register the very first doctor as an admin afterwards this endpoint will do nothing
+    @PostMapping("/admin/register")
+    public ResponseEntity<Doctor> registerAdmin(@RequestBody Doctor doctor){
+        return doctorService.registerAdmin(doctor);
+    }
+
     //this can only be done by doctor with administrative privileges
     @PostMapping("/register")
     public ResponseEntity<?> registerDoctor(@RequestBody Doctor doctor){

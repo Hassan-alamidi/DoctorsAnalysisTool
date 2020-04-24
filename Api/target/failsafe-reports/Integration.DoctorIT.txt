@@ -1,12 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: Integration.DoctorIT
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.209 s <<< FAILURE! - in Integration.DoctorIT
-Integration.DoctorIT.changePasswordWithoutSupplyingCurrentPassword_thenFail  Time elapsed: 0.166 s  <<< FAILURE!
-java.lang.AssertionError: expected:<401 UNAUTHORIZED> but was:<500 INTERNAL_SERVER_ERROR>
-	at Integration.DoctorIT.changePasswordWithoutSupplyingCurrentPassword_thenFail(DoctorIT.java:56)
-
-Integration.DoctorIT.doctorGetsTheirOwnInformation  Time elapsed: 0.023 s  <<< FAILURE!
-java.lang.AssertionError: expected:<200 OK> but was:<400 BAD_REQUEST>
-	at Integration.DoctorIT.doctorGetsTheirOwnInformation(DoctorIT.java:127)
-
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.91 s - in Integration.DoctorIT

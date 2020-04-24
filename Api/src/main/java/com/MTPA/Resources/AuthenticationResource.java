@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+
 @RestController
 public class AuthenticationResource {
 
@@ -24,8 +26,8 @@ public class AuthenticationResource {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> passwordChange(@RequestBody Doctor doctor, @RequestHeader String newPassword){
-        return doctorService.passwordChange(doctor,newPassword);
+    public ResponseEntity<?> passwordChange(@CookieValue("Authorization") final String token, @RequestHeader String oldPassword, @RequestHeader String newPassword){
+        return doctorService.passwordChange(token, oldPassword, newPassword);
     }
 
     @GetMapping("/colleague")
@@ -34,7 +36,7 @@ public class AuthenticationResource {
     }
 
     @GetMapping("/personal-details")
-    public ResponseEntity<?> getDoctorsPersonalDetails(@RequestHeader("Authorization") final String token){
+    public ResponseEntity<?> getDoctorsPersonalDetails(@CookieValue("Authorization") final String token){
         return doctorService.getPersonalDetails(token);
     }
 

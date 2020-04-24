@@ -1,13 +1,18 @@
 const key = "isLoggedIn";
+const isAdminKey = "isAdmin";
 
 class Auth {
     constructor(){
         this.stored = sessionStorage.getItem(key)
+        //this does nothing other than make the register staff button appear, the endpoint is secured to disallow non-admins from carrying out the action
+        this.isAdminStored = sessionStorage.getItem(isAdminKey)
         if(typeof this.stored === 'undefined' || this.stored === null){
             this.authenticated = false;
+            this.manager = false;
         }else{
             //convert the string to boolean and store the boolean in authenticated
-            this.authenticated = (Boolean(this.stored) === true);
+            this.authenticated = (this.stored === "true");
+            this.manager = (this.isAdminStored === "true");
         }
     }
 
@@ -15,15 +20,22 @@ class Auth {
         return this.authenticated;
     }
 
-    login(){
+    isAdmin(){
+        return this.manager;
+    }
+
+    login(privilegeLevel){
+        const admin = privilegeLevel === "Admin" ? true : false;
         this.authenticated = true;
+        this.manager = admin;
         sessionStorage.setItem(key,"true");
+        sessionStorage.setItem(isAdminKey, admin)
     }
 
     logout(){
         this.authenticated = false;
         sessionStorage.removeItem(key)
-        //sessionStorage.setItem(key,"false");
+        sessionStorage.removeItem(isAdminKey);
     }
 
 }

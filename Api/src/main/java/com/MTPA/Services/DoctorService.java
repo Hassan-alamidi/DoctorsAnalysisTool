@@ -5,6 +5,7 @@ import com.MTPA.Objects.Doctor;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,16 +62,17 @@ public class DoctorService implements UserDetailsService {
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> passwordChange(final Doctor doctor, final String newPassword){
-        if(newPassword == null || newPassword.trim().isEmpty()){
+    public ResponseEntity<HttpStatus> passwordChange(final String token, final String oldPassword, final String newPassword){
+        if(newPassword == null || newPassword.trim().isEmpty() || oldPassword == null){
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        Doctor retVal = doctorDAO.findByLicenceNumber(doctor.getMedicalLicenceNumber());
+        Doctor retVal = doctorDAO.findByLicenceNumber(getLicenceNumber(token));
+
         //if the password is the temp password then we don't care about passed in old password
         if(retVal == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else if(bCryptPasswordEncoder.matches(TEMP_PASSWORD, retVal.getPassword()) ||
-                (doctor.getPassword() != null && bCryptPasswordEncoder.matches(doctor.getPassword(), retVal.getPassword()))){
+                (bCryptPasswordEncoder.matches(oldPassword, retVal.getPassword()))){
             retVal.setPassword(bCryptPasswordEncoder.encode(newPassword));
             doctorDAO.save(retVal);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -80,6 +82,11 @@ public class DoctorService implements UserDetailsService {
 
     public ResponseEntity<Doctor> getDoctorByLicenceNumber(final String licenceNum){
         Doctor doctorDetails = doctorDAO.findByLicenceNumber(licenceNum);
+        //do not return password
+        if(doctorDetails == null){
+            return new ResponseEntity<Doctor>(HttpStatus.NOT_FOUND);
+        }
+        doctorDetails.setPassword("");
         return new ResponseEntity<Doctor>(doctorDetails, HttpStatus.OK);
     }
 
@@ -87,6 +94,8 @@ public class DoctorService implements UserDetailsService {
         String licenceNumber = getLicenceNumber(token);
         if(licenceNumber != null && !licenceNumber.isEmpty()){
             Doctor doctorDetails = doctorDAO.findByLicenceNumber(licenceNumber);
+            //do not return password
+            doctorDetails.setPassword("");
             return new ResponseEntity<>(doctorDetails, HttpStatus.OK);
         }
         return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -104,12 +113,16 @@ public class DoctorService implements UserDetailsService {
     }
 
     private String getLicenceNumber(final String token){
+        try{
         if (token != null) {
             // parse the token.
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC512(secret.getBytes())).build();
             DecodedJWT decodedJWT = jwtVerifier.verify(token.replace(tokenPrefix, ""));
 
             return decodedJWT.getSubject();
+        }
+        }catch(JWTDecodeException e){
+            System.out.println(e);
         }
         return null;
     }

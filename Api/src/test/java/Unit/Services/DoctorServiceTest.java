@@ -64,6 +64,7 @@ public class DoctorServiceTest {
                 .password("notDefault")
                 .medicalLicenceNumber("licence234")
                 .build();
+
     }
 
     @Test
@@ -126,7 +127,7 @@ public class DoctorServiceTest {
     @Test
     public void changePasswordNonExistentDoctor_thenNotFound(){
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(null);
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctor, "newPass");
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctor","", "newPass");
         Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
@@ -134,14 +135,14 @@ public class DoctorServiceTest {
     public void changeNonDefaultPasswordWithOriginalPasswordNotSupplied_thenUnauthorized(){
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
         doctor.setPassword(null);
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctor, "newPass");
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctor","", "newPass");
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
     }
 
     @Test
     public void changePasswordWithNoNewPasswordSupplied_thenUnprocessableEntity(){
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctor, "");
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctor", "oldPassword","");
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
 
     }
@@ -149,8 +150,8 @@ public class DoctorServiceTest {
     @Test
     public void changeNonDefaultPasswordWithIncorrectOriginalPassword_thenUnauthorized(){
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
-        doctorForLogin.setPassword("incorrectPass");
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctorForLogin, "newPass");
+        //doctorForLogin.setPassword("incorrectPass");
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctorForLogin","incorrectPass", "newPass");
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
     }
 
@@ -159,17 +160,17 @@ public class DoctorServiceTest {
         String newPassword = "newPass";
         doctor.setPassword(DEFAULT_PASSWORD_ENCODED);
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
-        doctorForLogin.setPassword(null);
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctorForLogin, newPassword);
+        //doctorForLogin.setPassword(null);
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctorForLogin","", newPassword);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
     public void changeNonDefaultPasswordWithOriginalPassword_thenOk(){
         String newPassword = "newPass";
-        doctor.setPassword(DEFAULT_PASSWORD_ENCODED);
+        doctor.setPassword(PASSWORD_ENCODED);
         when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
-        ResponseEntity<?> responseEntity = doctorService.passwordChange(doctorForLogin, newPassword);
+        ResponseEntity<?> responseEntity = doctorService.passwordChange("doctorForLogin", PASSWORD, newPassword);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 

@@ -34,7 +34,13 @@ class LoginPage extends React.Component {
                 .then(function (response) {
                     if (response.status === 200) {
                         //create a non-http session cookie and redirect to home
-                        this.toHome()
+                        
+                        axios('http://localhost:8080/personal-details', {method: "get", withCredentials: true })
+                        .then(function(response){
+                            console.log(response);
+                            this.toHome(response.data.privilegeLevel)
+                        }.bind(this));
+                        
                     }
                 }.bind(this));
         } else {
@@ -42,8 +48,8 @@ class LoginPage extends React.Component {
         }
     }
 
-    toHome() {
-        auth.login();
+    toHome(privilegeLevel) {
+        auth.login(privilegeLevel);
         this.props.history.push("/hub/home");
     }
 

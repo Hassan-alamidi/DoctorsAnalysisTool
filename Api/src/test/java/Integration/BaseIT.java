@@ -75,7 +75,7 @@ public abstract class BaseIT {
 
     private HttpHeaders generateHeader(String token){
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HEADER_STRING, token);
+        headers.set("Cookie", HEADER_STRING+"="+token);
         return headers;
     }
 

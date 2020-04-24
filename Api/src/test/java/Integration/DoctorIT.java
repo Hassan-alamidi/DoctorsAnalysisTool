@@ -32,68 +32,60 @@ public class DoctorIT extends BaseIT {
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void changeDefaultPasswordWithoutSupplyingCurrentPassword(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("newPassword", "newPass");
-        ResponseEntity<String> responseEntity =
-                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
-        System.out.println(responseEntity.toString());
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void changeDefaultPasswordWithoutSupplyingCurrentPassword(){
+//        Doctor doctor = new Doctor();
+//        doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
+//        doctorHeader.add("newPassword", "newPass");
+//        ResponseEntity<String> responseEntity =
+//                restTemplate.exchange("/setup/" + PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctorHeader), String.class);
+//        System.out.println(responseEntity.toString());
+//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//    }
 
     @Test
     public void changePasswordWithoutSupplyingCurrentPassword_thenFail(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("newPassword", "newPass");
+        doctorHeader.add("newPassword", "newPass");
+        doctorHeader.add("oldPassword", "");
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
     }
 
     @Test
     public void changePasswordWithIncorrectCurrentPassword_thenFail(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
-        doctor.setPassword("incorrectPass");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("newPassword", "newPass");
+        doctorHeader.add("newPassword", "newPass");
+        doctorHeader.add("oldPassword", "incorrectPass");
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
     }
 
     @Test
     public void changePasswordWithCorrectCurrentPassword(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber(NON_ADMIN_LICENCE_NUM);
-        doctor.setPassword(NON_DEFAULT_PASSWORD);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("newPassword", "newPass");
+        doctorHeader.add("newPassword", "newPass");
+        doctorHeader.add("oldPassword", NON_DEFAULT_PASSWORD);
         ResponseEntity<String> responseEntity =
-                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctorHeader), String.class);
         System.out.println(responseEntity.toString());
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    @Test
-    public void changePasswordWithLicenceNumberThatDoesNotExist_thenFail(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber("jiseknulkk");
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("newPassword", "newPass");
-        ResponseEntity<String> responseEntity =
-                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
-        System.out.println(responseEntity.toString());
-        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-    }
+//    @Test
+//    public void changePasswordWithLicenceNumberThatDoesNotExist_thenFail(){
+//        Doctor doctor = new Doctor();
+//        doctor.setMedicalLicenceNumber("jiseknulkk");
+//        //HttpHeaders headers = new HttpHeaders();
+//        headers.add("newPassword", "newPass");
+//        ResponseEntity<String> responseEntity =
+//                restTemplate.exchange(PASSWORD_CHANGE_ENDPOINT, HttpMethod.PUT, new HttpEntity<>(doctor, headers), String.class);
+//        System.out.println(responseEntity.toString());
+//        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+//    }
 
+    //TODO remove this functionality
     @Test
     public void loginToAccountWithDefaultPassword_thenNotLoggedIn(){
         Doctor doctor = new Doctor();
@@ -123,6 +115,7 @@ public class DoctorIT extends BaseIT {
 
     @Test
     public void doctorGetsTheirOwnInformation(){
+        doctorHeader.add("Cookie", "Authorization="+ NON_ADMIN_TOKEN);
         ResponseEntity<String> responseEntity = restTemplate.exchange("/personal-details", HttpMethod.GET, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -145,6 +138,6 @@ public class DoctorIT extends BaseIT {
     public void AdminTriesToGetNonExistentColleaguesInformation(){
         adminHeader.add("licenceNumber", "FakeLicence");
         ResponseEntity<String> responseEntity = restTemplate.exchange("/colleague", HttpMethod.GET, new HttpEntity<>(adminHeader), String.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 }

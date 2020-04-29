@@ -12,6 +12,8 @@ import PatientControlPanel from './pages/patientControlPanel'
 import EncounterPage from './pages/encounter'
 import HistoryPage from './pages/history'
 import AccountPage from './pages/account'
+import RegistrationPage from './pages/registration'
+import PatientInformationPage from './pages/patientInformation'
 import NavBar from './components/navBar'
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
         <Switch>
             <ProtectedRoute component={HomePage} exact path="/hub/home" />
             <ProtectedRoute component={PatientControlPanel} exact path="/hub/patient" />
+            <ProtectedRoute component={PatientInformationPage} exact path="/hub/patient/information" />
             <ProtectedRoute component={EncounterPage} exact path="/hub/patient/encounter" />
             <ProtectedRoute path="*" component={() => "404 Page Not Found"} />
         </Switch></div>
@@ -42,6 +45,14 @@ function App() {
             </Switch>
         </div>
     );
+    const register = () => (
+        <div>
+            <NavBar />
+            <Switch>
+                <ProtectedRoute component={RegistrationPage} exact path="/register" />
+            </Switch>
+        </div>
+    );
     return (
         <Router>
             <img id="background" src={require("./resources/images/loginPageBackground.jpg")} alt=""></img>
@@ -50,6 +61,8 @@ function App() {
                 <Route component={dashboard} path="/dashboard" />
                 <Route component={withNavBar} path="/hub" />
                 <Route component={doctor} path="/info" />
+                <Route component={register} exact path="/register" />
+                <Route component={RegistrationPage} exact path="/register/admin" />
                 <Route path="*" component={() => "404 Page Not Found"} />
             </Switch>
         </Router>

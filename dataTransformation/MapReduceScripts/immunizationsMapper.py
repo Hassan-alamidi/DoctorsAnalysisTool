@@ -6,7 +6,7 @@ Created on Fri Mar 13 19:10:56 2020
 @author: hassan
 map immunizations, this requires annother mapper to mix with medication, followed by a reducer
 """
-
+#nolonger have immunization table its now in with medication
 from __future__ import print_function
 import sys
 

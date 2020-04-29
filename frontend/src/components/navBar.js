@@ -19,7 +19,7 @@ class NavigationBar extends React.Component {
                     <ul className="navbar-nav mr-auto">
                         {(auth.isAdmin()) &&
                             <li className="nav-item">
-                                <a className="nav-link" href="#/action">
+                                <a className="nav-link" href="/register">
                                     Register Staff
                                 </a>
                             </li>

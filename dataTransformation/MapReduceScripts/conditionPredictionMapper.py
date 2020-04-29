@@ -11,7 +11,7 @@ import datetime as date
 import calendar
 import pandas as pd
 import numpy as np
-import pickle
+import subprocess
 
 def manipulateMonth(currentDate, months):
     currentDate = date.datetime.strptime(currentDate, "%Y-%m-%d").date()
@@ -23,7 +23,8 @@ def manipulateMonth(currentDate, months):
 
 def calculateAge(birthDate, currentDate):
     return currentDate.year - birthDate.year - ((currentDate.month, currentDate.day) < (birthDate.month, birthDate.day))
-    
+'''
+#this is testing version
 def loadPatientDataFromFile(patientId, fileName):
     file = open(fileName, 'r')
     lines = file.readlines()
@@ -35,8 +36,20 @@ def loadPatientDataFromFile(patientId, fileName):
             data = line.split(",")
             dataList.append(data)
     return dataList
+'''
+#this hadoop version
+def loadPatientDataFromFile(patientId, files):
+    cat = subprocess.Popen(["/home/ubuntu/hadoop-2.10.0/bin/hadoop", "fs", "-cat", files], stdout=subprocess.PIPE, encoding='utf8')
+    #file = sc.textFile('hdfs://localhost:9000/user/ubuntu/' + files)
+    #lines = file.readlines()
+    dataList = []
+    for line in cat.stdout:
+        if(patientId in line):
+            line = line.strip()
+            data = line.split(",")
+            dataList.append(data)
+    return dataList
 
-count = 0
 #file = open("../MapReduceOutput/patient.txt", 'r')
 #lines = file.readlines()
 #file.close()
@@ -44,27 +57,33 @@ finalData = pd.DataFrame()
 observationsList = set()
 boolList = set()
 for line in sys.stdin:
+    '''
     if(count == 0):
         count += 1
         continue
     count += 1
+    '''
     line = line.strip()
     line = [line.split(",")]
     #dataframe is overkill and is actually slightly slower but using it for readability
     patient = pd.DataFrame(line,columns=["ppsn", "birthDate", "deathDate", "gender"])
+    patient = patient.replace('null', '', regex=True)
     patient["birthDate"] = pd.to_datetime(patient["birthDate"])
     
-    patientObservations = loadPatientDataFromFile(patient.iloc[0,0], "MapReduceOutput/observations.txt")
+    patientObservations = loadPatientDataFromFile(patient.iloc[0,0], "mapOutput/observations/part*")
     patientObservations = pd.DataFrame(patientObservations,columns=["ppsn", "date", "description", "value", "units"])
+    patientObservations = patientObservations.replace('null', '', regex=True)
     patientObservations["date"] = pd.to_datetime(patientObservations["date"])
     
-    patientMedications = loadPatientDataFromFile(patient.iloc[0,0], "MapReduceOutput/medAndImmun.txt")
-    patientMedications = pd.DataFrame(patientMedications,columns=["ppsn", "start", "stop", "description"])
+    patientMedications = loadPatientDataFromFile(patient.iloc[0,0], "mapOutput/medication/part*")
+    patientMedications = pd.DataFrame(patientMedications,columns=["ppsn", "start", "stop", "description", "type"])
+    patientMedications = patientMedications.replace('null', '', regex=True)
     patientMedications["start"] = pd.to_datetime(patientMedications["start"])
     patientMedications["stop"] = pd.to_datetime(patientMedications["stop"])
     
-    patientConditions = loadPatientDataFromFile(patient.iloc[0,0], "MapReduceOutput/conditions.txt")
-    patientConditions = pd.DataFrame(patientConditions,columns=["ppsn", "start", "stop", "description", "predictive"])
+    patientConditions = loadPatientDataFromFile(patient.iloc[0,0], "mapOutput/conditions/part*")
+    patientConditions = pd.DataFrame(patientConditions,columns=["ppsn", "start", "stop", "description", "type", "predictive"])
+    patientConditions = patientConditions.replace('null', '', regex=True)
     patientConditions["start"] = pd.to_datetime(patientConditions["start"])
     patientConditions["stop"] = pd.to_datetime(patientConditions["stop"])
     
@@ -72,23 +91,25 @@ for line in sys.stdin:
     conditionsToPredict = patientConditions[predic]
     
     for index, rows in conditionsToPredict.iterrows():
-        fourMonthsBefore = manipulateMonth(rows["start"].strftime("%Y-%m-%d"), -4)
-        #obvBefore = patientObservations['date'] <= pd.to_datetime(fourMonthsBefore)
-        observationsBefore = patientObservations[(patientObservations['date'] <= pd.to_datetime(fourMonthsBefore))]
+#       oneMonthsBefore = manipulateMonth(rows["start"].strftime("%Y-%m-%d"), -1)
+        oneMonthsBefore = date.datetime.strptime(rows["start"].strftime("%Y-%m-%d"), "%Y-%m-%d").date()
+
+        #obvBefore = patientObservations['date'] <= pd.to_datetime(oneMonthsBefore)
+        observationsBefore = patientObservations[(patientObservations['date'] <= pd.to_datetime(oneMonthsBefore))]
         observationsBefore = observationsBefore.sort_values('date', ascending=False)
         observationsBefore = observationsBefore.drop_duplicates(subset='description')
         
-        #medDuring = ((patientMedications['start'] < pd.to_datetime(fourMonthsBefore)) & ((patientMedications['stop'] > pd.to_datetime(fourMonthsBefore)) | (patientMedications['stop'].empty)))
-        medicationDuring = patientMedications[((patientMedications['start'] < pd.to_datetime(fourMonthsBefore)) & ((patientMedications['stop'] > pd.to_datetime(fourMonthsBefore)) | (patientMedications['stop'].empty)))]
+        #medDuring = ((patientMedications['start'] < pd.to_datetime(oneMonthsBefore)) & ((patientMedications['stop'] > pd.to_datetime(oneMonthsBefore)) | (patientMedications['stop'].empty)))
+        medicationDuring = patientMedications[((patientMedications['start'] < pd.to_datetime(oneMonthsBefore)) & ((patientMedications['stop'] > pd.to_datetime(oneMonthsBefore)) | (patientMedications['stop'].empty)))]
         medicationDuring = medicationDuring.sort_values('start', ascending=False)
         medicationDuring = medicationDuring.drop_duplicates(subset='description')
         conditionsDuring = pd.DataFrame()
-        #condDuring = ((patientConditions['start'] < pd.to_datetime(fourMonthsBefore)) & ((patientConditions['stop'] > pd.to_datetime(fourMonthsBefore)) | (patientConditions['stop'].empty)))
-        conditionsDuring = patientConditions[((patientConditions['start'] < pd.to_datetime(fourMonthsBefore)) & ((patientConditions['stop'] > pd.to_datetime(fourMonthsBefore)) | (patientConditions['stop'].empty)))]
+        #condDuring = ((patientConditions['start'] < pd.to_datetime(oneMonthsBefore)) & ((patientConditions['stop'] > pd.to_datetime(oneMonthsBefore)) | (patientConditions['stop'].empty)))
+        conditionsDuring = patientConditions[((patientConditions['start'] < pd.to_datetime(oneMonthsBefore)) & ((patientConditions['stop'] > pd.to_datetime(oneMonthsBefore)) | (patientConditions['stop'].empty)))]
         conditionsDuring = conditionsDuring.sort_values('start', ascending=False)
         conditionsDuring = conditionsDuring.drop_duplicates(subset='description')
         
-        age = calculateAge(patient.iloc[0,1], fourMonthsBefore)
+        age = calculateAge(patient.iloc[0,1], oneMonthsBefore)
         
         if(conditionsDuring.shape[0] > 0 and age > 5):
             tmpCond = conditionsDuring[["description"]].copy()
@@ -126,13 +147,15 @@ for line in sys.stdin:
 #    for col in observationsList:
 #        if(!is_string_dtype(finalData[col])):
 #for the neural network I am going to leave missing data as na except conditions as the one and zero are binary
+
 for col in boolList:
     finalData[col].fillna(0, inplace=True)
-
+'''
 with open("MapReduceOutput/setOfBool.txt", "a") as file:
     for col in boolList:
         file.write(col + "\n")
-
+'''
+finalData.sort_index(axis=1, inplace=True)
 print(",".join(str(colName) for colName in finalData))
 for index, rows in finalData.iterrows():
         print(",".join(str(colu) for colu in rows))

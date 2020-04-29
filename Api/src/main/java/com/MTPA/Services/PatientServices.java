@@ -26,7 +26,7 @@ public class PatientServices {
         Patient patientOldDetails = patientDAO.findByPPSN(patient.getPpsn());
         if(patientOldDetails != null && patient.getId() == patientOldDetails.getId() && patient.getPpsn().equals(patientOldDetails.getPpsn())){
             if(patient.getDob().compareTo(patientOldDetails.getDob()) == 0){
-                patient = patientDAO.save(patient );
+                patient = patientDAO.save(patient);
                 return new ResponseEntity<Patient>(patient, HttpStatus.OK);
             }
             return new ResponseEntity<>("You cannot update the patients Date of birth", HttpStatus.UNPROCESSABLE_ENTITY);

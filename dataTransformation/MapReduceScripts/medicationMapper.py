@@ -14,13 +14,14 @@ for line in sys.stdin:
     data = line.split(",")
     
     try:
-        start = str(data[0])
-        stop = str(data[1])
-        ppsn = str(data[2])
+        start = str(data[2])
+        stop = str(data[3])
+        ppsn = str(data[4])
         description = str(data[6])
+        medicationType = str(data[1])
     except ValueError:
         #print("Failed to read medication")
         #print(data)
         continue
     
-    print(ppsn,start, stop, description, sep=',')
+    print(ppsn,start, stop, description, medicationType, sep=',')

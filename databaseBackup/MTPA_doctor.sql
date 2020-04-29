@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `MTPA` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `MTPA`;
 -- MySQL dump 10.13  Distrib 5.7.29, for Linux (x86_64)
 --
 -- Host: localhost    Database: MTPA
@@ -35,12 +33,11 @@ CREATE TABLE `doctor` (
   `privilege_level` varchar(45) NOT NULL,
   `password` varchar(200) NOT NULL,
   `phone_number` int(11) NOT NULL,
-  `organization_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `medical_licence_number_UNIQUE` (`medical_licence_number`),
   UNIQUE KEY `ppsn_UNIQUE` (`ppsn`),
   UNIQUE KEY `phone_number_UNIQUE` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +46,7 @@ CREATE TABLE `doctor` (
 
 LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-INSERT INTO `doctor` VALUES (1,'num1','testDoc','testie','1991-04-13','jsaof234j','123 easy street','Admin','$2a$10$9Zrs5s5wGDmxcSP71IG73eplyJXn0cSDdIyrvpVGxI8raHthHRSFy',819283,1),(2,'num31','testDoc','testie','1991-04-13','jsaofsfee234j','123 easy street','User','$2a$10$SaZQmxR7DSPXDokK2DXDrufdNe9AmJWrHm38XZoQ9tIIj..vsaiWC',81923483,1),(4,'num331','testDoc','testie','1991-04-13','jsaofsfsfee234j','123 easy street','User','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',34323483,1),(5,'12134e','testDoc','testie','1991-04-13','fsfee234j','123 easy street','User','$2a$10$N2mxboOvsAn56DA8Q.OeJ.ibE7UlRmQnLgbVvqZSj6YY8AqV.kdDq',343243,1);
+INSERT INTO `doctor` VALUES (6,'admin','jsiofajaw','jaosef','1991-12-10','jaosejf','osjffjsoej','Admin','$2a$10$rM.PWvRnX2pO7cwZU7tymexw9k0mWuB9FZP65GN6FrDZIvi2.BwaC',9439),(7,'nonAdmin','nonadmin','user','1984-03-23','jfoei','oafewoi','User','$2a$10$Ui5yJfzB61bDGL80sHtY5OHmNv/.Xy2e2NLdntzpE6.F8Qsrc9yVy',987888),(8,'aefj','asjefoi','osiejf','2003-08-03','afjaiweji;','jefoi','Admin','$2a$10$6dgBXt4B0XNUKkF3unemuuaHRBsu9LLdZbBjKYAcsbK4bfcd/uiXe',84983);
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-17 15:37:54
+-- Dump completed on 2020-04-29 17:19:35

@@ -17,6 +17,7 @@ class LoginPage extends React.Component {
         this.login = this.login.bind(this);
         this.changeHandler = this.changeHandler.bind(this)
         this.toHome = this.toHome.bind(this);
+        this.toPasswordChange = this.toPasswordChange.bind(this);
     }
 
     componentDidMount(){
@@ -38,14 +39,27 @@ class LoginPage extends React.Component {
                         axios('http://localhost:8080/personal-details', {method: "get", withCredentials: true })
                         .then(function(response){
                             console.log(response);
-                            this.toHome(response.data.privilegeLevel)
+                            if(response.data.accountMessages !== undefined && response.data.accountMessages === "change password"){
+                                console.log("pass")
+                                //treat all as basic doctor until password is changed
+                                this.toPasswordChange("User");
+                            }else{
+                                this.toHome(response.data.privilegeLevel)
+                            }
                         }.bind(this));
                         
                     }
-                }.bind(this));
+                }.bind(this)).catch(function(error){
+                    console.log(error);
+                });
         } else {
             alert("Please enter both your medical licence number and password")
         }
+    }
+
+    toPasswordChange(privilegeLevel){
+        auth.login(privilegeLevel);
+        this.props.history.push("/info/password");
     }
 
     toHome(privilegeLevel) {

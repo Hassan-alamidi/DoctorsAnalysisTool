@@ -59,7 +59,7 @@ class AccountPage extends React.Component {
                         <ul className="list-group">
                             <li className="list-group-item list-group-item-success">Medical Licence: {this.state.doctor.medicalLicenceNumber}</li>
                             <li className="list-group-item list-group-item-success">Name: {this.state.doctor.firstName} {this.state.doctor.lastName}</li>
-                            <li className="list-group-item list-group-item-success">Date Of Birth: {this.state.doctor.DOB}</li>
+                            <li className="list-group-item list-group-item-success">Date Of Birth: {this.state.doctor.dob}</li>
                             <li className="list-group-item list-group-item-success">PPSN: {this.state.doctor.ppsn}</li>
                             <li className="list-group-item list-group-item-success">Address: {this.state.doctor.address}</li>
                             <li className="list-group-item list-group-item-success">phone Number: {this.state.doctor.phoneNumber}</li>

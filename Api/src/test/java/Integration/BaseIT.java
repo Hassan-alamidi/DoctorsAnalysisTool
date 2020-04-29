@@ -16,7 +16,6 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -111,7 +110,7 @@ public abstract class BaseIT {
     private void doctorCreation(){
         NEVER_GETS_ADDED_DOCTOR = Doctor.builder()
                 .address("iajd")
-                .DOB(Date.valueOf("1999-08-09"))
+                .dob(LocalDate.parse("1999-08-09"))
                 .firstName("Tom")
                 .lastName("jife")
                 .medicalLicenceNumber("986987M")
@@ -122,7 +121,7 @@ public abstract class BaseIT {
                 .build();
         DOCTOR_GETS_ADDED_TO_DB = Doctor.builder()
                 .address("iajd")
-                .DOB(Date.valueOf("1999-08-09"))
+                .dob(LocalDate.parse("1999-08-09"))
                 .firstName("Tim")
                 .lastName("jife")
                 .medicalLicenceNumber("72648987N")

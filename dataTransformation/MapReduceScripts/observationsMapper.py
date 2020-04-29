@@ -19,11 +19,11 @@ for line in sys.stdin:
     data = line.split(",")
     
     try:
-        date = str(data[0])
-        ppsn = str(data[1])
-        description = str(data[4])
-        value = str(data[5])
-        units = str(data[6])
+        date = str(data[2])
+        ppsn = str(data[7])
+        description = str(data[1])
+        value = str(data[4])
+        units = str(data[5])
     except ValueError:
         #print("Failed to read observation")
         #print(data)

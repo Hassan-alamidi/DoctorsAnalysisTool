@@ -25,7 +25,7 @@ class PasswordPage extends React.Component {
 
     changePassword(){
         //need to componitize axios requests to reduce redundant code, in a rush now to get work done though so that will come later if time presents itself
-        if(this.state.oldPassword !== undefined && this.state.oldPassword.trim() !== "" && this.state.newPassword !== undefined && this.state.newPassword.trim() !== ""){
+        if(this.state.oldPassword !== undefined && this.state.newPassword !== undefined && this.state.newPassword.trim() !== ""){
             axios('http://localhost:8080/password', { 
                     method: "put", 
                     withCredentials: true, headers:{oldPassword:this.state.oldPassword, newPassword:this.state.newPassword}})
@@ -63,9 +63,10 @@ class PasswordPage extends React.Component {
         }else{
             return(
                 <div className="container">
-                    <CardAlt header={"Personal Information"}>
+                    <CardAlt header={"Change Password"}>
+                        <h5>If you have been sent here after logging in then you must change from your default password</h5>
                         {(this.state.error) && <p>{this.state.error}</p>}
-                        <input className="form-control form-control-lg" type="text" placeholder="Please enter your old password" name="oldPassword" onChange={this.changeHandler} />
+                        <input className="form-control form-control-lg" type="text" placeholder="Please enter your old password, not required if changing from default" name="oldPassword" onChange={this.changeHandler} />
                         <input className="form-control form-control-lg" type="text" placeholder="Please enter your new password" name="newPassword" onChange={this.changeHandler} />
                         <div className="card-footer">
                             <button type="button" className="btn" id="left-panel-link" onClick={this.changePassword}>change Password</button>

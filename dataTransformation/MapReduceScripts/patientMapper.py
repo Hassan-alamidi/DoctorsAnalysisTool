@@ -17,10 +17,10 @@ for line in sys.stdin:
     data = line.split(",")
     
     try:
-        ppsn = str(data[0])
-        birthDate = str(data[1])
-        deathDate = str(data[2])
-        gender = str(data[14])
+        ppsn = str(data[3])
+        birthDate = str(data[2])
+        deathDate = str(data[6])
+        gender = str(data[7])
     except ValueError:
         #print("Failed to read patient")
         #print(data)

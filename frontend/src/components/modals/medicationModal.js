@@ -124,12 +124,9 @@ class MedicationModal extends React.Component {
 
     prescribedAmountChangeHandler(val){
         const value = val.target.value;
-        const re = /^[0-9\b]+$/;
-      //if (value === '' || re.test(value)) {
-            let backup = this.state.medication;
-            backup.prescribedAmount = value.replace(/\D/g, "")
-            this.setState({ medication: backup });
-        //}else{console.log("failed")}
+        let backup = this.state.medication;
+        backup.prescribedAmount = value.replace(/\D/g, "")
+        this.setState({ medication: backup });
     }
 
     render(){

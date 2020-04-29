@@ -21,10 +21,11 @@ for line in sys.stdin:
     data = line.split(",")
     
     try:
-        start = str(data[0])
-        stop = str(data[1])
-        ppsn = str(data[2])
-        description = str(data[5])
+        start = str(data[5])
+        stop = str(data[6])
+        ppsn = str(data[7])
+        description = str(data[1])
+        conditionType = str(data[9])
     except ValueError:
         #print("Failed to read condition")
         #print(data)
@@ -34,9 +35,5 @@ for line in sys.stdin:
         continue
     elif any(nonPre in description.lower() for nonPre in nonPredictive):
         predictive = "false"
-        
-    if(count == 0):
-        predictive ="PREDICTIVE"
-        count += 1
-        
-    print(ppsn,start, stop, description, predictive, sep=',')
+  
+    print(ppsn,start, stop, description, conditionType, predictive, sep=',')

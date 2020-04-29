@@ -41,11 +41,8 @@ public class DoctorService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String licenceNum) {
         Doctor doctor = doctorDAO.findByLicenceNumber(licenceNum);
-
         if (doctor == null) {
             throw new UsernameNotFoundException(licenceNum + " not found");
-        }else if(bCryptPasswordEncoder.matches(TEMP_PASSWORD, doctor.getPassword())){
-            throw new UsernameNotFoundException("Must change password");
         }
 
         return User.builder()
@@ -61,6 +58,7 @@ public class DoctorService implements UserDetailsService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+        doctor.setPrivilegeLevel("Admin");
         Doctor retVal = doctorDAO.save(doctor);
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
@@ -103,6 +101,10 @@ public class DoctorService implements UserDetailsService {
         String licenceNumber = getLicenceNumber(token);
         if(licenceNumber != null && !licenceNumber.isEmpty()){
             Doctor doctorDetails = doctorDAO.findByLicenceNumber(licenceNumber);
+
+            if(bCryptPasswordEncoder.matches(TEMP_PASSWORD, doctorDetails.getPassword())){
+                doctorDetails.setAccountMessages("change password");
+            }
             //do not return password
             doctorDetails.setPassword("");
             return new ResponseEntity<>(doctorDetails, HttpStatus.OK);

@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import static junit.framework.TestCase.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +51,7 @@ public class DoctorServiceTest {
         doctorService = new DoctorService(doctorDAO, bCryptPasswordEncoder, secret, tokenPrefix);
         doctor = Doctor.builder()
                 .firstName("testDoc")
-                .DOB(new SimpleDateFormat("yyyy-MM-dd").parse("1972-03-06"))
+                .dob(LocalDate.parse("1972-03-06"))
                 .ppsn("ppssn")
                 .lastName("t")
                 .password("notDefault")

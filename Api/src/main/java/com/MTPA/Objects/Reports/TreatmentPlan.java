@@ -63,6 +63,8 @@ public class TreatmentPlan {
     @Column
     private String reasonDescription;
 
+
+
     //the below is only generated when prediction is requested might move to a separate class
     //This should probably be removed or be placed in its own object as a report object
 //    @Getter

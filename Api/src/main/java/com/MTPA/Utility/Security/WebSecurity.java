@@ -30,6 +30,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private static final String REGISTER_DOCTOR = "/register";
     private static final String HEALTHCHECK = "/healthCheck";
+    private static final String ADMIN_REGISTRATION = "/register/admin";
     private final String SECRET;
     private final String HEADER_STRING;
     private final String TOKEN_PREFIX;
@@ -62,6 +63,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/colleague").hasAuthority("ROLE_Admin")
                 .antMatchers(HttpMethod.GET, HEALTHCHECK).permitAll()
                 .antMatchers(HttpMethod.PUT, "/password").permitAll()
+                .antMatchers(HttpMethod.POST, ADMIN_REGISTRATION).permitAll()
                 .anyRequest().authenticated().and()
                 .addFilter(new AuthenticationFilter(authenticationManager(),SECRET,HEADER_STRING, TOKEN_PREFIX, EXPIRATION_TIME))
                 .addFilter(new AuthorizationFilter(authenticationManager(), SECRET,HEADER_STRING, TOKEN_PREFIX))

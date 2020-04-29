@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -41,9 +42,8 @@ public class Doctor implements Serializable {
 
     @Getter
     @Setter
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
-    private Date DOB;
+    private LocalDate dob;
 
     //I don't want a setter here but jackson seems to insist on it must find a solution later
     @Setter
@@ -53,17 +53,27 @@ public class Doctor implements Serializable {
 
     @Getter
     @Setter
+    @Column
     private String privilegeLevel;
 
     @Getter
     @Setter
+    @Column
     private String address;
 
     @Getter
     @Setter
+    @Column
     private int phoneNumber;
 
     @Getter
     @Setter
+    @Column
     private String password;
+
+    @Getter
+    @Setter
+    @Transient
+    private String accountMessages;
+
 }

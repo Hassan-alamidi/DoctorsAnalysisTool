@@ -104,7 +104,7 @@ class PatientControlPanelPage extends React.Component {
                                 <div className="col-xl-6">
                                     <div className="row" style={{height:"100%"}}>
                                         <CardButton header="Personal Information" details="Update patients personal information"
-                                                    icon="address-card" callback={() => {this.pageChange("")}} />
+                                                    icon="address-card" callback={() => {this.pageChange("/hub/patient/information")}} />
                                         <CardButton header="Document Encounter" details="Document encounter with patient"
                                                     icon="notes-medical" callback={() => {this.pageChange("/hub/patient/encounter")}} />
                                     </div>

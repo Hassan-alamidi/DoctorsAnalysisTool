@@ -14,9 +14,9 @@ for line in sys.stdin:
     data = line.split(",")
     
     try:
-        date = str(data[0])
-        ppsn = str(data[1])
-        description = str(data[4])
+        date = str(data[3])
+        ppsn = str(data[4])
+        description = str(data[2])
     except ValueError:
         #print("Failed to read procedure")
         #print(data)

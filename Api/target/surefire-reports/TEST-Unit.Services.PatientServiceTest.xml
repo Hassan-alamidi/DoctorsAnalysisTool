@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.PatientServiceTest" time="1.641" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.PatientServiceTest" time="21.457" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -40,7 +40,7 @@
     <property name="user.name" value="hassan"/>
     <property name="path.separator" value=":"/>
     <property name="securerandom.source" value="file:/dev/./urandom"/>
-    <property name="os.version" value="5.3.0-46-generic"/>
+    <property name="os.version" value="5.3.0-51-generic"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -64,12 +64,12 @@
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="createPatientWithUniquePPSN_thenPatientIsCreatedAnd201" classname="Unit.Services.PatientServiceTest" time="0.05"/>
-  <testcase name="patientInDatabaseGetsUpdated_thenResponseUpdatedPatientAnd200" classname="Unit.Services.PatientServiceTest" time="0.185"/>
-  <testcase name="getExistingPatient" classname="Unit.Services.PatientServiceTest" time="0.042"/>
-  <testcase name="patientNotInDatabaseGetsUpdated_thenResponse404" classname="Unit.Services.PatientServiceTest" time="0.045"/>
-  <testcase name="getNonExistingPatient" classname="Unit.Services.PatientServiceTest" time="0.084"/>
-  <testcase name="patientGetsDOBUpdated_thenUnprocessableEntity" classname="Unit.Services.PatientServiceTest" time="0.553"/>
-  <testcase name="patientGetsPPSNUpdated_thenNotFound" classname="Unit.Services.PatientServiceTest" time="0.333"/>
-  <testcase name="createPatientWithNonUniquePPSN_thenPatientIsNotCreatedAnd422" classname="Unit.Services.PatientServiceTest" time="0.133"/>
+  <testcase name="createPatientWithUniquePPSN_thenPatientIsCreatedAnd201" classname="Unit.Services.PatientServiceTest" time="0.007"/>
+  <testcase name="patientInDatabaseGetsUpdated_thenResponseUpdatedPatientAnd200" classname="Unit.Services.PatientServiceTest" time="0.011"/>
+  <testcase name="getExistingPatient" classname="Unit.Services.PatientServiceTest" time="2.777"/>
+  <testcase name="patientNotInDatabaseGetsUpdated_thenResponse404" classname="Unit.Services.PatientServiceTest" time="0.185"/>
+  <testcase name="getNonExistingPatient" classname="Unit.Services.PatientServiceTest" time="4.214"/>
+  <testcase name="patientGetsDOBUpdated_thenUnprocessableEntity" classname="Unit.Services.PatientServiceTest" time="2.881"/>
+  <testcase name="patientGetsPPSNUpdated_thenNotFound" classname="Unit.Services.PatientServiceTest" time="2.28"/>
+  <testcase name="createPatientWithNonUniquePPSN_thenPatientIsNotCreatedAnd422" classname="Unit.Services.PatientServiceTest" time="5.602"/>
 </testsuite>

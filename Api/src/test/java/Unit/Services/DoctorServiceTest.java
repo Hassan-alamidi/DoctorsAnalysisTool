@@ -79,19 +79,6 @@ public class DoctorServiceTest {
     }
 
     @Test
-    public void doctorWithDefaultPasswordTriesToLogin_thenUsernameNotFoundException(){
-        doctor.setPassword(DEFAULT_PASSWORD_ENCODED);
-        when(doctorDAO.findByLicenceNumber(any())).thenReturn(doctor);
-        doctorForLogin.setPassword(DEFAULT_PASSWORD);
-        try {
-            doctorService.loadUserByUsername(doctorForLogin.getMedicalLicenceNumber());
-            fail();
-        }catch (Exception e){
-            Assert.assertEquals("Must change password", e.getMessage());
-        }
-    }
-
-    @Test
     public void doctorWithNewPasswordLogsIn_thenUserDetailsReturned(){
         doctor.setPassword(PASSWORD_ENCODED);
         doctorForLogin.setPassword(PASSWORD);

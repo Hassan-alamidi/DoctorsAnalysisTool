@@ -3,16 +3,16 @@ package com.MTPA.Services;
 import com.MTPA.DAO.EncounterDAO;
 import com.MTPA.DAO.MedicationDAO;
 import com.MTPA.DAO.PatientDAO;
-import com.MTPA.Objects.Reports.PatientMedication;
+import com.MTPA.Objects.Reports.Medication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class MedicationService {
@@ -29,15 +29,15 @@ public class MedicationService {
         this.patientDAO = patientDAO;
     }
 
-    public ResponseEntity<List<PatientMedication>> getAllMedication(final String ppsn){
-        List<PatientMedication> medications = medicationDAO.getPatientMedicationHistory(ppsn);
+    public ResponseEntity<List<Medication>> getAllMedication(final String ppsn){
+        List<Medication> medications = medicationDAO.getPatientMedicationHistory(ppsn);
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> prescribeMedication(final PatientMedication patientMedication) {
-        if (patientMedication.getPatient() != null && patientDAO.exists(patientMedication.getPatient().getPpsn())){
-            if (encounterDAO.findById(patientMedication.getEncounter().getId()).isPresent()) {
-                PatientMedication prescribed = medicationDAO.save(patientMedication);
+    public ResponseEntity<?> prescribeMedication(final Medication medication) {
+        if (medication.getPatient() != null && patientDAO.exists(medication.getPatient().getPpsn())){
+            if (encounterDAO.findById(medication.getEncounter().getId()).isPresent()) {
+                Medication prescribed = medicationDAO.save(medication);
                 return new ResponseEntity<>(prescribed, HttpStatus.OK);
             }
             return new ResponseEntity<String>("must have valid encounter linked", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -47,20 +47,40 @@ public class MedicationService {
 
     public ResponseEntity<?> getPatientCurrentMedication(final String ppsn){
         LocalDate currentDate = LocalDate.now();
-        List<PatientMedication> currentMedication = medicationDAO.getCurrentPatientMedication(currentDate, ppsn);
+        List<Medication> currentMedication = medicationDAO.getCurrentPatientMedication(currentDate, ppsn);
         return new ResponseEntity<>(currentMedication, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getPatientImmunization(final String ppsn){
         LocalDate currentDate = LocalDate.now();
-        List<PatientMedication> currentMedication = medicationDAO.getPatientImmunizations(currentDate, ppsn);
+        List<Medication> currentMedication = medicationDAO.getPatientImmunizations(currentDate, ppsn);
         return new ResponseEntity<>(currentMedication, HttpStatus.OK);
     }
 
-    public ResponseEntity<PatientMedication> extendMedicationTreatment(final PatientMedication medication){
-        Optional<PatientMedication> med = medicationDAO.findById(medication.getId());
+    public ResponseEntity<?> markAsEnded(final int id){
+        Optional<Medication> optmedication = medicationDAO.findById(id);
+        if(optmedication.isPresent()){
+            Medication medication = optmedication.get();
+            medication.setTreatmentEnd(LocalDate.now());
+            medicationDAO.save(medication);
+            return new ResponseEntity<>(medication, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> deletePatientMedication(final int id){
+        try {
+            medicationDAO.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Medication> extendMedicationTreatment(final Medication medication){
+        Optional<Medication> med = medicationDAO.findById(medication.getId());
         if(med.isPresent()){
-            PatientMedication medDetail = med.get();
+            Medication medDetail = med.get();
             if(medication.getTreatmentEnd().compareTo(medDetail.getTreatmentEnd()) > 0){
                 medDetail.setTreatmentEnd(medication.getTreatmentEnd());
                 medDetail = medicationDAO.save(medDetail);

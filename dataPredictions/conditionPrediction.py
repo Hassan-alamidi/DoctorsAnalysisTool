@@ -18,11 +18,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import ModelCheckpoint
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.layers import BatchNormalization
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:100% !important; }</style>"))
+
 
 np.random.seed(1237981)
 sc = StandardScaler()

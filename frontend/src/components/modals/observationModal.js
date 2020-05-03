@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../resources/css/shared.scss"
 import "bootstrap";
+import {ObservationsListNoBody} from '../reportLists/observationList'
 import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
@@ -11,6 +12,7 @@ class ObservationModal extends React.Component {
         super(props);
         this.state = {
             error:"",
+            create:false,
             observation:{
                 //Observations were originally meant to be searchable via autosuggestion, which would then add a Observations assigned code.
                 //but that is low priority on my list of things todo and it is unlikly I will have time to get this completed so setting code to ignore
@@ -29,6 +31,8 @@ class ObservationModal extends React.Component {
         this.creationFooter = this.creationFooter.bind(this);
         this.valueEntered = this.valueEntered.bind(this);
         this.resetObjectState = this.resetObjectState.bind(this);
+        this.resetObjectState = this.resetObjectState.bind(this);
+        this.deleteObservation = this.deleteObservation.bind(this);
     }
 
     valueEntered(val){
@@ -66,6 +70,25 @@ class ObservationModal extends React.Component {
         }else{
             this.setState({error:"You must enter all details of observation"})
         }
+    }
+
+    deleteObservation(id){
+        axios('http://localhost:8080/observations/'+id, { 
+                method: 'delete', 
+                withCredentials: true})
+        .then(function (response) {
+            this.resetObjectState();
+            const encounterId = this.props.currentEncounter.id;
+            
+            axios('http://localhost:8080/encounter/' + encounterId, { 
+                    method: "get", 
+                    withCredentials: true})
+                .then(function (response) {
+                    console.log(response.data)
+                    this.props.callback(response.data)
+                }.bind(this))
+
+        }.bind(this));
     }
 
     returnToPatientPage(){
@@ -113,6 +136,22 @@ class ObservationModal extends React.Component {
                     }
                 } />
             );
+        }else if(this.props.currentEncounter && this.props.currentEncounter.observations.length > 0 && !this.state.create){
+            return(
+                <div className="modal fade" id="createObservationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLongTitle">Current Documented Observations</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <ObservationsListNoBody callback={this.deleteObservation} observations={this.props.currentEncounter.observations} />
+                                </div>
+                                <this.listFooter />
+                        </div>
+                    </div>
+                </div>
+            )
         }else{
             return(
                 <div className="modal fade" id="createObservationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -143,7 +182,7 @@ class ObservationModal extends React.Component {
     updateFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal" >Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitObservation} className="btn btn-primary">Update Observation</button>
             </div>
         )
@@ -152,8 +191,17 @@ class ObservationModal extends React.Component {
     creationFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitObservation} className="btn btn-primary">Create New</button>
+            </div>
+        );
+    }
+
+    listFooter(){
+        return(
+            <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onClick={() => {this.setState({create:true})}} className="btn btn-primary">Create New</button>
             </div>
         );
     }

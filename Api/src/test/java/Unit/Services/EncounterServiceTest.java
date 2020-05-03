@@ -4,9 +4,8 @@ import com.MTPA.DAO.EncounterDAO;
 import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.Encounter;
-import com.MTPA.Objects.Reports.PatientCondition;
-import com.MTPA.Objects.Reports.PatientMedication;
-import com.MTPA.Objects.Reports.PatientObservation;
+import com.MTPA.Objects.Reports.Condition;
+import com.MTPA.Objects.Reports.Observation;
 import com.MTPA.Services.ConditionServices;
 import com.MTPA.Services.EncounterService;
 import com.MTPA.Services.ObservationService;
@@ -19,16 +18,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -50,22 +46,22 @@ public class EncounterServiceTest {
     List<Encounter> encounters;
     LocalDate date;
     Patient patient;
-    PatientObservation observation;
-    Set<PatientObservation> observations;
+    Observation observation;
+    Set<Observation> observations;
 
     @Before
     @SneakyThrows
     public void setup(){
         date = LocalDate.parse("2020-02-12");
         patient = new Patient(1,"fistName","secondName","Male", date,null, "ppsn","address",
-                 new HashSet<PatientCondition>(), new HashSet<>());
+                 new HashSet<Condition>(), new HashSet<>());
 
-        observation = new PatientObservation();
+        observation = new Observation();
         observation.setDateTaken(date);
         observation.setType("blood test");
         observation.setResultValue("blood everywhere");
         observation.setUnit("mistakes");
-        observations = new HashSet<PatientObservation>(Collections.singleton(observation));
+        observations = new HashSet<Observation>(Collections.singleton(observation));
         encounterService = new EncounterService(patientDAO,encounterDAO,conditionServices,observationService,patientServices);
         encounter = new Encounter();
         encounter.setDateVisited(date);
@@ -147,7 +143,6 @@ public class EncounterServiceTest {
     public void createEncounterWithValidPatient_thenOk(){
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
         when(encounterDAO.save(any())).thenReturn(encounter);
-        when(observationService.saveAllObservations(any(), any())).thenReturn(observations);
         ResponseEntity entity = encounterService.createEncounter(encounter);
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
@@ -167,22 +162,4 @@ public class EncounterServiceTest {
         ResponseEntity entity = encounterService.createEncounter(encounter);
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
-
-    @Test
-    public void createEncounterWithValidPatientAndWithInvalidObservation_thenFail(){
-//        observation.setUnit(null);
-//        observation.setType(null);
-//        encounter.setObservations(Arrays.asList(observation));
-//        when(patientDAO.exists(any(String.class))).thenReturn(true);
-//        when(encounterDAO.save(any())).thenReturn(encounter);
-//        when(observationService.saveAllObservations(any(), any())).thenThrow(new Exception());
-//        try {
-//            ResponseEntity entity = encounterService.createEncounter(encounter);
-//            fail();
-//        }catch (Exception e){
-//
-//        }
-    }
-
-
 }

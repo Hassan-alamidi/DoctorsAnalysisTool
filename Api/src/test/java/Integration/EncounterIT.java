@@ -1,9 +1,9 @@
 package Integration;
 
 import com.MTPA.Objects.Reports.Encounter;
-import com.MTPA.Objects.Reports.PatientCondition;
-import com.MTPA.Objects.Reports.PatientMedication;
-import com.MTPA.Objects.Reports.PatientObservation;
+import com.MTPA.Objects.Reports.Condition;
+import com.MTPA.Objects.Reports.Medication;
+import com.MTPA.Objects.Reports.Observation;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,9 +20,9 @@ public class EncounterIT extends BaseIT {
 
     private final String ENCOUNTER_ENDPOINT = "/encounter";
     private Encounter encounter;
-    private Set<PatientObservation> observations;
-    private Set<PatientCondition> conditions;
-    private Set<PatientMedication> medication;
+    private Set<Observation> observations;
+    private Set<Condition> conditions;
+    private Set<Medication> medication;
 
     @SneakyThrows
     public void setupTest(){
@@ -30,7 +30,7 @@ public class EncounterIT extends BaseIT {
         observations = new HashSet<>();
         conditions = new HashSet<>();
         medication = new HashSet<>();
-        PatientObservation observation = new PatientObservation();
+        Observation observation = new Observation();
         observation.setDateTaken(date);
         observation.setType("blood test");
         observation.setResultValue("Holy fuck");
@@ -38,7 +38,7 @@ public class EncounterIT extends BaseIT {
         observation.setPatient(EXISTING_PATIENT);
         observations.add(observation);
 
-        PatientCondition condition = new PatientCondition();
+        Condition condition = new Condition();
         condition.setCode("");
         condition.setDetails("patient has a cold");
         condition.setDiscovered(date);
@@ -206,7 +206,7 @@ public class EncounterIT extends BaseIT {
 
     @Test
     public void createEncounterWithMultipleObservationsOneWithMissingValue_thenNothingIsSaved(){
-        PatientObservation observation = new PatientObservation();
+        Observation observation = new Observation();
         observation.setDateTaken(encounter.getDateVisited());
         observations.add(observation);
         encounter.setObservations(observations);

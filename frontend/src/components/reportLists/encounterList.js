@@ -55,7 +55,7 @@ export const EncounterList = ({encounters, header}) => {
                                         </div>)
                                 })}
                 
-                                {(encounter.medications.length > 0) && <p>Perscribed Medication</p>}
+                                {(encounter.medications.length > 0) && <p>Prescribed Medication</p>}
                                     {encounter.medications.map((medication, i) => {
                                     return(
                                         <div className="panel observations"  key={"medication"+i}>

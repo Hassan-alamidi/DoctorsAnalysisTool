@@ -153,7 +153,7 @@ class EncounterPage extends React.Component {
                             </div>
                             <div className="col-xl-4">
                                 <div className="row" style={{height:"100%"}}>
-                                    <CardButtonModal header="Document medications" details="Document any medications perscribed today"
+                                    <CardButtonModal header="Document medications" details="Document any medications prescribed today"
                                                             icon="archive" modalId="#createMedicationModal" />
                                 </div>
                             </div>

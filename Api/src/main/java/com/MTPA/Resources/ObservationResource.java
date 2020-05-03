@@ -1,10 +1,8 @@
 package com.MTPA.Resources;
 
-import com.MTPA.Objects.Reports.Encounter;
-import com.MTPA.Objects.Reports.PatientObservation;
+import com.MTPA.Objects.Reports.Observation;
 import com.MTPA.Services.ObservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +20,17 @@ public class ObservationResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientObservation>> getAllObservations(@RequestHeader("ppsn") final String ppsn){
+    public ResponseEntity<List<Observation>> getAllObservations(@RequestHeader("ppsn") final String ppsn){
         return observationService.getAllObservations(ppsn);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePatientObservation(@PathVariable("id") final int id){
+        return observationService.deletePatientObservation(id);
+    }
+
     @GetMapping("/recent")
-    public ResponseEntity<List<PatientObservation>> getRecentObservations(@RequestHeader("ppsn") final String ppsn){
+    public ResponseEntity<List<Observation>> getRecentObservations(@RequestHeader("ppsn") final String ppsn){
         return observationService.getRecentObservations(ppsn);
     }
 
@@ -37,7 +40,7 @@ public class ObservationResource {
 //    }
 
     @PostMapping
-    public ResponseEntity<?> createObservation(@RequestBody final PatientObservation observation){
+    public ResponseEntity<?> createObservation(@RequestBody final Observation observation){
         return observationService.createObservation(observation);
     }
 }

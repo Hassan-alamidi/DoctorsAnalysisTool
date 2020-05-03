@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../resources/css/shared.scss"
 import "bootstrap";
+import {MedicationListNoBody} from '../reportLists/medicationList'
 import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
@@ -20,7 +21,8 @@ class MedicationModal extends React.Component {
                 reasonCode:"ignore",
                 prescribedAmount:0
             },
-            close:false
+            close:false,
+            create:false
         }
 
         this.submitMedication = this.submitMedication.bind(this);
@@ -35,6 +37,8 @@ class MedicationModal extends React.Component {
         this.creationFooter = this.creationFooter.bind(this);
         this.valueEntered = this.valueEntered.bind(this);
         this.resetObjectState = this.resetObjectState.bind(this);
+        this.listFooter = this.listFooter.bind(this);
+        this.deleteMedication = this.deleteMedication.bind(this);
     }
 
     valueEntered(val){
@@ -44,6 +48,7 @@ class MedicationModal extends React.Component {
 
     resetObjectState(){
         this.setState({
+            create:false,
             medication:{
                 code:"ignored",
                 type:"",
@@ -80,6 +85,25 @@ class MedicationModal extends React.Component {
         }else{
             this.setState({error:"You must enter all details marked with *"})
         }
+    }
+
+    deleteMedication(id){
+        axios('http://localhost:8080/medication/'+id, { 
+                method: 'delete', 
+                withCredentials: true})
+        .then(function (response) {
+            this.resetObjectState();
+            const encounterId = this.props.currentEncounter.id;
+            
+            axios('http://localhost:8080/encounter/' + encounterId, { 
+                    method: "get", 
+                    withCredentials: true})
+                .then(function (response) {
+                    console.log(response.data)
+                    this.props.callback(response.data)
+                }.bind(this))
+
+        }.bind(this));
     }
 
     returnToPatientPage(){
@@ -142,6 +166,22 @@ class MedicationModal extends React.Component {
                     }
                 } />
             );
+        }else if(this.props.currentEncounter && this.props.currentEncounter.medications.length > 0 && !this.state.create){
+            return(
+                <div className="modal fade" id="createMedicationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLongTitle">Current Documented Medication</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <MedicationListNoBody callback={this.deleteMedication} medications={this.props.currentEncounter.medications} />
+                                </div>
+                                <this.listFooter />
+                        </div>
+                    </div>
+                </div>
+            )
         }else{
             return(
                 <div className="modal fade" id="createMedicationModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -176,7 +216,7 @@ class MedicationModal extends React.Component {
     updateFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal" >Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitMedication} className="btn btn-primary">Update Medication</button>
             </div>
         )
@@ -185,8 +225,17 @@ class MedicationModal extends React.Component {
     creationFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitMedication} className="btn btn-primary">Create New</button>
+            </div>
+        );
+    }
+
+    listFooter(){
+        return(
+            <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
+                <button type="button" onClick={() => {this.setState({create:true})}} className="btn btn-primary">Create New</button>
             </div>
         );
     }

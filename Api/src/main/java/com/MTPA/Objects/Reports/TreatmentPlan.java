@@ -32,7 +32,7 @@ public class TreatmentPlan {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"conditions", "currentMedication"}, allowSetters = true)
     @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
     private Patient patient;
 

@@ -1,7 +1,7 @@
 package com.MTPA.Objects;
 
-import com.MTPA.Objects.Reports.PatientMedication;
-import com.MTPA.Objects.Reports.PatientCondition;
+import com.MTPA.Objects.Reports.Medication;
+import com.MTPA.Objects.Reports.Condition;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
@@ -68,30 +68,30 @@ public class Patient implements Serializable {
     @JsonIgnoreProperties(value = "patient", allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @Where(clause = "cured_on IS NULL")
-    private Set<PatientCondition> patientConditions;
+    private Set<Condition> conditions;
 
     @Getter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @JsonIgnoreProperties(value = {"patient", "reasonForMedication"}, allowSetters = true)
     @Where(clause = "(treatment_end > CURRENT_DATE() OR treatment_end IS NULL) AND type NOT LIKE 'immunization'")
-    private Set<PatientMedication> currentMedication;
+    private Set<Medication> currentMedication;
 
     public Patient(final String ppsn){
         this.ppsn = ppsn;
-        patientConditions = new HashSet<PatientCondition>();
-        currentMedication = new HashSet<PatientMedication>();
+        conditions = new HashSet<Condition>();
+        currentMedication = new HashSet<Medication>();
     }
 
     public Patient(){
-        patientConditions = new HashSet<PatientCondition>();
-        currentMedication = new HashSet<PatientMedication>();
+        conditions = new HashSet<Condition>();
+        currentMedication = new HashSet<Medication>();
     }
 
-    public void addCondition(PatientCondition condition){
-        patientConditions.add(condition);
+    public void addCondition(Condition condition){
+        conditions.add(condition);
     }
 
-    public void addMedication(PatientMedication medication){
+    public void addMedication(Medication medication){
         currentMedication.add(medication);
     }
 

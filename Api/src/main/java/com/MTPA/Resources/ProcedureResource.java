@@ -1,13 +1,12 @@
 package com.MTPA.Resources;
 
-import com.MTPA.Objects.Reports.PatientProcedure;
+import com.MTPA.Objects.Reports.Procedure;
 import com.MTPA.Services.ProcedureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("procedure")
@@ -21,17 +20,22 @@ public class ProcedureResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientProcedure>> getAllProcedures(@RequestHeader("ppsn") final String ppsn){
+    public ResponseEntity<List<Procedure>> getAllProcedures(@RequestHeader("ppsn") final String ppsn){
         return procedureService.getAllProcedures(ppsn);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePatientProcedure(@PathVariable("id") final int id){
+        return procedureService.deletePatientProcedure(id);
+    }
+
     @GetMapping("/recent")
-    public ResponseEntity<List<PatientProcedure>> getRecentProcedures(@RequestHeader("ppsn") final String ppsn){
+    public ResponseEntity<List<Procedure>> getRecentProcedures(@RequestHeader("ppsn") final String ppsn){
         return procedureService.getRecentProcedures(ppsn);
     }
 
     @PostMapping
-    public ResponseEntity<?> createProcedure(@RequestBody final PatientProcedure procedure){
+    public ResponseEntity<?> createProcedure(@RequestBody final Procedure procedure){
         return procedureService.createProcedure(procedure);
     }
 

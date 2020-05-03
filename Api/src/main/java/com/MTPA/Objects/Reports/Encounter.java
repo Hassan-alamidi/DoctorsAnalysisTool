@@ -52,7 +52,7 @@ public class Encounter {
     @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"patientConditions", "currentMedication"})
+    @JsonIgnoreProperties(value = {"conditions", "currentMedication"})
     @JoinColumn(name = "patient_ppsn", referencedColumnName = "PPSN")
     private Patient patient;
 
@@ -60,25 +60,25 @@ public class Encounter {
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = "encounter", allowSetters = true)
-    private Set<PatientObservation> observations;
+    private Set<Observation> observations;
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private Set<PatientCondition> conditions;
+    private Set<Condition> conditions;
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private Set<PatientMedication> medications;
+    private Set<Medication> medications;
 
     @Getter
     @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "encounter", cascade = {CascadeType.ALL})
     @JsonIgnoreProperties(value = {"encounter", "patient"}, allowSetters = true)
-    private Set<PatientProcedure> procedures;
+    private Set<Procedure> procedures;
 
     @Getter
     @Setter

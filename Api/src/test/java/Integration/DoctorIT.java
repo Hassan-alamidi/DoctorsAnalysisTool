@@ -85,16 +85,6 @@ public class DoctorIT extends BaseIT {
 //        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
 //    }
 
-    //TODO remove this functionality
-    @Test
-    public void loginToAccountWithDefaultPassword_thenNotLoggedIn(){
-        Doctor doctor = new Doctor();
-        doctor.setMedicalLicenceNumber(DOCTOR_LICENCE_NUM_WITH_DEFAULT_PASSWORD);
-        doctor.setPassword(DEFAULT_PASSWORD);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(LOGIN_ENDPOINT, HttpMethod.POST, new HttpEntity<>(doctor), String.class);
-        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-    }
-
     @Test
     public void loginToAccountWithIncorrectPassword_thenNotLoggedIn(){
         Doctor doctor = new Doctor();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.EncounterServiceTest" time="3.826" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="Unit.Services.EncounterServiceTest" time="6.429" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -40,7 +40,7 @@
     <property name="user.name" value="hassan"/>
     <property name="path.separator" value=":"/>
     <property name="securerandom.source" value="file:/dev/./urandom"/>
-    <property name="os.version" value="5.3.0-46-generic"/>
+    <property name="os.version" value="5.3.0-51-generic"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -64,16 +64,16 @@
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="createEncounterWithValidPatientAndWithInvalidObservation_thenFail" classname="Unit.Services.EncounterServiceTest" time="0.052"/>
-  <testcase name="getAllEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.246"/>
-  <testcase name="getEncountersById_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.036"/>
-  <testcase name="getAllEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.155"/>
-  <testcase name="createEncounterWithValidPatient_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.055"/>
-  <testcase name="getANumberOfRecentEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.138"/>
-  <testcase name="getEncountersByFakeId_thenNotFound" classname="Unit.Services.EncounterServiceTest" time="0.216"/>
-  <testcase name="createEncounterWithFakePatient_thenNotFound" classname="Unit.Services.EncounterServiceTest" time="0.014"/>
-  <testcase name="getRecentEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.099"/>
-  <testcase name="getRecentEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.152"/>
-  <testcase name="getANumberOfRecentEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.083"/>
-  <testcase name="createEncounterWithValidPatientAndWithNoChildren_thenOK" classname="Unit.Services.EncounterServiceTest" time="0.138"/>
+  <testcase name="createEncounterWithValidPatientAndWithInvalidObservation_thenFail" classname="Unit.Services.EncounterServiceTest" time="0.074"/>
+  <testcase name="getAllEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.058"/>
+  <testcase name="getEncountersById_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.088"/>
+  <testcase name="getAllEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.045"/>
+  <testcase name="createEncounterWithValidPatient_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.093"/>
+  <testcase name="getANumberOfRecentEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.614"/>
+  <testcase name="getEncountersByFakeId_thenNotFound" classname="Unit.Services.EncounterServiceTest" time="0.204"/>
+  <testcase name="createEncounterWithFakePatient_thenNotFound" classname="Unit.Services.EncounterServiceTest" time="0.125"/>
+  <testcase name="getRecentEncountersWherePPSNHasNone_thenEmptyListReturned" classname="Unit.Services.EncounterServiceTest" time="0.329"/>
+  <testcase name="getRecentEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.102"/>
+  <testcase name="getANumberOfRecentEncounters_thenOk" classname="Unit.Services.EncounterServiceTest" time="0.077"/>
+  <testcase name="createEncounterWithValidPatientAndWithNoChildren_thenOK" classname="Unit.Services.EncounterServiceTest" time="1.811"/>
 </testsuite>

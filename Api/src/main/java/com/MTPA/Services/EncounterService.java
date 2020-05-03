@@ -1,25 +1,19 @@
 package com.MTPA.Services;
 
 import com.MTPA.DAO.EncounterDAO;
-import com.MTPA.DAO.ObservationDAO;
 import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.Encounter;
-import com.MTPA.Objects.Reports.PatientCondition;
-import com.MTPA.Objects.Reports.PatientObservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class EncounterService {

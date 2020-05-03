@@ -2,20 +2,16 @@ package com.MTPA.Services;
 
 import com.MTPA.DAO.ConditionDAO;
 import com.MTPA.DAO.PatientDAO;
-import com.MTPA.Objects.Patient;
-import com.MTPA.Objects.Reports.PatientCondition;
+import com.MTPA.Objects.Reports.Condition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ConditionServices {
@@ -29,32 +25,52 @@ public class ConditionServices {
         this.patientDAO = patientDAO;
     }
 
-    public ResponseEntity<List<PatientCondition>> getAllPatientConditions(String ppsn){
+    public ResponseEntity<List<Condition>> getAllPatientConditions(String ppsn){
         return new ResponseEntity<>(conditionDAO.findAllPatientConditions(ppsn), HttpStatus.OK);
     }
 
-    public ResponseEntity<PatientCondition> getPatientCondition(int id){
+    public ResponseEntity<Condition> getPatientCondition(int id){
         return conditionDAO.findSpecificPatientCondition(id)
                 .map(condition -> new ResponseEntity<>(condition, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    public ResponseEntity<List<PatientCondition>> getOnGoingPatientConditions(String ppsn){
+    public ResponseEntity<List<Condition>> getOnGoingPatientConditions(String ppsn){
         return new ResponseEntity<>(conditionDAO.findPatientsOnGoingConditions(ppsn), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> addPatientCondition(PatientCondition condition){
+    public ResponseEntity<?> addPatientCondition(Condition condition){
         if(condition.getPatient() != null && patientDAO.exists(condition.getPatient().getPpsn())){
             return new ResponseEntity<>(conditionDAO.save(condition), HttpStatus.OK);
         }
         return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> updatePatientCondition(PatientCondition newCondition){
+    public ResponseEntity<?> deletePatientCondition(final int id){
+        try {
+            conditionDAO.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> markAsCured(final int id){
+        Optional<Condition> optCondition = conditionDAO.findSpecificPatientCondition(id);
+        if(optCondition.isPresent()){
+            Condition condition = optCondition.get();
+            condition.setCuredOn(LocalDate.now());
+            conditionDAO.save(condition);
+            return new ResponseEntity<>(condition, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> updatePatientCondition(Condition newCondition){
         //get the original condition and ensure only certain details can be modified
-        Optional<PatientCondition> originalCondition = conditionDAO.findSpecificPatientCondition(newCondition.getId());
+        Optional<Condition> originalCondition = conditionDAO.findSpecificPatientCondition(newCondition.getId());
         if(originalCondition.isPresent()){
-            PatientCondition condition = originalCondition.get();
+            Condition condition = originalCondition.get();
             condition.setSymptoms(newCondition.getSymptoms());
             condition.setDetails(newCondition.getDetails());
             condition.setCuredOn(newCondition.getCuredOn());

@@ -3,7 +3,7 @@ package com.MTPA.Services;
 import com.MTPA.DAO.EncounterDAO;
 import com.MTPA.DAO.PatientDAO;
 import com.MTPA.DAO.ProcedureDAO;
-import com.MTPA.Objects.Reports.PatientProcedure;
+import com.MTPA.Objects.Reports.Procedure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProcedureService {
@@ -29,22 +29,31 @@ public class ProcedureService {
         this.encounterDAO = encounterDAO;
     }
 
-    public ResponseEntity<List<PatientProcedure>> getAllProcedures(final String ppsn){
-        List<PatientProcedure> procedures = procedureDAO.getPatientProcedureHistory(ppsn);
-        return new ResponseEntity<List<PatientProcedure>>(procedures, HttpStatus.OK);
+    public ResponseEntity<List<Procedure>> getAllProcedures(final String ppsn){
+        List<Procedure> procedures = procedureDAO.getPatientProcedureHistory(ppsn);
+        return new ResponseEntity<List<Procedure>>(procedures, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<PatientProcedure>> getRecentProcedures(final String ppsn){
+    public ResponseEntity<List<Procedure>> getRecentProcedures(final String ppsn){
         Pageable pageable = (Pageable) PageRequest.of(0, 10);
-        List<PatientProcedure> procedures = procedureDAO.findRecentProcedureOrderedByDate(ppsn, pageable);
-        return new ResponseEntity<List<PatientProcedure>>(procedures, HttpStatus.OK);
+        List<Procedure> procedures = procedureDAO.findRecentProcedureOrderedByDate(ppsn, pageable);
+        return new ResponseEntity<List<Procedure>>(procedures, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> createProcedure(final PatientProcedure procedure){
+    public ResponseEntity<?> deletePatientProcedure(final int id){
+        try {
+            procedureDAO.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> createProcedure(final Procedure procedure){
         if(procedure.getPatient() != null && patientDAO.exists(procedure.getPatient().getPpsn())) {
             if(procedure.getEncounter() != null && encounterDAO.existsById(procedure.getEncounter().getId())) {
-                PatientProcedure patientProcedure = procedureDAO.save(procedure);
-                return new ResponseEntity<PatientProcedure>(patientProcedure, HttpStatus.OK);
+                Procedure patientProcedure = procedureDAO.save(procedure);
+                return new ResponseEntity<Procedure>(patientProcedure, HttpStatus.OK);
             }
             return new ResponseEntity<>("Encounter not created", HttpStatus.UNPROCESSABLE_ENTITY);
         }

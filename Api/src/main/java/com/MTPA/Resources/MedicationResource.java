@@ -1,13 +1,13 @@
 package com.MTPA.Resources;
 
-import com.MTPA.Objects.Reports.PatientMedication;
+import com.MTPA.Objects.Reports.Medication;
 import com.MTPA.Services.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Table;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("medication")
@@ -21,13 +21,18 @@ public class MedicationResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientMedication>> getAllMedication(@RequestHeader("ppsn") final String ppsn){
+    public ResponseEntity<List<Medication>> getAllMedication(@RequestHeader("ppsn") final String ppsn){
         return medicationService.getAllMedication(ppsn);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePatientMedication(@PathVariable("id") final int id){
+        return medicationService.deletePatientMedication(id);
+    }
+
     @PostMapping
-    public ResponseEntity<?> prescribeMedication(@RequestBody final PatientMedication patientMedication){
-        return medicationService.prescribeMedication(patientMedication);
+    public ResponseEntity<?> prescribeMedication(@RequestBody final Medication medication){
+        return medicationService.prescribeMedication(medication);
     }
 
     @GetMapping("/immunization")
@@ -42,8 +47,13 @@ public class MedicationResource {
 
     //updating medication only allows for extending the end date anything other than that will need a new prescription
     @PutMapping("/current")
-    public ResponseEntity<PatientMedication> extendMedicationTreatment(@RequestBody final PatientMedication medication){
+    public ResponseEntity<Medication> extendMedicationTreatment(@RequestBody final Medication medication){
         return medicationService.extendMedicationTreatment(medication);
+    }
+
+    @PutMapping("/current/end/{id}")
+    public ResponseEntity<?> markMedicationAsEnded(@PathVariable("id") final int id){
+        return medicationService.markAsEnded(id);
     }
 
 }

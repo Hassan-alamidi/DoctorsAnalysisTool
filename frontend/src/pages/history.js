@@ -19,8 +19,9 @@ class HistoryPage extends React.Component {
         this.state = {
             patientPPSN: "",
             tokenExpired: false,
-            hisoricalData:"",
+            historicalData:"",
             historicalDataType:"On Going Conditions",
+            currentEndpoint:"/conditions/current",
             patientNotFound:false,
             loading: true
         }
@@ -41,11 +42,16 @@ class HistoryPage extends React.Component {
         this.apiRequest("/conditions/current");
     }
 
-    apiRequest(endpoint){
-        axios('http://localhost:8080' + endpoint, { method: "get", withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
+    apiRequest(endpoint, method = "get"){
+        axios('http://localhost:8080' + endpoint, { method: method, withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
             .then(function (response) {
                 console.log(response)
-                this.setState({ loading: false, hisoricalData:response.data })
+                if(method === "get"){
+                    this.setState({ loading: false, historicalData:response.data, currentEndpoint:endpoint })
+                }else{
+                    //call itself to refresh state
+                    this.apiRequest(this.state.currentEndpoint)
+                }
             }.bind(this)).catch(function (error) {
                 console.log(error)
                 if (error.response.status === 404) {
@@ -94,7 +100,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <ProcedureListTransparent procedures={this.state.hisoricalData} header={this.state.historicalDataType} />
+                            <ProcedureListTransparent procedures={this.state.historicalData} header={this.state.historicalDataType} />
                         </div>
                     </div>
                 );
@@ -104,7 +110,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <MedicationListTransparent medications={this.state.hisoricalData} header={this.state.historicalDataType} />
+                            <MedicationListTransparent callback={this.apiRequest} medications={this.state.historicalData} header={this.state.historicalDataType} />
                         </div>
                     </div>
                 );
@@ -114,7 +120,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <ObservationListTransparent observations={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                            <ObservationListTransparent observations={this.state.historicalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );
@@ -124,7 +130,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <ConditionsListTransparent conditions={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                            <ConditionsListTransparent callback={this.apiRequest} conditions={this.state.historicalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );
@@ -134,7 +140,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <EncounterList encounters={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                            <EncounterList encounters={this.state.historicalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );
@@ -144,7 +150,7 @@ class HistoryPage extends React.Component {
                         <NavBar />
                         <Sidebar callback={this.requestHistory} />
                         <div className="fluid-container" id="dataListContainer" >
-                            <TreatmentList treatments={this.state.hisoricalData} header={this.state.historicalDataType}/>
+                            <TreatmentList callback={this.apiRequest} treatments={this.state.historicalData} header={this.state.historicalDataType}/>
                         </div>
                     </div>
                 );

@@ -26,4 +26,24 @@ export const ProcedureListTransparent = ({procedures, header}) => {
     )
 }
 
+export const ProceduresListNoBody = ({callback, procedures}) => {
+    return(
+        <div className="card-body" id="proceduresDefault">
+            <div className="panel-group accordion" id="procedure">
+                {procedures.map((procedure, i) => {
+                    procedure.carriedOutOn = procedure.carriedOutOn ? procedure.carriedOutOn.split('T')[0] : "Not Specified";
+                    return(
+                    <div className="panel" key={"procedureitem" + i} >
+                        <div className="list-group-item list-group-item-action list-group-item-dark">
+                            <p>{procedure.description}</p> 
+                            <p>Carried Out On: {procedure.carriedOutOn}</p>
+                            <button type="button" className="btn btn-danger" onClick={() => {callback(procedure.id)}}>Delete</button>
+                        </div>
+                    </div>)
+                })}
+            </div>
+        </div>
+    )
+}
+
 export default ProcedureListTransparent;

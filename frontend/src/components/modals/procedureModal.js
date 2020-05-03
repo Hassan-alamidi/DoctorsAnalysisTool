@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../resources/css/shared.scss"
 import "bootstrap";
+import {ProceduresListNoBody} from '../reportLists/procedureList'
 import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
@@ -11,6 +12,7 @@ class ProcedureModal extends React.Component {
         super(props);
         this.state = {
             error:"",
+            create:false,
             procedure:{
                 //procedures were originally meant to be searchable via autosuggestion, which would then add a procedures assigned code.
                 //but that is low priority on my list of things todo and it is unlikly I will have time to get this completed so setting code to ignore
@@ -29,6 +31,8 @@ class ProcedureModal extends React.Component {
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
         this.resetObjectState = this.resetObjectState.bind(this);
+        this.deleteProcedure = this.deleteProcedure.bind(this);
+        this.listFooter = this.listFooter.bind(this);
     }
 
     resetObjectState(){
@@ -66,6 +70,25 @@ class ProcedureModal extends React.Component {
         }else{
             this.setState({error:"You must enter the name and date of procedure"})
         }
+    }
+
+    deleteProcedure(id){
+        axios('http://localhost:8080/procedure/'+id, { 
+                method: 'delete', 
+                withCredentials: true})
+        .then(function (response) {
+            this.resetObjectState();
+            const encounterId = this.props.currentEncounter.id;
+            
+            axios('http://localhost:8080/encounter/' + encounterId, { 
+                    method: "get", 
+                    withCredentials: true})
+                .then(function (response) {
+                    console.log(response.data)
+                    this.props.callback(response.data)
+                }.bind(this))
+
+        }.bind(this));
     }
 
     returnToPatientPage(){
@@ -113,6 +136,22 @@ class ProcedureModal extends React.Component {
                     }
                 } />
             );
+        }else if(this.props.currentEncounter && this.props.currentEncounter.procedures.length > 0 && !this.state.create){
+            return(
+                <div className="modal fade" id="createProcedureModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLongTitle">Current Documented Procedures</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <ProceduresListNoBody callback={this.deleteProcedure} procedures={this.props.currentEncounter.procedures} />
+                                </div>
+                                <this.listFooter />
+                        </div>
+                    </div>
+                </div>
+            )
         }else{
             return(
                 <div className="modal fade" id="createProcedureModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -143,7 +182,7 @@ class ProcedureModal extends React.Component {
     updateFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal" >Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitProcedure} className="btn btn-primary">Update Procedure</button>
             </div>
         )
@@ -152,8 +191,17 @@ class ProcedureModal extends React.Component {
     creationFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitProcedure} className="btn btn-primary">Create New</button>
+            </div>
+        );
+    }
+
+    listFooter(){
+        return(
+            <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onClick={() => {this.setState({create:true})}} className="btn btn-primary">Create New</button>
             </div>
         );
     }

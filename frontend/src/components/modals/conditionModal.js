@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../resources/css/shared.scss"
 import "bootstrap";
+import {ConditionsListNoBody} from '../reportLists/conditionsList'
 import { Redirect} from "react-router-dom"
 import $ from "jquery";
 
@@ -11,23 +12,24 @@ class ConditionModal extends React.Component {
         super(props);
         this.state = {
             error:"",
+            create:false,
             condition:{
                 //condition were originally meant to be searchable via autosuggestion, which would then add a condition assigned code.
-                //but that is low priority on my list of things todo and it is unlikly I will have time to get this completed so setting code to ignore
+                //but that is low priority on my list of things todo and it is unlikely I will have time to get this completed so setting code to ignore
                 code:"ignored"
-            },
-            close:false
+            }
         }
 
         this.submitCondition = this.submitCondition.bind(this);
-        this.returnToPatientPage = this.returnToPatientPage.bind(this);
         this.detailsChangeHandler = this.detailsChangeHandler.bind(this);
         this.nameChangeHandler = this.nameChangeHandler.bind(this);
         this.symptomsChangeHandler = this.symptomsChangeHandler.bind(this);
         this.discoveredChangeHandler = this.discoveredChangeHandler.bind(this);
         this.updateFooter = this.updateFooter.bind(this);
         this.creationFooter = this.creationFooter.bind(this);
+        this.listFooter = this.listFooter.bind(this);
         this.resetObjectState = this.resetObjectState.bind(this);
+        this.deleteCondition = this.deleteCondition.bind(this);
     }
 
     resetObjectState(){
@@ -62,8 +64,23 @@ class ConditionModal extends React.Component {
         }
     }
 
-    returnToPatientPage(){
-        this.setState({close:true});
+    deleteCondition(id){
+        axios('http://localhost:8080/conditions/'+id, { 
+                method: 'delete', 
+                withCredentials: true})
+        .then(function (response) {
+            this.resetObjectState();
+            const encounterId = this.props.currentEncounter.id;
+            
+            axios('http://localhost:8080/encounter/' + encounterId, { 
+                    method: "get", 
+                    withCredentials: true})
+                .then(function (response) {
+                    console.log(response.data)
+                    this.props.callback(response.data)
+                }.bind(this))
+
+        }.bind(this));
     }
 
     detailsChangeHandler(val){
@@ -95,39 +112,43 @@ class ConditionModal extends React.Component {
     }
 
     render(){
-        if(this.state.close){
-            $('#createConditionModal').modal('hide');
-            return (
-                <Redirect push to={
-                    {
-                        pathname: "/hub/patient",
-                        state: {
-                            from: "/hub/patient/encounter"
-                        }
-                    }
-                } />
-            );
+        if(this.props.currentEncounter && this.props.currentEncounter.conditions.length > 0 && !this.state.create){
+            return(
+                <div className="modal fade" id="createConditionModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLongTitle">Current Documented Conditions</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <ConditionsListNoBody callback={this.deleteCondition} conditions={this.props.currentEncounter.conditions} />
+                                </div>
+                                <this.listFooter />
+                        </div>
+                    </div>
+                </div>
+            )
         }else{
             return(
                 <div className="modal fade" id="createConditionModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Condition Details</h5>
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLongTitle">Please Enter Condition Details</h5>
+                                </div>
+                                <div className="modal-body">
+                                    <p className="text-danger">{this.state.error}</p>
+                                    <p>* Name Of Condition </p>
+                                    <input className="form-control form-control-lg" id="conditionInput" type="text" placeholder="Name" name="name" onChange={this.nameChangeHandler} />
+                                    <p>* Date This Condition was discovered</p>
+                                    <input className="form-control form-control-lg" id="discoveredInput" type="date" placeholder="yyyy-mm-dd" name="discovered" onChange={this.discoveredChangeHandler} />
+                                    <p>Symptoms Alongside This Condition</p>
+                                    <input className="form-control form-control-lg" id="symptomsInput" type="text" placeholder="Symptoms" name="symptoms" onChange={this.symptomsChangeHandler} />
+                                    <p>Extra Details</p>
+                                    <input className="form-control form-control-lg" id="detailsInput" type="text" placeholder="Details" name="details" onChange={this.detailsChangeHandler} />
+                                </div>
+                                {this.props.requestType === "post" ? <this.creationFooter/> : <this.updateFooter/>}
                             </div>
-                            <div className="modal-body">
-                                <p className="text-danger">{this.state.error}</p>
-                                <p>* Name Of Condition </p>
-                                <input className="form-control form-control-lg" id="conditionInput" type="text" placeholder="Name" name="name" onChange={this.nameChangeHandler} />
-                                <p>* Date This Condition was discovered</p>
-                                <input className="form-control form-control-lg" id="discoveredInput" type="date" placeholder="yyyy-mm-dd" name="discovered" onChange={this.discoveredChangeHandler} />
-                                <p>Symptoms Alongside This Condition</p>
-                                <input className="form-control form-control-lg" id="symptomsInput" type="text" placeholder="Symptoms" name="symptoms" onChange={this.symptomsChangeHandler} />
-                                <p>Extra Details</p>
-                                <input className="form-control form-control-lg" id="detailsInput" type="text" placeholder="Details" name="details" onChange={this.detailsChangeHandler} />
-                            </div>
-                            {this.props.requestType === "post" ? <this.creationFooter/> : <this.updateFooter/>}
-                        </div>
                     </div>
                 </div>
             );
@@ -137,7 +158,7 @@ class ConditionModal extends React.Component {
     updateFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal" >Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitCondition} className="btn btn-primary">Update condition</button>
             </div>
         )
@@ -146,8 +167,17 @@ class ConditionModal extends React.Component {
     creationFooter(){
         return(
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => {this.setState({create:false})}}>Cancel</button>
                 <button type="button" onClick={this.submitCondition} className="btn btn-primary">Create New</button>
+            </div>
+        );
+    }
+
+    listFooter(){
+        return(
+            <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" onClick={() => {this.setState({create:true})}} className="btn btn-primary">Create New</button>
             </div>
         );
     }

@@ -21,7 +21,7 @@ const PatientInfoCard = ({header, patient, detailed, callback}) => {
                     {(detailed) && 
                         <div className="row">
                             <div className="card col-md-6">
-                                <ConditionsList conditions={patient.patientConditions} />
+                                <ConditionsList conditions={patient.conditions} />
                             </div>
                             <div className="card col-md-6">
                                 <MedicationList medications={patient.currentMedication} />

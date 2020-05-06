@@ -14,6 +14,7 @@ import HistoryPage from './pages/history'
 import AccountPage from './pages/account'
 import RegistrationPage from './pages/registration'
 import PatientInformationPage from './pages/patientInformation'
+import PredictionPage from './pages/predictionReport'
 import NavBar from './components/navBar'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <ProtectedRoute component={PatientControlPanel} exact path="/hub/patient" />
             <ProtectedRoute component={PatientInformationPage} exact path="/hub/patient/information" />
             <ProtectedRoute component={EncounterPage} exact path="/hub/patient/encounter" />
+            <ProtectedRoute component={PredictionPage} exact path="/hub/patient/prediction" />
             <ProtectedRoute path="*" component={() => "404 Page Not Found"} />
         </Switch></div>
     );

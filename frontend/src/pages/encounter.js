@@ -32,6 +32,7 @@ class EncounterPage extends React.Component {
         
         this.setCurrentEncounter = this.setCurrentEncounter.bind(this);
         this.finalizeEncounter = this.finalizeEncounter.bind(this);
+        this.removeModal = this.removeModal.bind(this);
     }
 
     componentDidMount() {
@@ -76,15 +77,21 @@ class EncounterPage extends React.Component {
 
     setCurrentEncounter(encounter){
         console.log("called")
-        $('.modal').modal('hide');
+        this.removeModal()
         //$('#LoadingModal').modal('hide');
         //$('#createEncounterModal').modal('hide');
         this.setState({updating:true,currentEncounter:encounter});
     }
 
+    removeModal(){
+        $('.modal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    }
+
     render() {
         if (this.state.tokenExpired) {
-            $('.modal').modal('hide');
+            this.removeModal();
             return (
                 <Redirect to={
                     {
@@ -96,7 +103,7 @@ class EncounterPage extends React.Component {
                 } />
             )
         } else if (this.state.patientNotFound) {
-            $('.modal').modal('hide');
+            this.removeModal();
             return (
                 <Redirect to={
                     {
@@ -108,7 +115,7 @@ class EncounterPage extends React.Component {
                 } />
             )
         } else if (this.state.finalized === true) {
-            $('.modal').modal('hide');
+            this.removeModal();
             return(
             <Redirect to={
                 {

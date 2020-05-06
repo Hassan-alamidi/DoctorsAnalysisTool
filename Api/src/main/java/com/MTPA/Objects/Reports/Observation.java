@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @JsonDeserialize
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "patient_medication")
+@Table(name = "patient_observation")
 public class Observation {
 
     @Id

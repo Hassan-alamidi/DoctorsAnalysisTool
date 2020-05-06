@@ -127,6 +127,16 @@ class SideBar extends React.Component {
                                 Treatment History
                             </button>
                         </li>
+                        <li className="nav-item li-button">
+                            <button className="nav-link btn btn-link"
+                                onClick={() => {this.props.callback("/treatment/current", "On Going Treatments")
+                                this.setState({currentOption:"On Going Treatments",
+                                                currentFilter:"/treatment/current",
+                                                alternateFilter:"/treatment",
+                                                filterOption:"Full Treatment History"})}}>
+                                Recently Generated Reports
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </nav>

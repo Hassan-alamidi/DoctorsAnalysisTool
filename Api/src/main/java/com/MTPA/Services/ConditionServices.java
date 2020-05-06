@@ -20,7 +20,7 @@ public class ConditionServices {
     private final PatientDAO patientDAO;
 
     @Autowired
-    public ConditionServices(ConditionDAO conditionDAO, PatientDAO patientDAO){
+    public ConditionServices(final ConditionDAO conditionDAO, final PatientDAO patientDAO){
         this.conditionDAO = conditionDAO;
         this.patientDAO = patientDAO;
     }

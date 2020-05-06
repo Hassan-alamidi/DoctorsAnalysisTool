@@ -40,6 +40,7 @@ class EncounterConfirmModal extends React.Component {
             }
         }else if(this.props.requestType === "post"){
             $('#createEncounterModal').modal('show');
+            //$('#LoadingModal').modal('hide');
         }
     }
 
@@ -99,6 +100,8 @@ class EncounterConfirmModal extends React.Component {
     render(){
         if(this.state.close){
             $('.modal').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
             return (
                 <Redirect push to={
                     {

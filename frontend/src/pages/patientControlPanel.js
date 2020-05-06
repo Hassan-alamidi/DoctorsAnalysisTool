@@ -114,7 +114,7 @@ class PatientControlPanelPage extends React.Component {
                                         <CardButton header="Patient Medical History" details="View patients medical history"
                                                     icon="archive" callback={() => {this.pageChange("/dashboard/history")}} />
                                         <CardButton header="Build Prediction Report" details="Generated report with predictions on patients health based on most recent encounters"
-                                                    icon="file-medical-alt" callback={() => {this.pageChange("")}} />
+                                                    icon="file-medical-alt" callback={() => {this.pageChange("/hub/patient/prediction")}} />
                                     </div>
                                 </div>
                             </div>

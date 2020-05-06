@@ -14,11 +14,11 @@ from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-#cat = subprocess.Popen(["/home/ubuntu/hadoop-2.10.0/bin/hadoop", "fs", "-cat", "mapOutput/diabeties"], stdout=subprocess.PIPE, encoding='utf8')
-file = open("/home/hassan/Desktop/forTesting/dataTransformation/diabetiesResult.txt", 'r')
-lines = file.readlines()
+cat = subprocess.Popen(["/home/ubuntu/hadoop-2.10.0/bin/hadoop", "fs", "-cat", "mapOutput/diabeties/*"], stdout=subprocess.PIPE, encoding='utf8')
+#file = open("/home/hassan/Desktop/forTesting/dataTransformation/diabetiesResult.txt", 'r')
+#lines = file.readlines()
 dataList = []
-for line in lines:
+for line in cat.stdout:
     line = line.strip()
     data = line.split(",")
     dataList.append(data)

@@ -62,37 +62,4 @@ public class TreatmentPlan {
     @Setter
     @Column
     private String reasonDescription;
-
-
-
-    //the below is only generated when prediction is requested might move to a separate class
-    //This should probably be removed or be placed in its own object as a report object
-//    @Getter
-//    @Setter
-//    private int successChance;
-//
-//    @Getter
-//    @Setter
-//    private String bestPredictedOutcome;
-//
-//    @Getter
-//    @Setter
-//    private String worstPredictedOutcome;
-//
-//    @Getter
-//    @Setter
-//    private String likelyNegativeSideEffects;
-//    //effecting chance of success
-//
-//    @Getter
-//    @Setter
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "condition_code")
-//    private PatientMedication medicationEffecting;
-//
-//    @Getter
-//    @Setter
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id")
-//    private PatientCondition conditionEffecting;
 }

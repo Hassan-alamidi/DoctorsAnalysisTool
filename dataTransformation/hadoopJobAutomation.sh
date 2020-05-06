@@ -24,6 +24,8 @@ echo "mapping patient"
 #condition prediction mapper should be used as reducer for patient
 ~/hadoop-2.10.0/bin/hadoop jar ~/hadoop-2.10.0/share/hadoop/tools/lib/hadoop-*streaming*.jar -file ~/MapReduceScripts/patientMapper.py -mapper ~/MapReduceScripts/patientMapper.py -input patient/* -output mapOutput/patient
 
+echo "mapping and reducing observations for diabeties prediction"
+~/hadoop-2.10.0/bin/hadoop jar ~/hadoop-2.10.0/share/hadoop/tools/lib/hadoop-*streaming*.jar -mapper ~/MapReduceScripts/diabetiesMapper.py -reducer ~/MapReduceScripts/diabetiesReducer.py -input mapOutput/patient/* -output mapOutput/diabeties
 #echo "Mapping patients records for predictions"
 #~/hadoop-2.10.0/bin/hadoop jar ~/hadoop-2.10.0/share/hadoop/tools/lib/hadoop-*streaming*.jar -files ~/MapReduceScripts/conditionPredictionMappert.py -mapper conditionPredictionMappert.py -input mapOutput/patient/* -output mapOutput/conditionsPred
 hadoop fs -cat mapOutput/patient/* | ~/MapReduceScripts/conditionPredictionMappert.py > PatientCurrentCondition.csv

@@ -85,6 +85,9 @@ for line in sys.stdin:
             tmp = pd.DataFrame(rows).transpose()
             observationList = pd.concat([observationList,tmp])
     
+    if(len(observationList) == 0):
+        continue
+    
     groupedByDate = observationList.groupby('date')
     
     for groupName, group in groupedByDate:

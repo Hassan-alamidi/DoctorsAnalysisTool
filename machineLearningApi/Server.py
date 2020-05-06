@@ -15,51 +15,124 @@ import tensorflow.keras
 from tensorflow.keras.models import Model
 import mysql.connector
 from mysql.connector import errorcode
+from datetime import datetime, date
 
 model = tensorflow.keras.models.load_model("diabetiesPredictionModel.h5")
 database = None
-insertPredictionQuery = ("INSERT INTO prediction_reports (patient_ppsn, result, based_on) VALUES (%(patient_ppsn)s, %(result)s, %(based_on)s)")
-
+insertPredictionQuery = ("INSERT INTO prediction_reports (patient_ppsn, result, based_on, date_generated, confidence) VALUES (%(patient_ppsn)s, %(result)s, %(based_on)s, %(date_generated)s, %(confidence)s)")
+getPatientDOB = ("SELECT dob FROM patient WHERE ppsn = %s")
+getValueQuery = ("SELECT type AS observ, result_value FROM patient_observation WHERE encounter_id = %s")
 app = Flask(__name__)
 
-@app.route('/diabeties', methods=['GET'])
-def predictDiabeties():
-    if not request.json or not 'ppsn' in request.json:
+@app.route('/predict', methods=['POST'])
+def predictCondition():
+    if not request.json or not 'ppsn' in request.json and not 'encounterId' in request.json:
         abort(400)
     
-    #ppsn is not used yet but it will be used to store results in database
+    #get ppsn and encounterID then find values from database
     ppsn = request.json['ppsn']
-    age = request.json['age']
-    bmi = request.json['bmi']
-    sbp = request.json['sbp']
-    dbp = request.json['dbp']
-    hdl = request.json['hdl']
-    ldl = request.json['ldl']
+    encounterId = request.json['encounterId']
+    #wil have to work out age through DOB
+    #age = request.json['age']
+    #bmi = request.json['bmi']
+    #sbp = request.json['sbp']
+    #dbp = request.json['dbp']
+    #hdl = request.json['hdl']
+    #ldl = request.json['ldl']
+    diabetiesPred = predictDiabeties(ppsn, encounterId)
+
+    return jsonify(diabetiesPred), 200
+
+def predictDiabeties(ppsn, encounterId):
+    age = None
+    dbp = None
+    sbp = None
+    bmi = None
+    hdl = None
+    ldl = None
     #order should be 'ppsn', 'age', 'diastolic', 'systolic', 'bmi', 'hdl', 'ldl'
+    age = getAge(ppsn)
+    
+    global database    
+    global getValueQuery
+    cursor = database.cursor()
+    cursor.execute(getValueQuery,(encounterId,))
+    for (observ, resultValue) in cursor:
+      if("Diastolic" in observ):
+          dbp = float(resultValue)
+      elif("Systolic" in observ):
+          sbp = float(resultValue)
+      elif(observ =="Body Mass Index"):
+          bmi = float(resultValue)
+      elif("High Density Lipoprotein" in observ):
+          hdl = float(resultValue)
+      elif("Low Density Lipoprotein" in observ):
+          ldl = float(resultValue)
+    
+    cursor.close()
+    
+    if(dbp is None or sbp is None or bmi is None or hdl is None or ldl is None or age is None):
+        response = {
+            'message':"not enough observations taken"
+            }
+        return response
     
     tobePredicted = np.array([[age,dbp,sbp,bmi,hdl,ldl]])
     prediction = model.predict(tobePredicted)
-    print(prediction[0,0], flush=True);
-    if(prediction[0,0] == 0.0):
-        message = "This Patient appears to be Healthy"
+    if(prediction[0,0] < 0.5):
+        message = "This Patient does not appear to have diabeties"
+        confidence = round((1 - prediction[0,0]) * 100,2) 
     else:
         message = "This Patient appears to have or atleast is soon to have Diabeties"
-     
-    insertPrediction(ppsn, "12345", "Based on: once I caught a fish alive")
+        confidence = round(prediction[0,0] * 100,2) 
+    
+    basedOn = "Age:{}, Diastolic:{}, Systolic:{}, BMI:{}, HDL:{}, LDL:{}".format(age,dbp,sbp,bmi,hdl,ldl)
+    insertPrediction(ppsn, message, basedOn, confidence)
     response = {
-        'message': message,
-        'prediction': int(prediction[0,0])
-    }
-    return jsonify(response), 200
+        'ppsn': ppsn,
+        'result': message,
+        'basedOn': basedOn,
+        'confidence': str(confidence) + '%'
+        }
+    return response
 
-def insertPrediction(ppsn, result, basedOn):
+
+def getValue(encounterId, typeOfValue):
+    global database    
+    global getValueQuery
+    typeOfValue = '{}%'.format(typeOfValue)
+    cursor = database.cursor()
+    cursor.execute(getValueQuery,(encounterId, typeOfValue))
+    value = cursor.fetchone()[0]
+    cursor.close()
+    return value
+    
+def calculateAge(birthDate):
+    #birthDate = datetime.strptime(birthDate, "%Y-%m-%d")
+    currentDate = date.today()
+    return currentDate.year - birthDate.year - ((currentDate.month, currentDate.day) < (birthDate.month, birthDate.day))
+    
+def getAge(ppsn):
+    global database    
+    global getPatientDOB
+    cursor = database.cursor()
+    cursor.execute(getPatientDOB,(ppsn,))
+    dob = cursor.fetchone()[0]
+    print(dob, flush=True)
+    cursor.close()
+    return calculateAge(dob)
+    
+def insertPrediction(ppsn, result, basedOn, confidence):
     global database    
     global insertPredictionQuery
     cursor = database.cursor()
+    currentDate = datetime.date(datetime.now())
     record = {
         'patient_ppsn':ppsn,
         'result':result,
-        'based_on':basedOn
+        'based_on':basedOn,
+        'date_generated':currentDate,
+        'confidence': confidence
         }
     
     cursor.execute(insertPredictionQuery,record)

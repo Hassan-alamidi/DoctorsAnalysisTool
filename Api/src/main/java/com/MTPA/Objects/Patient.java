@@ -65,16 +65,18 @@ public class Patient implements Serializable {
     private String address;
 
     @Getter
+    @Setter
     @JsonIgnoreProperties(value = "patient", allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @Where(clause = "cured_on IS NULL")
-    private Set<Condition> conditions;
+    private Set<Condition> conditions = new HashSet<>();
 
     @Getter
+    @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     @JsonIgnoreProperties(value = {"patient", "reasonForMedication"}, allowSetters = true)
     @Where(clause = "(treatment_end > CURRENT_DATE() OR treatment_end IS NULL) AND type NOT LIKE 'immunization'")
-    private Set<Medication> currentMedication;
+    private Set<Medication> currentMedication = new HashSet<>();
 
     public Patient(final String ppsn){
         this.ppsn = ppsn;

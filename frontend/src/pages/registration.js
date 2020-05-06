@@ -140,7 +140,7 @@ class RegistrationPage extends React.Component {
                         <input className="form-control form-control-md" id="licenceNumberInput" type="text" placeholder="Medical Licence Number" onChange={this.medicalLicenceNumberChangeHandler} />
                         <input className="form-control form-control-md" id="firstNameInput" type="text" placeholder="First Name" onChange={this.firstNameChangeHandler} />
                         <input className="form-control form-control-md" id="lastNameInput" type="text" placeholder="Last Name" onChange={this.lastNameChangeHandler} />
-                        <p>Date Of Birth</p>
+                        <p style={{marginLeft:"10%"}}>Date Of Birth</p>
                         <input className="form-control form-control-md" id="DOBInput" type="date" placeholder="yyyy-mm-dd" onChange={this.DOBChangeHandler} />
                         <input className="form-control form-control-md" id="ppsnInput" type="text" placeholder="PPSN" onChange={this.PPSNChangeHandler} />
                         <input className="form-control form-control-md" id="addressInput" type="text" placeholder="Address" onChange={this.addressChangeHandler} />
@@ -156,7 +156,7 @@ class RegistrationPage extends React.Component {
                             </select>)
                         }
 
-                        <button type="button" className="btn space-please" id="left-panel-link" onClick={() => {this.registerAccount()}}>Register</button>
+                        <button style={{marginLeft:"5%"}} type="button" className="btn space-please" id="left-panel-link" onClick={() => {this.registerAccount()}}>Register</button>
                     </CardAlt>
                 </div>
             )

@@ -23,6 +23,26 @@ public class TreatmentPlan {
 
     @Getter
     @Setter
+    @Column
+    private String description;
+
+    @Getter
+    @Setter
+    @Column
+    private String code;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonCode;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonDescription;
+
+    @Getter
+    @Setter
     private LocalDate startDate;
 
     @Getter
@@ -42,24 +62,4 @@ public class TreatmentPlan {
     @JoinColumn(name = "encounter_id")
     @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations", "treatments"}, allowSetters = true)
     private Encounter encounter;
-
-    @Getter
-    @Setter
-    @Column
-    private String description;
-
-    @Getter
-    @Setter
-    @Column
-    private String code;
-
-    @Getter
-    @Setter
-    @Column
-    private String reasonCode;
-
-    @Getter
-    @Setter
-    @Column
-    private String reasonDescription;
 }

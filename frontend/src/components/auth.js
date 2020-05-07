@@ -1,8 +1,10 @@
 const key = "isLoggedIn";
 const isAdminKey = "isAdmin";
+const doctorName = "firstName"
 
 class Auth {
     constructor(){
+        this.firstName = sessionStorage.getItem(doctorName)
         this.stored = sessionStorage.getItem(key)
         //this does nothing other than make the register staff button appear, the endpoint is secured to disallow non-admins from carrying out the action
         this.isAdminStored = sessionStorage.getItem(isAdminKey)
@@ -24,10 +26,15 @@ class Auth {
         return this.manager;
     }
 
-    login(privilegeLevel){
+    getName(){
+        return this.firstName;
+    }
+
+    login(privilegeLevel, name){
         const admin = privilegeLevel === "Admin" ? true : false;
         this.authenticated = true;
         this.manager = admin;
+        sessionStorage.setItem(doctorName, name)
         sessionStorage.setItem(key,"true");
         sessionStorage.setItem(isAdminKey, admin)
     }
@@ -36,6 +43,7 @@ class Auth {
         this.authenticated = false;
         sessionStorage.removeItem(key)
         sessionStorage.removeItem(isAdminKey);
+        sessionStorage.removeItem(doctorName);
     }
 
 }

@@ -41,10 +41,16 @@ INSERT INTO `encounter` (id, type, date_visited, date_left, patient_ppsn, descri
 INSERT INTO `patient_observation` (type, date_taken, encounter_id, result_value, result_unit, patient_ppsn) VALUES
 ('ECG','2020-01-12','a','160','BPM','87937M');
 
----
---- Create condition
----
+INSERT INTO `patient_condition` (id,description,code,discovered,cured_on,patient_ppsn,encounter_id,type) VALUES
+(1,'Streptococcal sore throat (disorder)','43878008','2008-06-14','2008-06-27','87937M','a','condition'),
+(2,'Streptococcal sore throat (disorder)','43878008','2008-06-14','2008-06-27','87937M','a','condition'),
+(3,'Streptococcal sore throat (disorder)','43878008','2008-06-14','2008-06-27','87937M','a','condition'),
+(4,'Atopic dermatitis','43878008','2008-06-14',null,'87937M','b','condition'),
+(5,'Atopic dermatitis','43878008','2008-06-14',null,'87937M','b','condition'),
+(6,'Atopic dermatitis','43878008','2008-06-14',null,'87937M','b','condition');
 
-INSERT INTO `condition` (condition_code, name, type, description, common_causes, common_symptoms, can_progress_to) VALUES
-(1,'ECG','checking heart rate due to concerns', 'ajiofej','eijfow','headache', null),
-(2,'ECG','checking heart rate due to concerns', 'ajiofej','eijfow','headache',1);
+INSERT INTO `patient_medication` (id,description,code,treatment_start,treatment_end,patient_ppsn,encounter_id,type) VALUES
+(1,'Influenza  seasonal  injectable  preservative free','43878008','2008-06-14','2008-06-14','87937M','a','Immunization'),
+(2,'Ibuprofen 100 MG Oral Tablet','43878008','2008-06-14',null,'87937M','a','Medication'),
+(3,'Ibuprofen 100 MG Oral Tablet','43878008','2008-06-14',null,'87937M','a','Medication'),
+(4,'Ibuprofen 100 MG Oral Tablet','43878008','2008-06-14','2008-06-14','87937M','a','Medication');

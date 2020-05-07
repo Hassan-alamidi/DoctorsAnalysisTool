@@ -10,6 +10,7 @@ import {ObservationListTransparent} from "../components/reportLists/observationL
 import ProcedureListTransparent from "../components/reportLists/procedureList"
 import EncounterList from "../components/reportLists/encounterList"
 import TreatmentList from "../components/reportLists/treatmentList"
+import PredictionList from "../components/reportLists/predictionList"
 
 const axios = require('axios').default;
 
@@ -154,7 +155,17 @@ class HistoryPage extends React.Component {
                         </div>
                     </div>
                 );
-            } else{
+            } else if(this.state.historicalDataType.includes("Predictions")){
+                return (
+                    <div>
+                        <NavBar />
+                        <Sidebar callback={this.requestHistory} />
+                        <div className="fluid-container" id="dataListContainer" >
+                            <PredictionList callback={this.apiRequest} predictions={this.state.historicalData} header={this.state.historicalDataType}/>
+                        </div>
+                    </div>
+                );
+            }else{
                 return (
                     <div>
                         <NavBar />

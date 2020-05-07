@@ -35,7 +35,7 @@ class NavigationBar extends React.Component {
                     
                     <ul className="nav navbar-nav navbar-right" id="user-dropdown">
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#/action"> Doctors Name
+                            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#/action"> {auth.getName()}
                                 <span className="caret"></span></a>
                             <ul className="dropdown-menu bg-dark">
                                 <li className="nav-item">

@@ -25,7 +25,7 @@ class SideBar extends React.Component {
     }
 
     filterOption(){
-        if(this.state.currentOption === "Immunization"){
+        if(this.state.currentOption === "Immunization" || this.state.currentOption === "Generated Predictions"){
             return(
                 <div className="panel-body">
                     <p>Filter Options</p>
@@ -129,11 +129,11 @@ class SideBar extends React.Component {
                         </li>
                         <li className="nav-item li-button">
                             <button className="nav-link btn btn-link"
-                                onClick={() => {this.props.callback("/treatment/current", "On Going Treatments")
-                                this.setState({currentOption:"On Going Treatments",
-                                                currentFilter:"/treatment/current",
-                                                alternateFilter:"/treatment",
-                                                filterOption:"Full Treatment History"})}}>
+                                onClick={() => {this.props.callback("/prediction", "Generated Predictions")
+                                this.setState({currentOption:"Generated Predictions",
+                                                currentFilter:"/prediction",
+                                                alternateFilter:"/prediction",
+                                                filterOption:"Generated Predictions"})}}>
                                 Recently Generated Reports
                             </button>
                         </li>

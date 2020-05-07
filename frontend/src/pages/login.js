@@ -44,7 +44,7 @@ class LoginPage extends React.Component {
                                 //treat all as basic doctor until password is changed
                                 this.toPasswordChange("User");
                             }else{
-                                this.toHome(response.data.privilegeLevel)
+                                this.toHome(response.data.privilegeLevel, response.data.firstName)
                             }
                         }.bind(this));
                         
@@ -57,13 +57,13 @@ class LoginPage extends React.Component {
         }
     }
 
-    toPasswordChange(privilegeLevel){
-        auth.login(privilegeLevel);
+    toPasswordChange(privilegeLevel, firstName){
+        auth.login(privilegeLevel, firstName);
         this.props.history.push("/info/password");
     }
 
-    toHome(privilegeLevel) {
-        auth.login(privilegeLevel);
+    toHome(privilegeLevel, firstName) {
+        auth.login(privilegeLevel, firstName);
         this.props.history.push("/hub/home");
     }
 

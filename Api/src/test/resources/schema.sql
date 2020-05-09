@@ -1,22 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS `MTPA` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `MTPA`;
--- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
---
--- Host: localhost    Database: MTPA
--- ------------------------------------------------------
--- Server version	5.7.28-0ubuntu0.18.04.4
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 CREATE TABLE IF NOT EXISTS `encounter` (
   `id` varchar(200) NOT NULL PRIMARY KEY,
@@ -27,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `encounter` (
   `description` varchar(200) NOT NULL,
   `reason_description` varchar(200) NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Table structure for table `patient`
@@ -43,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `patient` (
   `last_name` varchar(45) NOT NULL,
   `gender` varchar(45) NOT NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 ALTER TABLE `patient` ADD CONSTRAINT patient_unique_cols UNIQUE ( ppsn );
 --
@@ -62,7 +42,6 @@ CREATE TABLE IF NOT EXISTS `patient_condition` (
   `encounter_id` varchar(200) NOT NULL,
   `type` varchar(45) NOT NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `patient_medication`
@@ -81,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `patient_medication` (
   `code` varchar(45) NULL,
   `reason_description` varchar(200) NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `patient_observation`
@@ -97,7 +75,6 @@ CREATE TABLE IF NOT EXISTS `patient_observation` (
   `code` varchar(45) NULL,
   `patient_ppsn` varchar(200) NOT NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `patient_procedure`
@@ -114,7 +91,6 @@ CREATE TABLE IF NOT EXISTS `patient_procedure` (
   `reason_description` varchar(200) NULL,
   `reason_code` varchar(45) NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Table structure for table `treatment_plan`
 --
@@ -130,7 +106,6 @@ CREATE TABLE IF NOT EXISTS `treatment_plan` (
   `reason_code` varchar(45) NULL,
   `reason_description` varchar(200) NULL
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `doctor`
@@ -149,24 +124,5 @@ CREATE TABLE IF NOT EXISTS `doctor` (
   `phone_number` int(11) NOT NULL
 );
 
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number, phone_number );
-
---
--- Table structure for table `encounter`
---
-
-
-
-
-
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

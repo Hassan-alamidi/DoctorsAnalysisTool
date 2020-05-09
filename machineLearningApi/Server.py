@@ -32,13 +32,7 @@ def predictCondition():
     #get ppsn and encounterID then find values from database
     ppsn = request.json['ppsn']
     encounterId = request.json['encounterId']
-    #wil have to work out age through DOB
-    #age = request.json['age']
-    #bmi = request.json['bmi']
-    #sbp = request.json['sbp']
-    #dbp = request.json['dbp']
-    #hdl = request.json['hdl']
-    #ldl = request.json['ldl']
+
     diabetiesPred = predictDiabeties(ppsn, encounterId)
 
     return jsonify(diabetiesPred), 200
@@ -73,17 +67,17 @@ def predictDiabeties(ppsn, encounterId):
     
     if(dbp is None or sbp is None or bmi is None or hdl is None or ldl is None or age is None):
         response = {
-            'message':"not enough observations taken"
+            'message':"Not enough observations taken"
             }
         return response
     
     tobePredicted = np.array([[age,dbp,sbp,bmi,hdl,ldl]])
     prediction = model.predict(tobePredicted)
     if(prediction[0,0] < 0.5):
-        message = "This Patient does not appear to have diabeties"
+        message = "This Patient does not appear to have diabetes"
         confidence = round((1 - prediction[0,0]) * 100,2) 
     else:
-        message = "This Patient appears to have or atleast is soon to have Diabeties"
+        message = "This Patient appears to have or atleast is soon to have diabetes"
         confidence = round(prediction[0,0] * 100,2) 
     
     basedOn = "Age:{}, Diastolic:{}, Systolic:{}, BMI:{}, HDL:{}, LDL:{}".format(age,dbp,sbp,bmi,hdl,ldl)

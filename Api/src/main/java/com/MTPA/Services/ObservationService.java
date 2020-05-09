@@ -58,7 +58,7 @@ public class ObservationService {
         if(observation.getPatient() != null && patientDAO.exists(observation.getPatient().getPpsn())) {
             if(observation.getEncounter() != null && encounterDAO.existsById(observation.getEncounter().getId())) {
                 Observation patientObservation = observationDAO.save(observation);
-                return new ResponseEntity<Observation>(patientObservation, HttpStatus.OK);
+                return new ResponseEntity<Observation>(patientObservation, HttpStatus.CREATED);
             }
             return new ResponseEntity<>("Encounter not created", HttpStatus.UNPROCESSABLE_ENTITY);
         }

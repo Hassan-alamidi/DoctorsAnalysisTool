@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +37,7 @@ public class Encounter {
 
     @Getter
     @Setter
+    @NotNull
     @Column(name = "date_visited")
     private LocalDate dateVisited;
 

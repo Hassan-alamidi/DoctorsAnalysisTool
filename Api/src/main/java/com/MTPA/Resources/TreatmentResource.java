@@ -18,13 +18,18 @@ public class TreatmentResource {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTreatments(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<?> getAllTreatments(@RequestHeader("ppsn") final String ppsn){
         return treatmentService.getAllTreatments(ppsn);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<?> getAllOnGoingTreatments(@RequestHeader("PPSN") final String ppsn){
+    public ResponseEntity<?> getAllOnGoingTreatments(@RequestHeader("ppsn") final String ppsn){
         return treatmentService.getAllOnGoingTreatments(ppsn);
+    }
+
+    @GetMapping("/finished")
+    public ResponseEntity<?> getAllCompletedTreatments(@RequestHeader("ppsn") final String ppsn){
+        return treatmentService.getAllCompletedTreatments(ppsn);
     }
 
     @PutMapping("current/end/{id}")
@@ -35,11 +40,6 @@ public class TreatmentResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTreatment(@PathVariable("id") final int id){
         return treatmentService.deleteTreatment(id);
-    }
-
-    @GetMapping("/finished")
-    public ResponseEntity<?> getAllCompletedTreatments(@RequestHeader("PPSN") final String ppsn){
-        return treatmentService.getAllCompletedTreatments(ppsn);
     }
 
     @PostMapping

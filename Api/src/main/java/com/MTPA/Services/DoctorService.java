@@ -55,18 +55,18 @@ public class DoctorService implements UserDetailsService {
 
     public ResponseEntity<Doctor> registerAdmin(final Doctor doctor){
         if(doctorDAO.count() > 0){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
         doctor.setPrivilegeLevel("Admin");
         Doctor retVal = doctorDAO.save(doctor);
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
+        return new ResponseEntity<>(retVal, HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> registerDoctor(final Doctor doctor){
         doctor.setPassword(bCryptPasswordEncoder.encode(TEMP_PASSWORD));
         Doctor retVal = doctorDAO.save(doctor);
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
+        return new ResponseEntity<>(retVal, HttpStatus.CREATED);
     }
 
     public ResponseEntity<HttpStatus> passwordChange(final String token, final String oldPassword, final String newPassword){

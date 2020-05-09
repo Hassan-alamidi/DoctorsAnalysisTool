@@ -71,7 +71,7 @@ public class EncounterService {
         if(encounter.getId() == null) {
             encounter.setDateVisited(LocalDate.now());
             Encounter savedEncounter = encounterDAO.save(encounter);
-            return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
+            return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.CREATED);
         }
         return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
@@ -84,7 +84,7 @@ public class EncounterService {
             Encounter savedEncounter = encounterDAO.save(encounter);
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }
-        return new ResponseEntity<>("can not find encounter to finalize", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("cannot find encounter to finalize", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> updateEncounter(final Encounter encounter){
@@ -97,6 +97,6 @@ public class EncounterService {
             Encounter savedEncounter = encounterDAO.save(encounter);
             return new ResponseEntity<Encounter>(savedEncounter, HttpStatus.OK);
         }
-        return new ResponseEntity<>("can not find encounter to update", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("cannot find encounter to update", HttpStatus.NOT_FOUND);
     }
 }

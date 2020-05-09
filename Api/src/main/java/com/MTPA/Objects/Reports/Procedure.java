@@ -42,6 +42,16 @@ public class Procedure {
 
     @Getter
     @Setter
+    @Column
+    private String reasonDescription;
+
+    @Getter
+    @Setter
+    @Column
+    private String reasonCode;
+
+    @Getter
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"conditions", "currentMedication"}, allowSetters = true)
     @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
@@ -51,16 +61,6 @@ public class Procedure {
     @Setter
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations", "treatments"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medications", "procedures", "observations", "treatments"}, allowSetters = true)
     private Encounter encounter;
-
-    @Getter
-    @Setter
-    @Column
-    private String reasonDescription;
-
-    @Getter
-    @Setter
-    @Column
-    private String reasonCode;
 }

@@ -34,11 +34,6 @@ public class ObservationResource {
         return observationService.getRecentObservations(ppsn);
     }
 
-//    @GetMapping("/recent/{count}")
-//    public ResponseEntity<List<PatientObservation>> getRecentObservations(@RequestHeader("ppsn") final String ppsn, @RequestParam("count") int count){
-//        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-//    }
-
     @PostMapping
     public ResponseEntity<?> createObservation(@RequestBody final Observation observation){
         return observationService.createObservation(observation);

@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -28,11 +29,13 @@ public class Patient implements Serializable {
 
     @Getter
     @Setter
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
     @Getter
     @Setter
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
@@ -43,6 +46,7 @@ public class Patient implements Serializable {
 
     @Getter
     @Setter
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
     private LocalDate dob;
@@ -56,6 +60,7 @@ public class Patient implements Serializable {
     //I don't want a setter here but jackson seems to insist on it must find a solution later
     @Setter
     @Getter
+    @NotNull
     @Column(name = "ppsn")
     private String ppsn;
 

@@ -29,7 +29,15 @@ public class DoctorIT extends BaseIT {
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(REGISTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(DOCTOR_GETS_ADDED_TO_DB, adminHeader), String.class);
         System.out.println(responseEntity.toString());
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void registerAdminThroughFirstUserEndpointWhenNotFirstUser_ThenForbiddenReturned(){
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(REGISTER_ENDPOINT + "/admin", HttpMethod.POST, new HttpEntity<>(NEVER_GETS_ADDED_DOCTOR, adminHeader), String.class);
+        System.out.println(responseEntity.toString());
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
     }
 
 //    @Test

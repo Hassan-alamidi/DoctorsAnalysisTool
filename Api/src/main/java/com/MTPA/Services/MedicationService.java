@@ -38,9 +38,9 @@ public class MedicationService {
         if (medication.getPatient() != null && patientDAO.exists(medication.getPatient().getPpsn())){
             if (encounterDAO.findById(medication.getEncounter().getId()).isPresent()) {
                 Medication prescribed = medicationDAO.save(medication);
-                return new ResponseEntity<>(prescribed, HttpStatus.OK);
+                return new ResponseEntity<>(prescribed, HttpStatus.CREATED);
             }
-            return new ResponseEntity<String>("must have valid encounter linked", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<String>("Must have valid encounter linked", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<String>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
@@ -58,9 +58,9 @@ public class MedicationService {
     }
 
     public ResponseEntity<?> markAsEnded(final int id){
-        Optional<Medication> optmedication = medicationDAO.findById(id);
-        if(optmedication.isPresent()){
-            Medication medication = optmedication.get();
+        Optional<Medication> optMedication = medicationDAO.findById(id);
+        if(optMedication.isPresent()){
+            Medication medication = optMedication.get();
             medication.setTreatmentEnd(LocalDate.now());
             medicationDAO.save(medication);
             return new ResponseEntity<>(medication, HttpStatus.OK);

@@ -20,32 +20,10 @@ public class EncounterIT extends BaseIT {
 
     private final String ENCOUNTER_ENDPOINT = "/encounter";
     private Encounter encounter;
-    private Set<Observation> observations;
-    private Set<Condition> conditions;
-    private Set<Medication> medication;
 
     @SneakyThrows
     public void setupTest(){
         LocalDate date = LocalDate.parse("2020-05-12");
-        observations = new HashSet<>();
-        conditions = new HashSet<>();
-        medication = new HashSet<>();
-        Observation observation = new Observation();
-        observation.setDateTaken(date);
-        observation.setType("blood test");
-        observation.setResultValue("Holy fuck");
-        observation.setUnit("Shock value");
-        observation.setPatient(EXISTING_PATIENT);
-        observations.add(observation);
-
-        Condition condition = new Condition();
-        condition.setCode("");
-        condition.setDetails("patient has a cold");
-        condition.setDiscovered(date);
-        condition.setName("cold");
-        condition.setSymptoms("runny nose");
-        conditions.add(condition);
-        //condition.setPatient(E);
 
         encounter = new Encounter();
         encounter.setType("checkup");
@@ -53,8 +31,6 @@ public class EncounterIT extends BaseIT {
         encounter.setDateVisited(date);
         encounter.setDateLeft(date);
         encounter.setPatient(EXISTING_PATIENT);
-        encounter.setObservations(observations);
-        encounter.setConditions(conditions);
     }
 
     //get all patient encounters
@@ -175,56 +151,4 @@ public class EncounterIT extends BaseIT {
         Assert.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
     }
 
-    // TODO figure out how to get hibernate to insert parent ids into child objects before reimplementing these tests
-//    @Test
-//    public void createEncounterWithObservationNoCondition_thenOK(){
-//        encounter.setCondition(null);
-//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//    }
-
-//    @Test
-//    public void createEncounterWithObservationAndCondition_thenOK(){
-//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//    }
-//
-//    @Test
-//    public void createEncounterWithMultipleObservations_thenOk(){
-//        PatientObservation observation = new PatientObservation();
-//        observation.setUnit("kg");
-//        observation.setResultValue("60");
-//        observation.setType("weight check");
-//        observation.setDateTaken(encounter.getDateVisited());
-//        observation.setPatient(encounter.getPatient());
-//        observations.add(observation);
-//        encounter.setObservations(observations);
-//        System.out.println(encounter.getPatient().getPpsn());
-//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//    }
-
-    @Test
-    public void createEncounterWithMultipleObservationsOneWithMissingValue_thenNothingIsSaved(){
-        Observation observation = new Observation();
-        observation.setDateTaken(encounter.getDateVisited());
-        observations.add(observation);
-        encounter.setObservations(observations);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-    }
-
-    @Test
-    public void createEncounterWithObservationMissingMandatoryFields_thenEncounterIsNotSaved(){
-        encounter.setDateVisited(null);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-    }
-//not valid anymore
-//    @Test
-//    public void createEncounterWithConditionWithoutMandatoryFields_thenEncounterIsNotSaved(){
-//        encounter.getCondition();
-//        ResponseEntity<String> responseEntity = restTemplate.exchange(ENCOUNTER_ENDPOINT, HttpMethod.POST, new HttpEntity<>(encounter, doctorHeader), String.class);
-//        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
 }

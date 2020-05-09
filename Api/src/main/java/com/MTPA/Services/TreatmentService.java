@@ -27,7 +27,7 @@ public class TreatmentService {
 
     public ResponseEntity<?> createTreatmentPlan(final TreatmentPlan treatmentPlan){
         if(treatmentPlan.getPatient() != null && patientDAO.exists(treatmentPlan.getPatient().getPpsn())) {
-            return new ResponseEntity<>(treatmentPlanDAO.save(treatmentPlan), HttpStatus.OK);
+            return new ResponseEntity<>(treatmentPlanDAO.save(treatmentPlan), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }
@@ -43,7 +43,7 @@ public class TreatmentService {
             });
             return new ResponseEntity<>(treatmentPlanDAO.save(planWithRestrictions.get()), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Plan does not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<List<TreatmentPlan>> getAllTreatments(final String ppsn){

@@ -18,7 +18,7 @@ public class PatientResource {
     }
 
     @GetMapping
-    public ResponseEntity<?> getPatientRecords(@RequestHeader("PPSN") String ppsn){
+    public ResponseEntity<?> getPatientRecords(@RequestHeader("ppsn") String ppsn){
         return patientServices.getPatient(ppsn);
     }
 

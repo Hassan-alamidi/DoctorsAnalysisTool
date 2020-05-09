@@ -53,9 +53,9 @@ public class ProcedureService {
         if(procedure.getPatient() != null && patientDAO.exists(procedure.getPatient().getPpsn())) {
             if(procedure.getEncounter() != null && encounterDAO.existsById(procedure.getEncounter().getId())) {
                 Procedure patientProcedure = procedureDAO.save(procedure);
-                return new ResponseEntity<Procedure>(patientProcedure, HttpStatus.OK);
+                return new ResponseEntity<Procedure>(patientProcedure, HttpStatus.CREATED);
             }
-            return new ResponseEntity<>("Encounter not created", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Encounter Not Created", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }

@@ -81,7 +81,7 @@ public class MedicationIT extends BaseIT{
         Medication medication = createTestMedication();
         ResponseEntity<Medication> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Medication>(medication, doctorHeader), Medication.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Medication createdMedication = responseEntity.getBody();
         Assert.assertNotNull(createdMedication);
         Assert.assertEquals(medication.getTreatmentStart(), createdMedication.getTreatmentStart());

@@ -29,7 +29,7 @@ public class PatientServices {
                 patient = patientDAO.save(patient);
                 return new ResponseEntity<Patient>(patient, HttpStatus.OK);
             }
-            return new ResponseEntity<>("You cannot update the patients Date of birth", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("You cannot update the patient's Date of birth", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>("Patient Details not found", HttpStatus.NOT_FOUND);
     }

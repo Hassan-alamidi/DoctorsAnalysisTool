@@ -106,9 +106,36 @@ public class DoctorServiceTest {
         when(doctorDAO.save(any(Doctor.class))).thenReturn(doctor);
         ResponseEntity<?> responseEntity = doctorService.registerDoctor(doctor);
 
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Doctor result = (Doctor) responseEntity.getBody();
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertNotNull(result);
         Assert.assertTrue(bCryptPasswordEncoder.matches(DEFAULT_PASSWORD, result.getPassword()));
+    }
+
+    @Test
+    public void registerFirstDoctor_thenDoctorAdminPrivilegesAndDesiredPasswordReturned(){
+        doctor.setPassword("DesiredPassword");
+        doctor.setPrivilegeLevel(null);
+        when(doctorDAO.save(any(Doctor.class))).thenReturn(doctor);
+        when(doctorDAO.count()).thenReturn(0L);
+        ResponseEntity<?> responseEntity = doctorService.registerAdmin(doctor);
+
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+
+        Doctor result = (Doctor) responseEntity.getBody();
+        Assert.assertNotNull(result);
+        Assert.assertEquals("Admin", result.getPrivilegeLevel());
+        Assert.assertTrue(bCryptPasswordEncoder.matches("DesiredPassword", result.getPassword()));
+    }
+
+    @Test
+    public void registerAdminThroughFirstDoctorEndpointWhenNotFirstUser_thenForbiddenReturned(){
+        doctor.setPassword("DesiredPassword");
+        doctor.setPrivilegeLevel(null);
+        when(doctorDAO.count()).thenReturn(1L);
+        ResponseEntity<?> responseEntity = doctorService.registerAdmin(doctor);
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
     }
 
     @Test

@@ -144,7 +144,7 @@ public class EncounterServiceTest {
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
         when(encounterDAO.save(any())).thenReturn(encounter);
         ResponseEntity entity = encounterService.createEncounter(encounter);
-        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, entity.getStatusCode());
     }
 
     @Test
@@ -155,11 +155,11 @@ public class EncounterServiceTest {
     }
 
     @Test
-    public void createEncounterWithValidPatientAndWithNoChildren_thenOK(){
+    public void createEncounterWithValidPatientAndWithNoChildren_thenCreated(){
         encounter.setObservations(null);
         when(patientDAO.findByPPSN(any(String.class))).thenReturn(patient);
         when(encounterDAO.save(any())).thenReturn(encounter);
         ResponseEntity entity = encounterService.createEncounter(encounter);
-        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, entity.getStatusCode());
     }
 }

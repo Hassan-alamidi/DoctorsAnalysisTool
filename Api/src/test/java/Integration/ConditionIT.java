@@ -111,7 +111,7 @@ public class ConditionIT extends BaseIT{
         Condition condition = createTestCondition();
         ResponseEntity<Condition> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.POST, new HttpEntity<Condition>(condition, doctorHeader), Condition.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Condition createdCondition = responseEntity.getBody();
         Assert.assertNotNull(createdCondition);
         Assert.assertEquals(condition.getDiscovered(), createdCondition.getDiscovered());

@@ -48,20 +48,6 @@ public class Medication {
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"conditions", "currentMedication"}, allowSetters = true)
-    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
-    private Patient patient;
-
-    @Getter
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "encounter_id")
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations", "treatments"}, allowSetters = true)
-    private Encounter encounter;
-
-    @Getter
-    @Setter
     @Column
     private String reasonDescription;
 
@@ -75,4 +61,17 @@ public class Medication {
     @Column(name = "prescribed_amount")
     private Integer prescribedAmount;
 
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"conditions", "currentMedication"}, allowSetters = true)
+    @JoinColumn(name = "patient_ppsn", referencedColumnName = "ppsn")
+    private Patient patient;
+
+    @Getter
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "encounter_id")
+    @JsonIgnoreProperties(value = {"patient", "condition","medications", "procedures", "observations", "treatments"}, allowSetters = true)
+    private Encounter encounter;
 }

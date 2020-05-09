@@ -36,15 +36,6 @@ public class Observation {
     @Setter
     private LocalDate dateTaken;
 
-    @Getter
-    @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "encounter_id",nullable = true)
-    @JsonIgnoreProperties(value = {"patient", "condition","medication", "procedures", "observations", "treatments"}, allowSetters = true)
-    //this is only used as the importation of dataset to database ends up in some data loss and in turn caused parent objects to be dropped but child objects stayed
-    @NotFound(action = NotFoundAction.IGNORE)
-    private Encounter encounter;
-
     //value could be an amount, true or false and so on, so string is best for this
     @Getter
     @Setter
@@ -54,6 +45,15 @@ public class Observation {
     @Setter
     @Column(name = "result_unit")
     private String unit;
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "encounter_id",nullable = true)
+    @JsonIgnoreProperties(value = {"patient", "condition","medications", "procedures", "observations", "treatments"}, allowSetters = true)
+    //this is only used as the importation of dataset to database ends up in some data loss and in turn caused parent objects to be dropped but child objects stayed
+    @NotFound(action = NotFoundAction.IGNORE)
+    private Encounter encounter;
 
     @Getter
     @Setter

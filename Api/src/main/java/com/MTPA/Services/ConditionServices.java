@@ -41,7 +41,7 @@ public class ConditionServices {
 
     public ResponseEntity<?> addPatientCondition(Condition condition){
         if(condition.getPatient() != null && patientDAO.exists(condition.getPatient().getPpsn())){
-            return new ResponseEntity<>(conditionDAO.save(condition), HttpStatus.OK);
+            return new ResponseEntity<>(conditionDAO.save(condition), HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Patient Not Found", HttpStatus.NOT_FOUND);
     }

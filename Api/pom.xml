@@ -64,7 +64,7 @@
                 </executions>
                 <configuration>
                     <!--H2 database seems to fail to create tables on occasion so running tests 5 times to ensure its not my code that is failing-->
-                    <rerunFailingTestsCount>5</rerunFailingTestsCount>
+                    <rerunFailingTestsCount>10</rerunFailingTestsCount>
                     <forkCount>0</forkCount>
                     <reuseForks>true</reuseForks>
                     <argLine>-Xmx2048m -XX:MaxPermSize=256m</argLine>

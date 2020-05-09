@@ -1,25 +1,45 @@
 package Integration;
 
+import com.MTPA.HealthApp;
 import com.MTPA.Objects.Patient;
 import com.MTPA.Objects.Reports.Condition;
 import com.MTPA.Objects.Reports.Encounter;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConditionIT extends BaseIT{
 
     private static final String BASE_ENDPOINT = "/conditions";
 
+    @LocalServerPort
+    protected int port;
+
+    @Autowired
+    protected TestRestTemplate restTemplate;
+
+    @Before
     @Override
-    void setupTest() {}
+    public void setupTest() {
+        setupBeforeEach(restTemplate, port);
+    }
 
     private Condition createTestCondition(){
         Encounter encounter = new Encounter();

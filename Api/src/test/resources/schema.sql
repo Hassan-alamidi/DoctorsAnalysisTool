@@ -1,4 +1,3 @@
-DROP SCHEMA IF EXISTS `MTPA`;
 CREATE SCHEMA IF NOT EXISTS `MTPA` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `MTPA`;
 -- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
@@ -19,16 +18,14 @@ USE `MTPA`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-DROP TABLE IF EXISTS `encounter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `encounter` (
-  `id` int(11) NOT NULL,
+  `id` varchar(200) NOT NULL PRIMARY KEY,
   `type` varchar(200) NOT NULL,
   `date_visited` date NOT NULL,
   `date_left` date DEFAULT NULL,
   `patient_ppsn` varchar(200) NOT NULL,
-  `organization_id` int(11) NOT NULL
+  `description` varchar(200) NOT NULL,
+  `reason_description` varchar(200) NULL
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,14 +33,11 @@ CREATE TABLE IF NOT EXISTS `encounter` (
 -- Table structure for table `patient`
 --
 
-DROP TABLE IF EXISTS `patient`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `patient` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `first_name` varchar(45) NOT NULL,
   `dob` date NOT NULL,
-  `dod` date,
+  `dod` date NULL,
   `ppsn` varchar(45) NOT NULL,
   `address` varchar(200) NOT NULL,
   `last_name` varchar(45) NOT NULL,
@@ -56,9 +50,6 @@ ALTER TABLE `patient` ADD CONSTRAINT patient_unique_cols UNIQUE ( ppsn );
 -- Table structure for table `patient_condition`
 --
 
-DROP TABLE IF EXISTS `patient_condition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `patient_condition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(200) NOT NULL,
@@ -77,9 +68,6 @@ CREATE TABLE IF NOT EXISTS `patient_condition` (
 -- Table structure for table `patient_medication`
 --
 
-DROP TABLE IF EXISTS `patient_medication`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `patient_medication` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(200) NOT NULL,
@@ -99,9 +87,6 @@ CREATE TABLE IF NOT EXISTS `patient_medication` (
 -- Table structure for table `patient_observation`
 --
 
-DROP TABLE IF EXISTS `patient_observation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `patient_observation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(200) NOT NULL,
@@ -118,9 +103,6 @@ CREATE TABLE IF NOT EXISTS `patient_observation` (
 -- Table structure for table `patient_procedure`
 --
 
-DROP TABLE IF EXISTS `patient_procedure`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `patient_procedure` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(45) NOT NULL,
@@ -137,9 +119,6 @@ CREATE TABLE IF NOT EXISTS `patient_procedure` (
 -- Table structure for table `treatment_plan`
 --
 
-DROP TABLE IF EXISTS `treatment_plan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `treatment_plan` (
   `id` int(11) NOT NULL,
   `start_date` date NOT NULL,
@@ -157,9 +136,6 @@ CREATE TABLE IF NOT EXISTS `treatment_plan` (
 -- Table structure for table `doctor`
 --
 
-DROP TABLE IF EXISTS `doctor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `doctor` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `medical_licence_number` varchar(200) NOT NULL,
@@ -181,19 +157,7 @@ ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_li
 -- Table structure for table `encounter`
 --
 
-DROP TABLE IF EXISTS `encounter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE IF NOT EXISTS `encounter` (
-  `id` varchar(200) NOT NULL PRIMARY KEY,
-  `type` varchar(200) NOT NULL,
-  `date_visited` date NOT NULL,
-  `date_left` date DEFAULT NULL,
-  `patient_ppsn` varchar(200) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `reason_description` varchar(200) NULL
-);
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 

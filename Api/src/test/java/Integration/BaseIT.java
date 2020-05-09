@@ -20,8 +20,6 @@ import java.time.LocalDate;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseIT {
 
     protected static final String BASE_URI = "http://localhost:";
@@ -43,14 +41,10 @@ public abstract class BaseIT {
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
-    @LocalServerPort
-    protected int port;
+    private TestRestTemplate restTemplate;
 
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
-    public void setupBeforeEach(){
+    public void setupBeforeEach(TestRestTemplate restTemplate, int port){
+        this.restTemplate = restTemplate;
         DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(BASE_URI + port);
         restTemplate.setUriTemplateHandler(uriBuilderFactory);
         if(ADMIN_TOKEN == null) {
@@ -67,7 +61,6 @@ public abstract class BaseIT {
         doctorHeader = generateHeader(NON_ADMIN_TOKEN);
         patientCreation();
         doctorCreation();
-        setupTest();
     }
 
     abstract void setupTest();

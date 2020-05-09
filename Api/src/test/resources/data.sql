@@ -2,7 +2,7 @@
 --- Create Patient Data
 ---
 
-INSERT INTO patient (first_name, last_name, dob, dod, ppsn, address, gender) VALUES
+INSERT INTO `patient` (first_name, last_name, dob, dod, ppsn, address, gender) VALUES
 ('Test', 'Subject', TO_DATE('1990-10-19', 'yyyy-MM-dd'), null, '87937M', 'Our Lab', 'Male'),
 ('Test', 'Subject2', TO_DATE('1990-10-19', 'yyyy-MM-dd'), null, '87937N', 'Our Lab', 'Female');
 
@@ -11,7 +11,7 @@ INSERT INTO patient (first_name, last_name, dob, dod, ppsn, address, gender) VAL
 --- Create Doctor Data
 ---
 
-INSERT INTO doctor (medical_licence_number, first_name, last_name, dob, ppsn, address, privilege_level, password, phone_number) VALUES
+INSERT INTO `doctor` (medical_licence_number, first_name, last_name, dob, ppsn, address, privilege_level, password, phone_number) VALUES
 ('num1','testDoc','testie','1991-04-13','jsaof234j','123 easy street','Admin','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',819283),
 ('num31','testDoc','testie','1991-04-13','jsaofsfee234j','123 easy street','User','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',81923483),
 ('num331','testDoc','testie','1991-04-13','jsaofsfsfee234j','123 easy street','User','$2a$10$BxBGxoQ7Ui1wiS8p./.kZe3sRpW946z8AZVpE23DVEiBsgV9jVG3u',34323483),

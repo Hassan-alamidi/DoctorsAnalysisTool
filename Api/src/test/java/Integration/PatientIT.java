@@ -1,17 +1,36 @@
 package Integration;
 
+import com.MTPA.HealthApp;
 import com.MTPA.Objects.Patient;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PatientIT extends BaseIT {
 
     private static final String BASE_ENDPOINT = "/patient";
 
-    public void setupTest(){}
+    @LocalServerPort
+    protected int port;
+
+    @Autowired
+    protected TestRestTemplate restTemplate;
+
+    @Before
+    public void setupTest(){
+        setupBeforeEach(restTemplate, port);
+    }
 
     @Test
     public void createNonExistingPatient(){

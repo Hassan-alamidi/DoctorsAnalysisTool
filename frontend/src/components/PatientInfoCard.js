@@ -6,8 +6,6 @@ import MedicationList from "./reportLists/medicationList"
 
 
 const PatientInfoCard = ({header, patient, detailed, callback}) => {
-    //remove time from date
-    //for testing use this 145452b5-8ede-44f4-9d68-8a60ef0771d6
     patient.dob = patient.dob.split('T')[0]
     return(
         <div className="card">

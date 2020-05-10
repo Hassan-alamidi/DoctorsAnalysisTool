@@ -52,7 +52,6 @@ public abstract class BaseIT {
 
     @Before
     public void setupBeforeEach(){
-        this.restTemplate = restTemplate;
         DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(BASE_URI + port);
         restTemplate.setUriTemplateHandler(uriBuilderFactory);
         if(ADMIN_TOKEN == null) {

@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private static final String REGISTER_DOCTOR = "/register";
@@ -82,7 +82,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST","PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));//Arrays.asList("X-Requested-With","X-Auth-Token", "X-HTTP-Method-Override", "Content-Type", "Accept", "Authorization", "Origin","Access-Control-Request-Method","Access-Control-Request-Headers"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("http://localhost:5000"));//Arrays.asList("X-Requested-With","X-Auth-Token", "X-HTTP-Method-Override", "Content-Type", "Accept", "Authorization", "Origin","Access-Control-Request-Method","Access-Control-Request-Headers"));
         corsConfiguration.addAllowedOrigin("*");
 //        corsConfiguration.addExposedHeader("Authorization");
 //        corsConfiguration.addExposedHeader("Set-Cookie");

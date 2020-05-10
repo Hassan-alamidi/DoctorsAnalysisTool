@@ -36,7 +36,7 @@ class LoginPage extends React.Component {
                     if (response.status === 200) {
                         //create a non-http session cookie and redirect to home
                         
-                        axios('/personal-details', {method: "get", withCredentials: true })
+                        axios('/personal-details', {method: "get", withCredentials: true,data: {} })
                         .then(function(response){
                             console.log(response);
                             if(response.data.accountMessages !== undefined && response.data.accountMessages === "change password"){

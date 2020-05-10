@@ -7,4 +7,3 @@ yes | sudo -H pip3 install numpy
 yes | sudo -H pip3 install Keras
 yes | sudo -H pip3 install tensorflow
 yes | sudo -H pip3 install Flask 
-sudo apt-get -y install gunicorn3

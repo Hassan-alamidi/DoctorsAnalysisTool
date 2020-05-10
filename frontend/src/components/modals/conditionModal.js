@@ -52,7 +52,7 @@ class ConditionModal extends React.Component {
                     
                     axios('/encounter/' + encounterId, { 
                             method: "get", 
-                            withCredentials: true})
+                            withCredentials: true,data: {}})
                         .then(function (response) {
                             console.log(response.data)
                             this.props.callback(response.data)
@@ -67,14 +67,14 @@ class ConditionModal extends React.Component {
     deleteCondition(id){
         axios('/conditions/'+id, { 
                 method: 'delete', 
-                withCredentials: true})
+                withCredentials: true,data: {}})
         .then(function (response) {
             this.resetObjectState();
             const encounterId = this.props.currentEncounter.id;
             
             axios('/encounter/' + encounterId, { 
                     method: "get", 
-                    withCredentials: true})
+                    withCredentials: true,data: {}})
                 .then(function (response) {
                     console.log(response.data)
                     this.props.callback(response.data)

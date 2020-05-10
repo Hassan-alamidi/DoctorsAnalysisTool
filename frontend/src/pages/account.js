@@ -21,7 +21,7 @@ class AccountPage extends React.Component {
     componentDidMount() {
         document.getElementById("background").src = require("../resources/images/woman-girl-silhouette-jogger-40751.jpg");
 
-        axios('http://localhost:8080/personal-details', { method: "get", withCredentials: true})
+        axios('/personal-details', { method: "get", withCredentials: true})
             .then(function (response) {
                 response.data.detailed = false;
                 console.log(response)

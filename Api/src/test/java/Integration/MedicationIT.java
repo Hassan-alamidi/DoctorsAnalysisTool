@@ -22,22 +22,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDate;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MedicationIT extends BaseIT{
 
     private static final String BASE_ENDPOINT = "/medication";
 
-    @LocalServerPort
-    protected int port;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
     @Override
     public void setupTest() {
-        setupBeforeEach(restTemplate, port);
     }
 
     private Medication createTestMedication(){
@@ -63,6 +53,17 @@ public class MedicationIT extends BaseIT{
         List<Medication> medications = responseEntity.getBody();
         Assert.assertNotNull(medications);
         Assert.assertFalse(medications.isEmpty());
+    }
+
+    @Test
+    public void getAllMedicationWithFakePPSN_thenEmptyResult(){
+        doctorHeader.add("ppsn", FAKE_PATIENT_PPSN);
+        ResponseEntity<List<Medication>> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Medication>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Medication> medications = responseEntity.getBody();
+        Assert.assertNotNull(medications);
+        Assert.assertTrue(medications.isEmpty());
     }
 
     @Test
@@ -93,6 +94,17 @@ public class MedicationIT extends BaseIT{
         for (Medication medication: medications) {
             Assert.assertEquals("Immunization",medication.getType());
         }
+    }
+
+    @Test
+    public void getImmunizationWithFakePPSN_thenEmptyResult(){
+        doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
+        ResponseEntity<List<Medication>> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT + "/immunization", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Medication>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Medication> medications = responseEntity.getBody();
+        Assert.assertNotNull(medications);
+        Assert.assertTrue(medications.isEmpty());
     }
 
     @Test

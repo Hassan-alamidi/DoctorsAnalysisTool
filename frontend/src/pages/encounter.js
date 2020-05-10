@@ -43,7 +43,7 @@ class EncounterPage extends React.Component {
             return;
         }
 
-        axios('http://localhost:8080/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
+        axios('/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
             .then(function (response) {
                 response.data.detailed = false;
                 console.log(response)
@@ -66,7 +66,7 @@ class EncounterPage extends React.Component {
 
     finalizeEncounter(){
         //need to componitize axios requests to reduce redundant code, in a rush now to get work done though so that will come later if time presents itself
-        axios('http://localhost:8080/encounter/finalize/' + this.state.currentEncounter.id, { 
+        axios('/encounter/finalize/' + this.state.currentEncounter.id, { 
                 method: "put", 
                 withCredentials: true})
             .then(function (response) {

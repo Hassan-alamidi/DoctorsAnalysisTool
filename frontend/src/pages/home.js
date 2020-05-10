@@ -37,7 +37,7 @@ class HomePage extends React.Component {
   requestPatient(){
     this.setState({patient:"",errorMessage:""})
     if(this.state.patientPPSN === undefined || this.state.patientPPSN !== ""){
-      axios('http://localhost:8080/patient', {method:"get", withCredentials: true, headers:{"ppsn":this.state.patientPPSN}})
+      axios('/patient', {method:"get", withCredentials: true, headers:{"ppsn":this.state.patientPPSN}})
             .then(function(response){
                 console.log(response)
                 response.data.detailed = false;

@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS `encounter` (
   `reason_description` varchar(200) NULL
 );
 
-
 --
 -- Table structure for table `patient`
 --
@@ -123,6 +122,5 @@ CREATE TABLE IF NOT EXISTS `doctor` (
   `password` varchar(200) NOT NULL,
   `phone_number` int(11) NOT NULL
 );
-
 
 ALTER TABLE `doctor` ADD CONSTRAINT doctor_unique_cols UNIQUE ( ppsn, medical_licence_number, phone_number );

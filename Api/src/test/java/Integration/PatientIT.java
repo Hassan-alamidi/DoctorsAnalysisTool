@@ -15,21 +15,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PatientIT extends BaseIT {
 
     private static final String BASE_ENDPOINT = "/patient";
 
-    @LocalServerPort
-    protected int port;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
     public void setupTest(){
-        setupBeforeEach(restTemplate, port);
+
     }
 
     @Test

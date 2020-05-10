@@ -50,7 +50,7 @@ class ProcedureModal extends React.Component {
             let requestData = this.state.procedure;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/procedure', { 
+            axios('/procedure', { 
                     data:requestData,
                         method: this.props.requestType, 
                         withCredentials: true})
@@ -58,7 +58,7 @@ class ProcedureModal extends React.Component {
                     this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
-                    axios('http://localhost:8080/encounter/' + encounterId, { 
+                    axios('/encounter/' + encounterId, { 
                             method: "get", 
                             withCredentials: true})
                         .then(function (response) {
@@ -73,14 +73,14 @@ class ProcedureModal extends React.Component {
     }
 
     deleteProcedure(id){
-        axios('http://localhost:8080/procedure/'+id, { 
+        axios('/procedure/'+id, { 
                 method: 'delete', 
                 withCredentials: true})
         .then(function (response) {
             this.resetObjectState();
             const encounterId = this.props.currentEncounter.id;
             
-            axios('http://localhost:8080/encounter/' + encounterId, { 
+            axios('/encounter/' + encounterId, { 
                     method: "get", 
                     withCredentials: true})
                 .then(function (response) {

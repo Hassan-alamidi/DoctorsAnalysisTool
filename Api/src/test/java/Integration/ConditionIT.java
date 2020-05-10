@@ -23,22 +23,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDate;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ConditionIT extends BaseIT{
 
     private static final String BASE_ENDPOINT = "/conditions";
 
-    @LocalServerPort
-    protected int port;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
     @Override
     public void setupTest() {
-        setupBeforeEach(restTemplate, port);
+
     }
 
     private Condition createTestCondition(){
@@ -67,6 +58,17 @@ public class ConditionIT extends BaseIT{
     }
 
     @Test
+    public void getAllConditionsWithFakePPSN_thenEmptyListReturned(){
+        doctorHeader.add("ppsn", FAKE_PATIENT_PPSN);
+        ResponseEntity<List<Condition>> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Condition>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Condition> conditions = responseEntity.getBody();
+        Assert.assertNotNull(conditions);
+        Assert.assertTrue(conditions.isEmpty());
+    }
+
+    @Test
     public void getOnGoingConditions(){
         doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<List<Condition>> responseEntity =
@@ -78,11 +80,21 @@ public class ConditionIT extends BaseIT{
         for (Condition condition:conditions) {
             Assert.assertNull(condition.getCuredOn());
         }
-
     }
 
     @Test
-    public void markConditionAsCured_thenPatientShouldHaveNoOnGoingConditions(){
+    public void getOnGoingConditionsWithFakePPSN_thenEmptyListReturned(){
+        doctorHeader.add("ppsn", FAKE_PATIENT_PPSN);
+        ResponseEntity<List<Condition>> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT + "/current", HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Condition>>() {});
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<Condition> conditions = responseEntity.getBody();
+        Assert.assertNotNull(conditions);
+        Assert.assertTrue(conditions.isEmpty());
+    }
+
+    @Test
+    public void markConditionAsCured_thenPatientShouldHaveThatConditionAsOnGoing(){
         doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT  + "/current/cured/4" , HttpMethod.PUT, new HttpEntity<>(doctorHeader), String.class);
@@ -99,7 +111,6 @@ public class ConditionIT extends BaseIT{
 
     @Test
     public void getConditionById(){
-        doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<Condition> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT + "/2", HttpMethod.GET, new HttpEntity<>(doctorHeader), Condition.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -109,11 +120,18 @@ public class ConditionIT extends BaseIT{
     }
 
     @Test
+    public void getConditionByIdWithFakeId_thenNotFound(){
+        ResponseEntity<Condition> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT + "/1000", HttpMethod.GET, new HttpEntity<>(doctorHeader), Condition.class);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
+
+    @Test
     public void deletePatientCondition(){
-        doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<String> responseEntity =
                 restTemplate.exchange(BASE_ENDPOINT  + "/1" , HttpMethod.DELETE, new HttpEntity<>(doctorHeader), String.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        doctorHeader.add("ppsn", REAL_PATIENT_PPSN);
         ResponseEntity<List<Condition>> responseEntityCheck =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(doctorHeader), new ParameterizedTypeReference<List<Condition>>() {});
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -123,7 +141,13 @@ public class ConditionIT extends BaseIT{
         for (Condition condition:conditions) {
             Assert.assertNotEquals(1,condition.getId());
         }
+    }
 
+    @Test
+    public void deletePatientConditionWithFakeId_thenNotFound(){
+        ResponseEntity<String> responseEntity =
+                restTemplate.exchange(BASE_ENDPOINT  + "/1000" , HttpMethod.DELETE, new HttpEntity<>(doctorHeader), String.class);
+        Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
     @Test
@@ -147,7 +171,6 @@ public class ConditionIT extends BaseIT{
         Assert.assertNotNull(condition);
         condition.setSymptoms("TestCondition Updated");
         condition.setCuredOn(LocalDate.now());
-
 
         ResponseEntity<Condition> responseEntityUpdate =
                 restTemplate.exchange(BASE_ENDPOINT, HttpMethod.PUT, new HttpEntity<Condition>(condition, doctorHeader), Condition.class);

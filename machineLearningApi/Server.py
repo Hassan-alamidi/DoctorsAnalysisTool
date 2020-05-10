@@ -35,7 +35,7 @@ def predictCondition():
 
     diabetiesPred = predictDiabeties(ppsn, encounterId)
 
-    return jsonify(diabetiesPred), 200
+    return diabetiesPred
 
 def predictDiabeties(ppsn, encounterId):
     age = None
@@ -46,6 +46,8 @@ def predictDiabeties(ppsn, encounterId):
     ldl = None
     #order should be 'ppsn', 'age', 'diastolic', 'systolic', 'bmi', 'hdl', 'ldl'
     age = getAge(ppsn)
+    if(age == None):
+        return jsonify({'message':"Patient not found"}), 404
     
     global database    
     global getValueQuery
@@ -65,11 +67,11 @@ def predictDiabeties(ppsn, encounterId):
     
     cursor.close()
     
-    if(dbp is None or sbp is None or bmi is None or hdl is None or ldl is None or age is None):
+    if(dbp is None or sbp is None or bmi is None or hdl is None or ldl is None):
         response = {
             'message':"Not enough observations taken"
             }
-        return response
+        return jsonify(response), 422
     
     tobePredicted = np.array([[age,dbp,sbp,bmi,hdl,ldl]])
     prediction = model.predict(tobePredicted)
@@ -88,7 +90,7 @@ def predictDiabeties(ppsn, encounterId):
         'basedOn': basedOn,
         'confidence': str(confidence) + '%'
         }
-    return response
+    return jsonify(response), 200
 
 
 def getValue(encounterId, typeOfValue):
@@ -111,10 +113,11 @@ def getAge(ppsn):
     global getPatientDOB
     cursor = database.cursor()
     cursor.execute(getPatientDOB,(ppsn,))
-    dob = cursor.fetchone()[0]
-    print(dob, flush=True)
+    dob = cursor.fetchone()
     cursor.close()
-    return calculateAge(dob)
+    if(dob != None):
+        return calculateAge(dob[0])
+    return None
     
 def insertPrediction(ppsn, result, basedOn, confidence):
     global database    
@@ -151,4 +154,4 @@ def databaseConnection():
 
 if __name__ == '__main__':
     databaseConnection()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=False, threaded=False)

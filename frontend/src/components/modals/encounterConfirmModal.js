@@ -23,7 +23,7 @@ class EncounterConfirmModal extends React.Component {
 
     componentDidMount() {
         $('#LoadingModal').modal('show');
-        axios('http://localhost:8080/encounter/open', { method: "get", withCredentials: true, headers: { "ppsn": this.props.patient.ppsn } })
+        axios('/encounter/open', { method: "get", withCredentials: true, headers: { "ppsn": this.props.patient.ppsn } })
             .then(function (response) {
                 console.log(response)
                 this.setState({ openEncounters: response.data, loading: false })

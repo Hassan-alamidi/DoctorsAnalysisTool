@@ -28,7 +28,7 @@ class PredictionPage extends React.Component {
             return;
         }
 
-        axios('http://localhost:8080/prediction', { method: "post", withCredentials: true, headers: { "ppsn": patientPPSN } })
+        axios('/prediction', { method: "post", withCredentials: true, headers: { "ppsn": patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 this.setState({ predictionReport: response.data, loading: false })

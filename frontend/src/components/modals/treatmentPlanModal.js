@@ -49,7 +49,7 @@ class TreatmentPlanModal extends React.Component {
             let requestData = this.state.treatmentPlan;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/treatment', { 
+            axios('/treatment', { 
                     data:requestData,
                     method: this.props.requestType, 
                     withCredentials: true})
@@ -57,7 +57,7 @@ class TreatmentPlanModal extends React.Component {
                     this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
-                    axios('http://localhost:8080/encounter/' + encounterId, { 
+                    axios('/encounter/' + encounterId, { 
                             method: "get", 
                             withCredentials: true})
                         .then(function (response) {
@@ -72,14 +72,14 @@ class TreatmentPlanModal extends React.Component {
     }
 
     deleteTreatment(id){
-        axios('http://localhost:8080/treatment/'+id, { 
+        axios('/treatment/'+id, { 
                 method: 'delete', 
                 withCredentials: true})
         .then(function (response) {
             this.resetObjectState();
             const encounterId = this.props.currentEncounter.id;
             
-            axios('http://localhost:8080/encounter/' + encounterId, { 
+            axios('/encounter/' + encounterId, { 
                     method: "get", 
                     withCredentials: true})
                 .then(function (response) {

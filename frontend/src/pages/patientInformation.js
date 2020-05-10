@@ -39,7 +39,7 @@ class PatientInformationPage extends React.Component {
             return;
         }
 
-        axios('http://localhost:8080/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
+        axios('/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 this.setState({ patient: response.data, loading: false })
@@ -57,7 +57,7 @@ class PatientInformationPage extends React.Component {
     updatePatientInformation() {
         if(this.state.patient !== undefined && Object.keys(this.state.patient).length > 1){
             this.setState({error:"", success:"" })
-            axios('http://localhost:8080/patient', { data:this.state.patient, method: "put", withCredentials: true})
+            axios('/patient', { data:this.state.patient, method: "put", withCredentials: true})
                 .then(function (response) {
                     console.log(response)
                     this.setState({ doctor: response.data, loading: false,  success: "Patient Successfully Updated" })

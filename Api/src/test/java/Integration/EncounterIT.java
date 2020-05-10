@@ -25,31 +25,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDate;
 import java.util.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 public class EncounterIT extends BaseIT {
 
     private final String ENCOUNTER_ENDPOINT = "/encounter";
     private Encounter encounter;
 
-    @LocalServerPort
-    protected int port;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
     @SneakyThrows
     public void setupTest(){
-        setupBeforeEach(restTemplate, port);
         LocalDate date = LocalDate.parse("2020-05-12");
-
-        encounter = new Encounter();
-        encounter.setType("checkup");
-        encounter.setDescription("some random description");
-        encounter.setDateVisited(date);
-        encounter.setDateLeft(date);
-        encounter.setPatient(EXISTING_PATIENT);
+        encounter = createTestEncounter(date);
     }
 
     //get all patient encounters

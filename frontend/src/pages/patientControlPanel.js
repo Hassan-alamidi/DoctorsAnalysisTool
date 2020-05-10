@@ -33,7 +33,7 @@ class PatientControlPanelPage extends React.Component {
             return;
         }
 
-        axios('http://localhost:8080/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
+        axios('/patient', { method: "get", withCredentials: true, headers: { "ppsn": patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 response.data.detailed = false;

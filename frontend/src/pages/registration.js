@@ -42,7 +42,7 @@ class RegistrationPage extends React.Component {
                                     this.state.doctor.privilegeLevel === "Please Select Privilege Level" ? "User" : this.state.doctor.privilegeLevel;
             let doctor = this.state.doctor;
             doctor.privilegeLevel = privilegeLevel;
-            axios('http://localhost:8080' + this.state.endpoint, { data:doctor, method: "post", withCredentials: true})
+            axios(this.state.endpoint, { data:doctor, method: "post", withCredentials: true})
                 .then(function (response) {
                     console.log(response)
                     this.setState({ doctor: response.data, loading: false,  success: "Doctor Successfully Registered" })

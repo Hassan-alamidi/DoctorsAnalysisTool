@@ -3,6 +3,7 @@ package Integration;
 import com.MTPA.HealthApp;
 import com.MTPA.Objects.Doctor;
 import com.MTPA.Objects.Patient;
+import com.MTPA.Objects.Reports.Encounter;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,6 +21,8 @@ import java.time.LocalDate;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseIT {
 
     protected static final String BASE_URI = "http://localhost:";
@@ -41,9 +44,14 @@ public abstract class BaseIT {
     protected HttpHeaders adminHeader = new HttpHeaders();
     protected HttpHeaders doctorHeader = new HttpHeaders();
 
-    private TestRestTemplate restTemplate;
+    @LocalServerPort
+    protected int port;
 
-    public void setupBeforeEach(TestRestTemplate restTemplate, int port){
+    @Autowired
+    protected TestRestTemplate restTemplate;
+
+    @Before
+    public void setupBeforeEach(){
         this.restTemplate = restTemplate;
         DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(BASE_URI + port);
         restTemplate.setUriTemplateHandler(uriBuilderFactory);
@@ -61,6 +69,7 @@ public abstract class BaseIT {
         doctorHeader = generateHeader(NON_ADMIN_TOKEN);
         patientCreation();
         doctorCreation();
+        setupTest();
     }
 
     abstract void setupTest();
@@ -124,6 +133,17 @@ public abstract class BaseIT {
                 .password("anyPass")
                 .build();
 
+    }
+
+    public Encounter createTestEncounter(final LocalDate date){
+
+        Encounter encounter = new Encounter();
+        encounter.setType("checkup");
+        encounter.setDescription("some random description");
+        encounter.setDateVisited(date);
+        encounter.setDateLeft(date);
+        encounter.setPatient(EXISTING_PATIENT);
+        return encounter;
     }
 
     private String getToken(Doctor doctor){

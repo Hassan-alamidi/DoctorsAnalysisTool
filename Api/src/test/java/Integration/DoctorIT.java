@@ -13,8 +13,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = HealthApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DoctorIT extends BaseIT {
 
     private static final String REGISTER_ENDPOINT = "/register";
@@ -24,15 +22,7 @@ public class DoctorIT extends BaseIT {
     private static final String NON_DEFAULT_PASSWORD = "notDefault";
     private static final String DEFAULT_PASSWORD = "ToBeChanged";
 
-    @LocalServerPort
-    protected int port;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-
-    @Before
     public void setupTest(){
-        setupBeforeEach(restTemplate, port);
     }
 
     @Test

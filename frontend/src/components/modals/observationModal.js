@@ -49,7 +49,7 @@ class ObservationModal extends React.Component {
             let requestData = this.state.observation;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/observations', { 
+            axios('/observations', { 
                     data:requestData,
                         method: this.props.requestType, 
                         withCredentials: true})
@@ -57,7 +57,7 @@ class ObservationModal extends React.Component {
                     this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
-                    axios('http://localhost:8080/encounter/' + encounterId, { 
+                    axios('/encounter/' + encounterId, { 
                             method: "get", 
                             withCredentials: true})
                         .then(function (response) {
@@ -73,14 +73,14 @@ class ObservationModal extends React.Component {
     }
 
     deleteObservation(id){
-        axios('http://localhost:8080/observations/'+id, { 
+        axios('/observations/'+id, { 
                 method: 'delete', 
                 withCredentials: true})
         .then(function (response) {
             this.resetObjectState();
             const encounterId = this.props.currentEncounter.id;
             
-            axios('http://localhost:8080/encounter/' + encounterId, { 
+            axios('/encounter/' + encounterId, { 
                     method: "get", 
                     withCredentials: true})
                 .then(function (response) {

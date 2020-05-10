@@ -44,7 +44,7 @@ class HistoryPage extends React.Component {
     }
 
     apiRequest(endpoint, method = "get"){
-        axios('http://localhost:8080' + endpoint, { method: method, withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
+        axios('' + endpoint, { method: method, withCredentials: true, headers: { "ppsn": this.state.patientPPSN } })
             .then(function (response) {
                 console.log(response)
                 if(method === "get"){

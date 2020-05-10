@@ -31,12 +31,12 @@ class LoginPage extends React.Component {
 
     login() {
         if (this.state.medicalLicenceNumber !== "" && this.state.password !== "") {
-            axios('http://localhost:8080/login', { data: this.state, method: "post", withCredentials: true })
+            axios('/login', { data: this.state, method: "post", withCredentials: true })
                 .then(function (response) {
                     if (response.status === 200) {
                         //create a non-http session cookie and redirect to home
                         
-                        axios('http://localhost:8080/personal-details', {method: "get", withCredentials: true })
+                        axios('/personal-details', {method: "get", withCredentials: true })
                         .then(function(response){
                             console.log(response);
                             if(response.data.accountMessages !== undefined && response.data.accountMessages === "change password"){

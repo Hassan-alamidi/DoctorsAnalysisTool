@@ -39,7 +39,10 @@ INSERT INTO `encounter` (id, type, date_visited, date_left, patient_ppsn, descri
 ---
 
 INSERT INTO `patient_observation` (type, date_taken, encounter_id, result_value, result_unit, patient_ppsn) VALUES
-('ECG','2020-01-12','a','160','BPM','87937M');
+('ECG','2020-01-12','a','160','BPM','87937M'),
+('Body Height','2020-01-12','a','56.3','cm','87937M'),
+('Respiratory rate','2020-01-12','a','15','/min','87937M'),
+('Hematocrit [Volume Fraction] of Blood by Automated count','2020-01-12','a','45.8','%','87937M');
 
 INSERT INTO `patient_condition` (id,description,code,discovered,cured_on,patient_ppsn,encounter_id,type) VALUES
 (1,'Streptococcal sore throat (disorder)','43878008','2008-06-14','2008-06-27','87937M','a','condition'),

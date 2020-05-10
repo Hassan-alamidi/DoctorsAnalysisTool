@@ -48,7 +48,7 @@ class EncounterConfirmModal extends React.Component {
         if(this.state.encounter !== undefined && this.state.encounter.description !== undefined && this.state.encounter.type !== undefined 
             && this.state.encounter.description.trim() !== "" && this.state.encounter.type.trim() !== ""){
             const request = this.createRequestData();
-            axios('http://localhost:8080/encounter', { 
+            axios('/encounter', { 
                 data:request,
                     method: this.props.requestType, 
                     withCredentials: true})

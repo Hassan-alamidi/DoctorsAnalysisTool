@@ -42,7 +42,7 @@ class ConditionModal extends React.Component {
             let requestData = this.state.condition;
             requestData.patient = this.props.patient;
             requestData.encounter = this.props.currentEncounter;
-            axios('http://localhost:8080/conditions', { 
+            axios('/conditions', { 
                     data:requestData,
                         method: this.props.requestType, 
                         withCredentials: true})
@@ -50,7 +50,7 @@ class ConditionModal extends React.Component {
                     this.resetObjectState();
                     const encounterId = response.data.encounter.id;
                     
-                    axios('http://localhost:8080/encounter/' + encounterId, { 
+                    axios('/encounter/' + encounterId, { 
                             method: "get", 
                             withCredentials: true})
                         .then(function (response) {
@@ -65,14 +65,14 @@ class ConditionModal extends React.Component {
     }
 
     deleteCondition(id){
-        axios('http://localhost:8080/conditions/'+id, { 
+        axios('/conditions/'+id, { 
                 method: 'delete', 
                 withCredentials: true})
         .then(function (response) {
             this.resetObjectState();
             const encounterId = this.props.currentEncounter.id;
             
-            axios('http://localhost:8080/encounter/' + encounterId, { 
+            axios('/encounter/' + encounterId, { 
                     method: "get", 
                     withCredentials: true})
                 .then(function (response) {

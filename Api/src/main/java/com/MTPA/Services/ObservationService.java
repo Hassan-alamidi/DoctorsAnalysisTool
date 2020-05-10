@@ -6,6 +6,7 @@ import com.MTPA.DAO.PatientDAO;
 import com.MTPA.Objects.Reports.Encounter;
 import com.MTPA.Objects.Reports.Observation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class ObservationService {
         try {
             observationDAO.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (EntityNotFoundException ex){
+        }catch (EntityNotFoundException | EmptyResultDataAccessException ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

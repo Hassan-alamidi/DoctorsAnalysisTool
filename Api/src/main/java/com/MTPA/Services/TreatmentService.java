@@ -4,6 +4,7 @@ import com.MTPA.DAO.PatientDAO;
 import com.MTPA.DAO.TreatmentPlanDAO;
 import com.MTPA.Objects.Reports.TreatmentPlan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class TreatmentService {
         try {
             treatmentPlanDAO.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (EntityNotFoundException ex){
+        }catch (EntityNotFoundException | EmptyResultDataAccessException ex){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

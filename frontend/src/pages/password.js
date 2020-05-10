@@ -26,7 +26,7 @@ class PasswordPage extends React.Component {
     changePassword(){
         //need to componitize axios requests to reduce redundant code, in a rush now to get work done though so that will come later if time presents itself
         if(this.state.oldPassword !== undefined && this.state.newPassword !== undefined && this.state.newPassword.trim() !== ""){
-            axios('http://localhost:8080/password', { 
+            axios('/password', { 
                     method: "put", 
                     withCredentials: true, headers:{oldPassword:this.state.oldPassword, newPassword:this.state.newPassword}})
                 .then(function (response) {
